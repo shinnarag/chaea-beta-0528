@@ -1,6 +1,5 @@
 const STALE_STORAGE_KEYS = ["chaea-chat-v2", "chaea-memory-v2", "chaea-session-v2"];
 const LOCAL_API_ORIGIN = "http://127.0.0.1:4173";
-const API_DISABLED_KEY = "chaea-api-disabled";
 const configuredApiOrigin = String(window.ChaeAConfig?.apiOrigin || "").replace(/\/$/, "");
 
 const persona = {
@@ -335,7 +334,6 @@ const messagesEl = document.querySelector("#messages");
 const form = document.querySelector("#chatForm");
 const input = document.querySelector("#messageInput");
 const resetButton = document.querySelector("#resetButton");
-const apiToggleButton = document.querySelector("#apiToggleButton");
 const apiStatus = document.querySelector("#apiStatus");
 const scrollProgress = document.querySelector("#scrollProgress");
 const lightLayer = document.querySelector("#lightLayer");
@@ -351,7 +349,6 @@ let isComposing = false;
 let visibleChaeALines = [];
 let openingTimer = null;
 let apiHealthCache = null;
-let apiDisabledMemory = false;
 
 function createInitialMemory() {
   return {
@@ -378,49 +375,9 @@ function clearClientConversationCache() {
 }
 
 function canUseApi() {
-  if (isApiDisabled()) return false;
   if (configuredApiOrigin) return true;
   if (window.location.protocol === "file:") return true;
   return window.location.protocol === "http:" || window.location.protocol === "https:";
-}
-
-function canReachApi() {
-  if (configuredApiOrigin) return true;
-  if (window.location.protocol === "file:") return true;
-  return window.location.protocol === "http:" || window.location.protocol === "https:";
-}
-
-function isApiDisabled() {
-  try {
-    return localStorage.getItem(API_DISABLED_KEY) === "1";
-  } catch {
-    return apiDisabledMemory;
-  }
-}
-
-function setApiDisabled(disabled) {
-  apiDisabledMemory = disabled;
-  try {
-    if (disabled) {
-      localStorage.setItem(API_DISABLED_KEY, "1");
-    } else {
-      localStorage.removeItem(API_DISABLED_KEY);
-    }
-  } catch {
-    // Keep the current in-memory toggle in restricted browser contexts.
-  }
-  apiHealthCache = null;
-  updateApiToggleButton();
-  checkApiConnection();
-}
-
-function updateApiToggleButton() {
-  if (!apiToggleButton) return;
-  const disabled = isApiDisabled();
-  apiToggleButton.classList.toggle("is-off", disabled);
-  apiToggleButton.setAttribute("aria-pressed", disabled ? "true" : "false");
-  apiToggleButton.setAttribute("aria-label", disabled ? "Turn Grok API on" : "Turn Grok API off");
-  apiToggleButton.title = disabled ? "Grok API 켜기" : "Grok API 끄기";
 }
 
 function apiUrl(path) {
@@ -448,15 +405,8 @@ function setApiStatus(mode, detail = "") {
     return;
   }
 
-  if (mode === "off") {
-    apiStatus.classList.add("off");
-    apiStatus.setAttribute("aria-label", "Grok API 꺼짐");
-    apiStatus.title = detail || "Grok API 꺼짐";
-    return;
-  }
-
-  apiStatus.setAttribute("aria-label", canReachApi() ? "API 연결 대기 중" : "로컬 모드");
-  apiStatus.title = canReachApi() ? "API 연결 대기 중" : "로컬 모드";
+  apiStatus.setAttribute("aria-label", canUseApi() ? "API 연결 대기 중" : "로컬 모드");
+  apiStatus.title = canUseApi() ? "API 연결 대기 중" : "로컬 모드";
 }
 
 function normalize(text) {
@@ -812,10 +762,6 @@ function generateResponse(message, options = {}) {
 }
 
 async function generateApiResponse(message) {
-  if (isApiDisabled()) {
-    throw new Error("Grok API가 꺼져 있어 로컬 응답으로 전환했어요.");
-  }
-
   if (!canUseApi()) {
     throw new Error("API는 로컬 서버로 열었을 때만 사용할 수 있어요.");
   }
@@ -867,11 +813,6 @@ async function generateApiResponse(message) {
 }
 
 async function checkApiConnection() {
-  if (isApiDisabled()) {
-    setApiStatus("off", "Grok API가 꺼져 있어 로컬 fallback으로 응답합니다.");
-    return;
-  }
-
   if (!canUseApi()) {
     setApiStatus("fallback");
     return;
@@ -917,7 +858,7 @@ function getChatEndpoints(health) {
 }
 
 async function logConversationTurn(userText, reply, mode) {
-  if (!canReachApi()) return;
+  if (!canUseApi()) return;
 
   try {
     await fetch(apiUrl("/api/log-turn"), {
@@ -1547,7 +1488,7 @@ function sendMessage(text) {
       typing.remove();
       addMessage("chaea", reply);
       await logConversationTurn(clean, reply, "fallback");
-      setApiStatus(isApiDisabled() ? "off" : "fallback", error.message);
+      setApiStatus("fallback", error.message);
     } finally {
       if (typing.isConnected) typing.remove();
       isResponding = false;
@@ -1606,12 +1547,6 @@ if (resetButton) {
   });
 }
 
-if (apiToggleButton) {
-  apiToggleButton.addEventListener("click", () => {
-    setApiDisabled(!isApiDisabled());
-  });
-}
-
 function updateScrollMotion() {
   const max = Math.max(document.documentElement.scrollHeight - window.innerHeight, 1);
   const progress = Math.min(Math.max(window.scrollY / max, 0), 1);
@@ -1661,7 +1596,6 @@ function initRevealMotion() {
 }
 
 renderConversation();
-updateApiToggleButton();
 setApiStatus("idle");
 checkApiConnection();
 initRevealMotion();

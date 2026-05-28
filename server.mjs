@@ -12,6 +12,7 @@ const PORT = Number(process.env.PORT || 4173);
 const HOST = process.env.HOST || "127.0.0.1";
 const XAI_BASE_URL = process.env.XAI_BASE_URL || "https://api.x.ai/v1";
 const XAI_MODEL = process.env.XAI_MODEL || "grok-4.3";
+const XAI_ENABLED = isEnabledEnv(process.env.XAI_ENABLED ?? process.env.GROK_ENABLED, true);
 const DATA_DIR = path.join(__dirname, "data");
 const CONVERSATION_DIR = path.join(DATA_DIR, "conversations");
 const SESSION_DIR = path.join(DATA_DIR, "sessions");
@@ -78,7 +79,8 @@ const server = createServer(async (req, res) => {
         ok: true,
         provider: "xai",
         model: XAI_MODEL,
-        apiConfigured: Boolean(process.env.XAI_API_KEY),
+        grokEnabled: XAI_ENABLED,
+        apiConfigured: XAI_ENABLED && Boolean(process.env.XAI_API_KEY),
         claudeConfigured: Boolean(process.env.ANTHROPIC_API_KEY),
         logging: {
           dailyJsonl: path.relative(__dirname, CONVERSATION_DIR),
@@ -119,13 +121,21 @@ const server = createServer(async (req, res) => {
 
 server.listen(PORT, HOST, () => {
   console.log(`ChaeA chat app: http://${HOST}:${PORT}/app/`);
-  console.log(`xAI API: ${process.env.XAI_API_KEY ? "configured" : "missing XAI_API_KEY"}`);
+  console.log(`xAI API: ${XAI_ENABLED ? (process.env.XAI_API_KEY ? "configured" : "missing XAI_API_KEY") : "disabled by XAI_ENABLED"}`);
   console.log(`Grok model: ${XAI_MODEL}`);
   console.log(`Claude API: ${process.env.ANTHROPIC_API_KEY ? "configured" : "missing ANTHROPIC_API_KEY"}`);
   console.log(`Claude routes: /api/chat-claude, /api/sns-classify, /api/sns-draft, /api/sns-queue`);
 });
 
 async function handleChat(req, res) {
+  if (!XAI_ENABLED) {
+    sendJson(res, 503, {
+      error: "xai_disabled",
+      message: "운영자 설정으로 Grok API가 꺼져 있습니다.",
+    });
+    return;
+  }
+
   const apiKey = process.env.XAI_API_KEY;
   if (!apiKey) {
     sendJson(res, 503, {
@@ -539,6 +549,11 @@ async function readInsights() {
 
 function safeText(value, maxLength) {
   return String(value || "").replace(/\s+\n/g, "\n").trim().slice(0, maxLength);
+}
+
+function isEnabledEnv(value, fallback = true) {
+  if (value === undefined || value === null || String(value).trim() === "") return fallback;
+  return !["0", "false", "off", "no", "disabled"].includes(String(value).trim().toLowerCase());
 }
 
 function getSeoulNowParts() {

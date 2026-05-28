@@ -5,6 +5,16 @@ export async function onRequest(context) {
   if (context.request.method === "OPTIONS") return options();
   if (context.request.method !== "POST") return json({ error: "method_not_allowed" }, 405);
 
+  if (!isXaiEnabled(context.env)) {
+    return json(
+      {
+        error: "xai_disabled",
+        message: "운영자 설정으로 Grok API가 꺼져 있습니다.",
+      },
+      503,
+    );
+  }
+
   const apiKey = context.env.XAI_API_KEY;
   if (!apiKey) {
     return json(
@@ -91,6 +101,11 @@ export async function onRequest(context) {
     provider: "xai",
     responseId: data.id || null,
   });
+}
+
+function isXaiEnabled(env = {}) {
+  const value = String(env.XAI_ENABLED ?? env.GROK_ENABLED ?? "true").trim().toLowerCase();
+  return !["0", "false", "off", "no", "disabled"].includes(value);
 }
 
 async function writeOptionalLog(env, record) {

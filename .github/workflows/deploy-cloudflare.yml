@@ -5,6 +5,15 @@ on:
     branches:
       - main
   workflow_dispatch:
+    inputs:
+      grok_enabled:
+        description: "Enable Grok API for all visitors"
+        required: true
+        default: "true"
+        type: choice
+        options:
+          - "true"
+          - "false"
 
 permissions:
   contents: read
@@ -38,5 +47,7 @@ jobs:
           command: deploy
           secrets: |
             XAI_API_KEY
+            XAI_ENABLED
         env:
           XAI_API_KEY: ${{ secrets.XAI_API_KEY }}
+          XAI_ENABLED: ${{ github.event.inputs.grok_enabled || vars.XAI_ENABLED || 'true' }}

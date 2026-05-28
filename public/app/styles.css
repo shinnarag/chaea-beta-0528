@@ -636,12 +636,6 @@ p {
   box-shadow: 0 0 0 4px rgba(126, 132, 143, 0.08);
 }
 
-.api-pill.off {
-  border-color: rgba(190, 106, 85, 0.34);
-  background: #d07763;
-  box-shadow: 0 0 0 4px rgba(208, 119, 99, 0.12);
-}
-
 .icon-button,
 .composer button {
   width: 42px;
@@ -661,17 +655,6 @@ p {
   border-color: rgba(169, 111, 143, 0.3);
   background: rgba(255, 255, 255, 0.9);
   box-shadow: 0 16px 34px rgba(105, 94, 120, 0.13);
-}
-
-.api-toggle {
-  font-size: 1rem;
-  line-height: 1;
-}
-
-.api-toggle.is-off {
-  color: #a65345;
-  border-color: rgba(166, 83, 69, 0.28);
-  background: rgba(255, 244, 239, 0.88);
 }
 
 .messages {

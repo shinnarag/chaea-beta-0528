@@ -92,6 +92,13 @@ Required repository secrets:
 
 After adding the secrets, push to `main` or run `Deploy Cloudflare Worker` manually from the Actions tab.
 
+Operator Grok switch:
+
+- GitHub Actions -> `Deploy Cloudflare Worker` -> `Run workflow`
+- Choose `grok_enabled=false` to turn Grok off for every visitor.
+- Choose `grok_enabled=true` to turn Grok back on.
+- Optional: set repository variable `XAI_ENABLED=false` to keep Grok off across future automatic deploys.
+
 ## Project Notes
 
 - `server.mjs` serves the app, local APIs, logs, and file-backed SNS queue.
