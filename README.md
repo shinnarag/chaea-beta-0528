@@ -80,6 +80,18 @@ This writes `data/social/chaealine-snapshot.json`, appends `data/social/chaealin
 
 `npm run build:pages` rebuilds `public/` from `index.html`, `app/`, and `assets/`. This is mainly for previewing static assets; the full internal workflow should use `npm run dev`.
 
+## GitHub Deploy
+
+GitHub Actions deploys `main` to the Cloudflare Worker defined in `wrangler.toml`.
+
+Required repository secrets:
+
+- `CLOUDFLARE_API_TOKEN`
+- `CLOUDFLARE_ACCOUNT_ID`
+- `XAI_API_KEY`
+
+After adding the secrets, push to `main` or run `Deploy Cloudflare Worker` manually from the Actions tab.
+
 ## Project Notes
 
 - `server.mjs` serves the app, local APIs, logs, and file-backed SNS queue.
