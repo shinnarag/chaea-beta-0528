@@ -1,0 +1,70 @@
+{
+  "updatedAt": "2026-05-27T07:21:03.907Z",
+  "updatedAtKst": "2026. 05. 27. 16:21:03",
+  "sources": {
+    "youtube": "https://www.youtube.com/@chaealine",
+    "instagram": "https://www.instagram.com/chaealine/"
+  },
+  "youtube": {
+    "platform": "youtube",
+    "handle": "@chaealine",
+    "url": "https://www.youtube.com/@chaealine",
+    "canonicalUrl": "https://www.youtube.com/channel/UCtiA6ZmHFB3p31ntizLVukQ",
+    "channelId": "UCtiA6ZmHFB3p31ntizLVukQ",
+    "title": "ChaeA 채아",
+    "description": "안녕하세요. 싱어송라이터 채아라고 해요.",
+    "shorts": [
+      {
+        "videoId": "vfKn0-zb16s",
+        "url": "https://www.youtube.com/shorts/vfKn0-zb16s",
+        "title": "\"나만을 위한 삶\" 🌾 | ChaeA",
+        "views": "조회수 488회",
+        "accessibilityText": "\"나만을 위한 삶\" 🌾 | ChaeA, 조회수 488회 - Shorts 동영상 재생"
+      },
+      {
+        "videoId": "IRl__1M_G8o",
+        "url": "https://www.youtube.com/shorts/IRl__1M_G8o",
+        "title": "“사랑이 뭐냐고”라는 말에 담긴 진심 💭 | ChaeA",
+        "views": "조회수 1.2천회",
+        "accessibilityText": "“사랑이 뭐냐고”라는 말에 담긴 진심 💭 | ChaeA, 조회수 1.2천회 - Shorts 동영상 재생"
+      }
+    ]
+  },
+  "instagram": {
+    "platform": "instagram",
+    "handle": "@chaealine",
+    "url": "https://www.instagram.com/chaealine/",
+    "canonicalUrl": "https://www.instagram.com/chaealine/",
+    "profileId": "23704110250",
+    "title": "ChaeA (@chaealine) • Instagram photos and videos",
+    "description": "15 Followers, 0 Following, 3 Posts - See Instagram photos and videos from ChaeA (@chaealine)",
+    "followers": {
+      "display": "15",
+      "value": 15
+    },
+    "following": {
+      "display": "0",
+      "value": 0
+    },
+    "posts": {
+      "display": "3",
+      "value": 3
+    },
+    "bio": "ChaeA🍒",
+    "publicPostDetailsAvailable": false,
+    "note": "Instagram public HTML currently exposes profile-level metadata, not reliable logged-out post detail or comment data."
+  },
+  "analysis": {
+    "summary": "Official social presence is now unified under @chaealine.",
+    "positioning": [
+      "YouTube should carry short performance/story fragments and future room-session archives.",
+      "Instagram should carry visual diary, short reels, bio signals, and comment intake for the review queue.",
+      "Both channels should keep the early-discovery feeling: small room, direct Korean text, quiet singer-songwriter identity."
+    ],
+    "monitoringPolicy": [
+      "Store public profile metadata and Shorts inventory as snapshots.",
+      "Append every run to history so growth and content changes can be audited later.",
+      "Do not auto-publish replies; route comments and DMs through the existing SNS review queue."
+    ]
+  }
+}

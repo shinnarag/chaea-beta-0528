@@ -1,0 +1,605 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ChaeA · Operator Dashboard</title>
+    <style>
+      :root {
+        --ink: #1f1a17;
+        --paper: #fbf6ef;
+        --muted: #7d6f63;
+        --line: #d9cdbf;
+        --accent: #c0876f;
+        --green: #4f8a55;
+        --red: #b65555;
+        --amber: #c79248;
+      }
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        font-family: "Pretendard", -apple-system, "Noto Sans KR", sans-serif;
+        background: var(--paper);
+        color: var(--ink);
+        line-height: 1.55;
+      }
+      header.top {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 14px 24px;
+        border-bottom: 1px solid var(--line);
+        background: #fffefb;
+        position: sticky;
+        top: 0;
+        z-index: 5;
+      }
+      header.top h1 {
+        margin: 0;
+        font-size: 16px;
+        letter-spacing: 0.06em;
+      }
+      header.top nav a {
+        margin-left: 18px;
+        color: var(--muted);
+        text-decoration: none;
+        font-size: 13px;
+      }
+      header.top nav a:hover { color: var(--ink); }
+      main {
+        max-width: 1100px;
+        margin: 0 auto;
+        padding: 24px;
+      }
+      h2 {
+        font-size: 14px;
+        text-transform: uppercase;
+        letter-spacing: 0.12em;
+        color: var(--muted);
+        margin: 32px 0 12px;
+      }
+      .kpi-row {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+        gap: 12px;
+      }
+      .kpi {
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        padding: 14px;
+        background: #fffefb;
+      }
+      .kpi .label {
+        font-size: 12px;
+        color: var(--muted);
+        margin-bottom: 4px;
+      }
+      .kpi .value {
+        font-size: 24px;
+        font-weight: 700;
+      }
+      .queue {
+        margin-top: 8px;
+      }
+      .intake {
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        padding: 16px;
+        background: #fffefb;
+      }
+      .intake-grid {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 10px;
+      }
+      .field {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+      }
+      .field.wide {
+        grid-column: 1 / -1;
+      }
+      .field label {
+        font-size: 12px;
+        color: var(--muted);
+      }
+      .field input,
+      .field select,
+      .field textarea {
+        width: 100%;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        padding: 9px 10px;
+        background: #fff;
+        color: var(--ink);
+        font: inherit;
+        font-size: 14px;
+      }
+      .field textarea {
+        min-height: 82px;
+        resize: vertical;
+      }
+      .intake-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-top: 12px;
+        align-items: center;
+      }
+      .queue-item {
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        padding: 16px;
+        margin-bottom: 12px;
+        background: #fffefb;
+      }
+      .queue-meta {
+        display: flex;
+        gap: 12px;
+        font-size: 12px;
+        color: var(--muted);
+        margin-bottom: 8px;
+        flex-wrap: wrap;
+        align-items: center;
+      }
+      .tag {
+        display: inline-block;
+        padding: 2px 8px;
+        border-radius: 999px;
+        font-size: 11px;
+        font-weight: 600;
+      }
+      .tag.cheer     { background: #e7f1e9; color: var(--green); }
+      .tag.question  { background: #e8eef5; color: #36608a; }
+      .tag.sensitive { background: #f7e1e1; color: var(--red); }
+      .tag.spam      { background: #f4ede2; color: var(--muted); }
+      .tag.other     { background: #f1ece3; color: var(--muted); }
+      .risk-bar {
+        height: 4px;
+        background: var(--line);
+        border-radius: 2px;
+        overflow: hidden;
+        flex: 1;
+        min-width: 80px;
+      }
+      .risk-bar > span {
+        display: block;
+        height: 100%;
+        background: var(--amber);
+      }
+      .queue-text {
+        font-size: 15px;
+        margin: 6px 0 12px;
+        padding: 10px 12px;
+        background: #fbf3e9;
+        border-radius: 8px;
+      }
+      .drafts label {
+        display: block;
+        font-size: 12px;
+        color: var(--muted);
+        margin-bottom: 4px;
+      }
+      .drafts textarea {
+        width: 100%;
+        min-height: 64px;
+        padding: 10px;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        font: inherit;
+        font-size: 14px;
+        background: #fff;
+        resize: vertical;
+      }
+      .draft-chips {
+        display: flex;
+        gap: 6px;
+        flex-wrap: wrap;
+        margin-bottom: 6px;
+      }
+      .chip {
+        font-size: 12px;
+        padding: 6px 10px;
+        border-radius: 999px;
+        border: 1px solid var(--line);
+        background: #fff;
+        cursor: pointer;
+      }
+      .chip:hover { border-color: var(--accent); color: var(--accent); }
+      .actions {
+        margin-top: 10px;
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+      }
+      button.btn {
+        border: 1px solid var(--ink);
+        background: var(--ink);
+        color: var(--paper);
+        padding: 8px 14px;
+        border-radius: 999px;
+        font-size: 13px;
+        font-weight: 600;
+        cursor: pointer;
+      }
+      button.btn.ghost {
+        background: transparent;
+        color: var(--ink);
+      }
+      button.btn.danger {
+        background: var(--red);
+        border-color: var(--red);
+      }
+      .empty {
+        text-align: center;
+        color: var(--muted);
+        padding: 40px 0;
+      }
+      .note {
+        font-size: 12px;
+        color: var(--muted);
+        margin-top: 6px;
+      }
+      .toast {
+        position: fixed;
+        right: 24px;
+        bottom: 24px;
+        background: var(--ink);
+        color: var(--paper);
+        padding: 10px 16px;
+        border-radius: 8px;
+        font-size: 13px;
+        opacity: 0;
+        transform: translateY(8px);
+        transition: all 0.2s ease;
+        pointer-events: none;
+      }
+      .toast.show {
+        opacity: 1;
+        transform: translateY(0);
+      }
+      @media (max-width: 760px) {
+        .intake-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="top">
+      <h1>ChaeA · Operator Dashboard</h1>
+      <nav>
+        <a href="../home/">Site</a>
+        <a href="../">Chat</a>
+        <a href="#" id="refresh-btn">Refresh</a>
+      </nav>
+    </header>
+
+    <main>
+      <h2>Today</h2>
+      <div class="kpi-row" id="kpi-row">
+        <div class="kpi"><div class="label">대기 중 답글</div><div class="value" id="kpi-pending">—</div></div>
+        <div class="kpi"><div class="label">오늘 승인</div><div class="value" id="kpi-approved">—</div></div>
+        <div class="kpi"><div class="label">민감 항목</div><div class="value" id="kpi-sensitive">—</div></div>
+        <div class="kpi"><div class="label">평균 위험도</div><div class="value" id="kpi-risk">—</div></div>
+      </div>
+
+      <h2>Quick Intake</h2>
+      <form class="intake" id="intake-form">
+        <div class="intake-grid">
+          <div class="field">
+            <label for="intake-platform">플랫폼</label>
+            <input id="intake-platform" name="platform" value="instagram" autocomplete="off" />
+          </div>
+          <div class="field">
+            <label for="intake-author">작성자</label>
+            <input id="intake-author" name="author" placeholder="@user" autocomplete="off" />
+          </div>
+          <div class="field">
+            <label for="intake-category">분류</label>
+            <select id="intake-category" name="category">
+              <option value="auto">자동 분류</option>
+              <option value="cheer">cheer</option>
+              <option value="question">question</option>
+              <option value="sensitive">sensitive</option>
+              <option value="spam">spam</option>
+              <option value="other">other</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="intake-risk">위험도</label>
+            <input id="intake-risk" name="risk" type="number" min="0" max="1" step="0.05" value="0.1" />
+          </div>
+          <div class="field wide">
+            <label for="intake-source">원문 링크</label>
+            <input id="intake-source" name="sourceUrl" placeholder="https://www.instagram.com/p/..." autocomplete="off" />
+          </div>
+          <div class="field wide">
+            <label for="intake-text">댓글 / DM 원문</label>
+            <textarea id="intake-text" name="text" required placeholder="검토 큐에 넣을 메시지를 붙여넣으세요."></textarea>
+          </div>
+        </div>
+        <div class="intake-actions">
+          <button class="btn" type="submit">분류 + 초안 생성</button>
+          <button class="btn ghost" type="button" id="manual-add-btn">수동 큐 등록</button>
+          <span class="note" id="intake-note">Claude 키가 없으면 수동 큐 등록으로 저장됩니다.</span>
+        </div>
+      </form>
+
+      <h2>SNS Review Queue</h2>
+      <div class="queue" id="queue"></div>
+    </main>
+
+    <div class="toast" id="toast"></div>
+
+    <script>
+      const API_BASE = window.location.origin;
+      const queueEl = document.getElementById("queue");
+      const toastEl = document.getElementById("toast");
+      const refreshBtn = document.getElementById("refresh-btn");
+      const intakeForm = document.getElementById("intake-form");
+      const manualAddBtn = document.getElementById("manual-add-btn");
+      const intakeNote = document.getElementById("intake-note");
+
+      refreshBtn.addEventListener("click", (e) => {
+        e.preventDefault();
+        load();
+      });
+
+      function toast(msg) {
+        toastEl.textContent = msg;
+        toastEl.classList.add("show");
+        setTimeout(() => toastEl.classList.remove("show"), 1800);
+      }
+
+      function categoryTag(cat) {
+        const safe = ["cheer", "question", "sensitive", "spam", "other"].includes(cat) ? cat : "other";
+        return `<span class="tag ${safe}">${safe}</span>`;
+      }
+
+      function riskBar(r) {
+        const pct = Math.max(0, Math.min(1, Number(r) || 0)) * 100;
+        return `<span class="risk-bar"><span style="width:${pct.toFixed(0)}%"></span></span><span style="font-size:11px;color:var(--muted)">${(Number(r)||0).toFixed(2)}</span>`;
+      }
+
+      function escapeHtml(s) {
+        return (s || "").replace(/[&<>"']/g, (c) => ({
+          "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;",
+        })[c]);
+      }
+
+      function clampRisk(value) {
+        return Math.max(0, Math.min(1, Number(value) || 0));
+      }
+
+      function intakePayload() {
+        const fd = new FormData(intakeForm);
+        return {
+          platform: String(fd.get("platform") || "instagram").trim() || "instagram",
+          author: String(fd.get("author") || "").trim(),
+          sourceUrl: String(fd.get("sourceUrl") || "").trim(),
+          text: String(fd.get("text") || "").trim(),
+          category: String(fd.get("category") || "auto").trim(),
+          risk: clampRisk(fd.get("risk")),
+        };
+      }
+
+      async function postJson(path, body) {
+        const res = await fetch(`${API_BASE}${path}`, {
+          method: "POST",
+          headers: { "content-type": "application/json" },
+          body: JSON.stringify(body),
+        });
+        const data = await res.json().catch(() => ({}));
+        if (!res.ok) throw new Error(data.message || data.error || `HTTP ${res.status}`);
+        return data;
+      }
+
+      async function createQueueItem(item) {
+        return postJson("/api/sns-queue", {
+          platform: item.platform,
+          sourceUrl: item.sourceUrl,
+          author: item.author,
+          text: item.text,
+          category: item.category,
+          risk: item.risk,
+          drafts: item.drafts || [],
+          note: item.note || "",
+        });
+      }
+
+      async function addFromIntake({ withAi }) {
+        const base = intakePayload();
+        if (!base.text) {
+          toast("원문을 입력해주세요.");
+          return;
+        }
+
+        intakeNote.textContent = withAi ? "분류와 초안을 생성하는 중…" : "큐에 등록하는 중…";
+        intakeForm.querySelectorAll("button, input, textarea, select").forEach((el) => (el.disabled = true));
+
+        try {
+          let item = {
+            ...base,
+            category: base.category === "auto" ? "other" : base.category,
+            drafts: [],
+            note: withAi ? "" : "운영자가 수동으로 등록한 항목입니다.",
+          };
+
+          if (withAi) {
+            try {
+              const classified = base.category === "auto"
+                ? await postJson("/api/sns-classify", { text: base.text })
+                : { category: base.category, risk: base.risk, reason: "운영자 지정 분류" };
+              const draft = await postJson("/api/sns-draft", {
+                text: base.text,
+                category: classified.category,
+                risk: classified.risk,
+                platform: base.platform,
+              });
+              item = {
+                ...item,
+                category: classified.category || item.category,
+                risk: clampRisk(classified.risk),
+                drafts: draft.drafts || [],
+                note: draft.note || classified.reason || "",
+              };
+            } catch (err) {
+              item.note = `AI 분류/초안 생성 실패: ${err.message}. 수동 검토 필요.`;
+            }
+          }
+
+          await createQueueItem(item);
+          intakeForm.reset();
+          document.getElementById("intake-platform").value = "instagram";
+          document.getElementById("intake-risk").value = "0.1";
+          toast("검토 큐에 등록했습니다.");
+          await load();
+        } catch (err) {
+          toast("등록 실패: " + err.message);
+        } finally {
+          intakeForm.querySelectorAll("button, input, textarea, select").forEach((el) => (el.disabled = false));
+          intakeNote.textContent = "Claude 키가 없으면 수동 큐 등록으로 저장됩니다.";
+        }
+      }
+
+      function renderItem(item) {
+        const draftsHtml = (item.drafts || []).map((d, i) =>
+          `<button class="chip" data-draft="${i}">초안 ${i + 1}</button>`
+        ).join("");
+
+        const firstDraft = (item.drafts && item.drafts[0]) || "";
+
+        return `
+          <div class="queue-item" data-id="${item.id}">
+            <div class="queue-meta">
+              ${categoryTag(item.category)}
+              ${riskBar(item.risk)}
+              <span>${escapeHtml(item.platform)} · ${escapeHtml(item.author || "익명")}</span>
+              <span style="margin-left:auto;color:var(--muted)">${new Date(item.createdAt).toLocaleString("ko-KR")}</span>
+            </div>
+            <div class="queue-text">${escapeHtml(item.text)}</div>
+            <div class="drafts">
+              <label>답글 초안 (클릭해서 채우기, 직접 수정 가능)</label>
+              <div class="draft-chips">${draftsHtml || '<span style="font-size:12px;color:var(--muted)">초안 없음</span>'}</div>
+              <textarea data-reply>${escapeHtml(firstDraft)}</textarea>
+              ${item.note ? `<div class="note">메모: ${escapeHtml(item.note)}</div>` : ""}
+            </div>
+            <div class="actions">
+              <button class="btn" data-action="approved">승인</button>
+              <button class="btn ghost" data-copy>복사</button>
+              <button class="btn ghost" data-action="edited">수정 후 승인</button>
+              <button class="btn danger" data-action="rejected">거절</button>
+              ${item.sourceUrl ? `<a class="btn ghost" href="${escapeHtml(item.sourceUrl)}" target="_blank" rel="noopener">원문</a>` : ""}
+            </div>
+          </div>
+        `;
+      }
+
+      function attachItemHandlers(item, root) {
+        const ta = root.querySelector("[data-reply]");
+        root.querySelectorAll("[data-draft]").forEach((btn) => {
+          btn.addEventListener("click", () => {
+            const idx = Number(btn.dataset.draft);
+            ta.value = item.drafts[idx] || "";
+            ta.focus();
+          });
+        });
+        const copyBtn = root.querySelector("[data-copy]");
+        if (copyBtn) {
+          copyBtn.addEventListener("click", async () => {
+            const text = ta.value.trim();
+            if (!text) {
+              toast("복사할 내용이 없어요.");
+              return;
+            }
+            try {
+              await navigator.clipboard.writeText(text);
+              toast("클립보드에 복사했어요. 인스타에 붙여넣어 주세요.");
+            } catch (err) {
+              try {
+                ta.select();
+                document.execCommand("copy");
+                toast("클립보드에 복사했어요.");
+              } catch {
+                toast("복사 실패: " + err.message);
+              }
+            }
+          });
+        }
+        root.querySelectorAll("[data-action]").forEach((btn) => {
+          btn.addEventListener("click", async () => {
+            const status = btn.dataset.action;
+            const reply = ta.value.trim();
+            try {
+              const res = await fetch(
+                `${API_BASE}/api/sns-queue?action=resolve&id=${encodeURIComponent(item.id)}`,
+                {
+                  method: "POST",
+                  headers: { "content-type": "application/json" },
+                  body: JSON.stringify({ status, chosenReply: reply }),
+                },
+              );
+              if (!res.ok) throw new Error(`HTTP ${res.status}`);
+              toast(status === "rejected" ? "거절했습니다." : "처리 완료");
+              load();
+            } catch (err) {
+              toast("처리 실패: " + err.message);
+            }
+          });
+        });
+      }
+
+      intakeForm.addEventListener("submit", (e) => {
+        e.preventDefault();
+        addFromIntake({ withAi: true });
+      });
+
+      manualAddBtn.addEventListener("click", () => {
+        addFromIntake({ withAi: false });
+      });
+
+      function computeKpi(items) {
+        const pending = items.filter((i) => i.status === "pending");
+        const today = new Date().toISOString().slice(0, 10);
+        const approvedToday = items.filter(
+          (i) => i.resolvedAt && i.resolvedAt.startsWith(today) && i.status !== "rejected",
+        ).length;
+        const sensitive = pending.filter((i) => i.category === "sensitive").length;
+        const risks = pending.map((i) => Number(i.risk) || 0);
+        const avgRisk = risks.length ? (risks.reduce((a, b) => a + b, 0) / risks.length).toFixed(2) : "—";
+        document.getElementById("kpi-pending").textContent = pending.length;
+        document.getElementById("kpi-approved").textContent = approvedToday;
+        document.getElementById("kpi-sensitive").textContent = sensitive;
+        document.getElementById("kpi-risk").textContent = avgRisk;
+      }
+
+      async function load() {
+        queueEl.innerHTML = '<div class="empty">불러오는 중…</div>';
+        try {
+          const res = await fetch(`${API_BASE}/api/sns-queue`);
+          if (!res.ok) throw new Error(`HTTP ${res.status}`);
+          const data = await res.json();
+          const items = (data.items || []).filter((i) => i.status === "pending");
+          computeKpi(data.items || []);
+
+          if (!items.length) {
+            queueEl.innerHTML = '<div class="empty">대기 중인 항목이 없어요. ☕</div>';
+            return;
+          }
+          queueEl.innerHTML = items.map(renderItem).join("");
+          items.forEach((item) => {
+            const root = queueEl.querySelector(`[data-id="${item.id}"]`);
+            if (root) attachItemHandlers(item, root);
+          });
+        } catch (err) {
+          queueEl.innerHTML = `<div class="empty">큐를 불러올 수 없습니다: ${escapeHtml(err.message)}<br/><span class="note">/api/sns-queue 엔드포인트가 실행 중이고 CHAEA_QUEUE_KV가 바인딩되어 있는지 확인해주세요.</span></div>`;
+        }
+      }
+
+      load();
+      setInterval(load, 60_000);
+    </script>
+  </body>
+</html>

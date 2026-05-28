@@ -1,0 +1,13 @@
+name = "chaea-beta-260511"
+main = "worker.js"
+compatibility_date = "2026-05-11"
+
+[vars]
+XAI_MODEL = "grok-4.3"
+XAI_BASE_URL = "https://api.x.ai/v1"
+XAI_MAX_TOKENS = "280"
+
+[assets]
+directory = "./public"
+binding = "ASSETS"
+run_worker_first = true

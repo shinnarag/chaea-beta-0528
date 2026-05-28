@@ -1,0 +1,12 @@
+.env
+.DS_Store
+node_modules/
+__pycache__/
+
+# Local runtime logs and queues
+data/conversations/
+data/sessions/
+data/sns-queue/
+data/conversation-insights.json
+data/sns-inbox.json
+data/sns-seen.json

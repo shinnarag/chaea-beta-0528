@@ -1,0 +1,15 @@
+services:
+  - type: web
+    name: chaea-beta
+    env: node
+    plan: free
+    region: singapore
+    buildCommand: ""
+    startCommand: npm start
+    envVars:
+      - key: HOST
+        value: 0.0.0.0
+      - key: XAI_MODEL
+        value: grok-4.3
+      - key: XAI_API_KEY
+        sync: false

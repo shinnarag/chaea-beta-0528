@@ -1,0 +1,15 @@
+{
+  "name": "chaea-chat",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build:pages": "node scripts/build-pages-assets.mjs",
+    "build:cloudflare": "node scripts/build-pages-assets.mjs",
+    "check": "node --check server.mjs && node --check app/app.js && node --check worker.js && node --check functions/api/chat.js && node --check functions/api/chat-claude.js && node --check functions/api/health.js && node --check functions/api/log-turn.js && node --check functions/api/insights.js && node --check functions/api/sns-classify.js && node --check functions/api/sns-draft.js && node --check functions/api/sns-queue.js && node --check functions/_shared/claude.js && node --check scripts/instagram-monitor.mjs && node --check scripts/chaealine-monitor.mjs",
+    "deploy:cloudflare": "wrangler deploy",
+    "dev": "node server.mjs",
+    "monitor:social": "node scripts/chaealine-monitor.mjs",
+    "start": "node server.mjs"
+  }
+}

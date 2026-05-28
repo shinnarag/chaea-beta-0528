@@ -1,0 +1,317 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ChaeA · 채아 — Official</title>
+    <meta
+      name="description"
+      content="서울의 작은 원룸에서 한국어 노래를 만드는 가상 싱어송라이터 ChaeA의 공식 홈."
+    />
+    <meta property="og:title" content="ChaeA · 채아" />
+    <meta property="og:description" content="LINE 위에서 노래하는 사람. ChaeA 공식 홈." />
+    <style>
+      :root {
+        --ink: #1f1a17;
+        --paper: #fbf6ef;
+        --muted: #7d6f63;
+        --peach: #f4c8b8;
+        --line: #d9cdbf;
+        --accent: #c0876f;
+      }
+      * { box-sizing: border-box; }
+      html, body { margin: 0; padding: 0; }
+      body {
+        font-family: "Pretendard", -apple-system, BlinkMacSystemFont, "Noto Sans KR", sans-serif;
+        background: var(--paper);
+        color: var(--ink);
+        line-height: 1.6;
+        -webkit-font-smoothing: antialiased;
+      }
+      a { color: inherit; }
+      .container {
+        max-width: 980px;
+        margin: 0 auto;
+        padding: 0 24px;
+      }
+      header.site {
+        position: sticky;
+        top: 0;
+        background: rgba(251, 246, 239, 0.85);
+        backdrop-filter: blur(8px);
+        border-bottom: 1px solid var(--line);
+        z-index: 50;
+      }
+      header.site .row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 14px 0;
+      }
+      .wordmark {
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        font-size: 18px;
+        text-decoration: none;
+      }
+      nav.site a {
+        text-decoration: none;
+        margin-left: 24px;
+        font-size: 14px;
+        color: var(--muted);
+      }
+      nav.site a:hover { color: var(--ink); }
+      .hero {
+        padding: 80px 0 60px;
+        border-bottom: 1px solid var(--line);
+      }
+      .eyebrow {
+        text-transform: uppercase;
+        letter-spacing: 0.2em;
+        font-size: 12px;
+        color: var(--accent);
+        margin: 0 0 12px;
+      }
+      h1 {
+        font-size: clamp(34px, 5vw, 56px);
+        line-height: 1.15;
+        margin: 0 0 18px;
+        font-weight: 700;
+      }
+      .hero p.lead {
+        font-size: 18px;
+        color: var(--muted);
+        max-width: 640px;
+        margin: 0 0 28px;
+      }
+      .cta-row {
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+      }
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 12px 20px;
+        border-radius: 999px;
+        font-size: 14px;
+        font-weight: 600;
+        text-decoration: none;
+        border: 1px solid var(--ink);
+        background: var(--ink);
+        color: var(--paper);
+        transition: transform 0.15s ease;
+      }
+      .btn.ghost {
+        background: transparent;
+        color: var(--ink);
+      }
+      .btn:hover { transform: translateY(-1px); }
+      section.band {
+        padding: 64px 0;
+        border-bottom: 1px solid var(--line);
+      }
+      section.band h2 {
+        font-size: 24px;
+        margin: 0 0 8px;
+      }
+      section.band p.sub {
+        color: var(--muted);
+        margin: 0 0 32px;
+      }
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 20px;
+      }
+      .card {
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        padding: 20px;
+        background: #fffefb;
+      }
+      .card h3 {
+        margin: 0 0 6px;
+        font-size: 16px;
+      }
+      .card p {
+        margin: 0;
+        color: var(--muted);
+        font-size: 14px;
+      }
+      .quote {
+        font-size: 20px;
+        line-height: 1.6;
+        color: var(--ink);
+        max-width: 720px;
+        margin: 0;
+      }
+      .quote span.mark {
+        color: var(--accent);
+        font-weight: 700;
+        margin-right: 6px;
+      }
+      .sns-row {
+        display: flex;
+        gap: 16px;
+        flex-wrap: wrap;
+      }
+      .sns-row a {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 10px 16px;
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        text-decoration: none;
+        font-size: 14px;
+        color: var(--ink);
+        background: #fffefb;
+      }
+      .sns-row a:hover { border-color: var(--accent); color: var(--accent); }
+      footer.site {
+        padding: 32px 0 80px;
+        color: var(--muted);
+        font-size: 13px;
+        text-align: center;
+      }
+      /* Chat launcher */
+      .chat-fab {
+        position: fixed;
+        right: 22px;
+        bottom: 22px;
+        z-index: 100;
+        background: var(--ink);
+        color: var(--paper);
+        padding: 14px 18px;
+        border-radius: 999px;
+        text-decoration: none;
+        font-size: 14px;
+        font-weight: 600;
+        box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+      }
+      .chat-fab:hover { background: var(--accent); }
+    </style>
+  </head>
+  <body>
+    <header class="site">
+      <div class="container row">
+        <a class="wordmark" href="#top">ChaeA</a>
+        <nav class="site">
+          <a href="#about">About</a>
+          <a href="#music">Music</a>
+          <a href="#world">LINE</a>
+          <a href="#sns">SNS</a>
+          <a href="../">Talk</a>
+        </nav>
+      </div>
+    </header>
+
+    <main id="top">
+      <section class="hero">
+        <div class="container">
+          <p class="eyebrow">Singer-Songwriter · Seoul</p>
+          <h1>LINE 위에서<br />노래하는 사람.</h1>
+          <p class="lead">
+            ChaeA는 서울의 작은 원룸에서 한국어 노래를 만드는 가상
+            싱어송라이터입니다. 한국과 미국 사이, 말하고 싶은 마음과
+            못 한 말 사이의 선 위에서 천천히 기록합니다.
+          </p>
+          <div class="cta-row">
+            <a class="btn" href="../">채아와 대화하기</a>
+            <a class="btn ghost" href="#music">최근 작업 듣기</a>
+          </div>
+        </div>
+      </section>
+
+      <section class="band" id="about">
+        <div class="container">
+          <h2>About</h2>
+          <p class="sub">조용하고 섬세한, 통기타와 노트를 가진 사람.</p>
+          <div class="grid">
+            <div class="card">
+              <h3>이름</h3>
+              <p>ChaeA / 채아 · 본명 윤채아</p>
+            </div>
+            <div class="card">
+              <h3>장르</h3>
+              <p>K-POP · POP · INDIE POP</p>
+            </div>
+            <div class="card">
+              <h3>주 악기</h3>
+              <p>통기타, 그리고 노트와 아이폰</p>
+            </div>
+            <div class="card">
+              <h3>거점</h3>
+              <p>서울의 작은 원룸</p>
+            </div>
+            <div class="card">
+              <h3>성향</h3>
+              <p>INFJ · 순우리말 수집가</p>
+            </div>
+            <div class="card">
+              <h3>발견 서사</h3>
+              <p>인스타그램 원룸 커버 영상</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="band" id="world">
+        <div class="container">
+          <h2>LINE — 채아의 세계관</h2>
+          <p class="sub">단절이 아니라 연결의 선.</p>
+          <p class="quote">
+            <span class="mark">"</span>한국과 미국 사이의 선, 과거와 현재 사이의 선,
+            말하고 싶은 마음과 끝내 말하지 못한 마음 사이의 선.
+            채아는 그 선 위에서 노래합니다.<span class="mark">"</span>
+          </p>
+        </div>
+      </section>
+
+      <section class="band" id="music">
+        <div class="container">
+          <h2>Music</h2>
+          <p class="sub">작게 시작해서 후반부로 갈수록 마음이 커지는 음악.</p>
+          <div class="grid">
+            <div class="card">
+              <h3>Sound</h3>
+              <p>통기타 · 피아노 · 부드러운 신스 · 낮은 호흡의 보컬</p>
+            </div>
+            <div class="card">
+              <h3>Lyric</h3>
+              <p>일기처럼 사적이지만, 누구나 자신의 기억을 대입할 수 있게.</p>
+            </div>
+            <div class="card">
+              <h3>Recording</h3>
+              <p>원룸 책상, 작은 마이크, 아이폰 메모.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="band" id="sns">
+        <div class="container">
+          <h2>SNS</h2>
+          <p class="sub">짧은 영상과 사진은 인스타그램과 유튜브에서.</p>
+          <div class="sns-row">
+            <a href="https://www.instagram.com/chaealine" target="_blank" rel="noopener">Instagram · @chaealine</a>
+            <a href="https://www.youtube.com/@chaealine" target="_blank" rel="noopener">YouTube · @chaealine</a>
+            <a href="../">Talk to ChaeA</a>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <a class="chat-fab" href="../" aria-label="ChaeA와 대화하기">채아와 대화 →</a>
+
+    <footer class="site">
+      <div class="container">
+        © ChaeA · LINE 위에서 노래하는 사람.
+        <br />
+        <small>ChaeA는 AI로 운영되는 캐릭터 아티스트입니다. 모든 메시지·답글은 운영자 검토 후 발행됩니다.</small>
+      </div>
+    </footer>
+  </body>
+</html>
