@@ -26,6 +26,8 @@ npm run dev
 - `app/app.js`의 `knowledgeBase`, `phraseBank`, `intents`에 채아의 정체성, 말투, 기준 답변을 담았습니다.
 - 고정 Q&A 매칭이 아니라 의도 분석, 감정 분석, 시간대, 최근 대화 기억을 조합해 응답을 생성합니다.
 - 로컬 서버 모드의 대화는 `data/conversations/`와 `data/sessions/`에 저장됩니다.
+- 배포 웹의 대화는 Cloudflare KV `CHAEA_LOG_KV` 바인딩이 있을 때 저장됩니다.
+- KV에 저장된 배포 웹 대화는 `npm run sync:conversations -- --date YYYY-MM-DD`로 로컬 `data/conversations/`와 `data/sessions/`에 병합합니다. 이때 `CHAEA_LOG_EXPORT_TOKEN`이 필요합니다.
 - 사용자가 이름이나 취향을 말하면 일부를 기억하고 이후 답변에 낮은 빈도로 반영합니다.
 - 팬덤명은 아직 정하지 않는 기준을 따릅니다.
 - 한국어가 서툰 캐릭터처럼 말하지 않는 기준을 따릅니다.

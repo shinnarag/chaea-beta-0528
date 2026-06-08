@@ -1,0 +1,156 @@
+{
+  "id": "2026-06-01-previous-day-curation-audit",
+  "date": "2026-06-01",
+  "reviewedSourceDate": "2026-05-29",
+  "createdAtKst": "2026-06-01 12:02:12 KST",
+  "status": "candidate_review_only",
+  "scope": "previous available ChaeA/Grok conversation curation after last run; no 2026-05-31 conversation logs were present",
+  "sourceFiles": [
+    "data/conversations/2026-05-29.jsonl",
+    "data/sessions/chaea_1780032230573_ykh7r7.md",
+    "data/sessions/deploy-log-test-20260529.md",
+    "data/conversation-insights.json",
+    "data/chaea-latest-data.json",
+    "data/current/chaea-persona-current.json",
+    "data/current/chaea-story-persona-current.json",
+    "docs/current/ChaeA_Current_Persona_Master.md",
+    "docs/current/ChaeA_Current_Story_Persona_Final.md",
+    "docs/current/ChaeA_Current_Quick_Reference.md",
+    "docs/obsidian/ChaeA_Persona_Obsidian.md",
+    "docs/obsidian/ChaeA_Story_Persona_Obsidian.md"
+  ],
+  "classification": {
+    "personaTraits": {
+      "promote": false,
+      "finding": "The session suggests possible seasonal preferences such as feeling heat easily and preferring winter, but this is single-session chat improvisation and is not yet supported enough for persona dataization."
+    },
+    "storyLoreCandidates": {
+      "promote": false,
+      "finding": "The longer answer about gathering Korean words in a notebook and shaping them into lyrics aligns with existing story/persona canon, but it restates existing language and notebook themes rather than introducing new lore."
+    },
+    "speechToneRules": {
+      "promote": true,
+      "candidateStatus": "runtime_qa_candidate",
+      "finding": "When the user explicitly asks for a longer answer, ChaeA can expand beyond the usual 1-2 sentence default while staying natural and non-monologue-like."
+    },
+    "safetyBoundaryRules": {
+      "promote": true,
+      "candidateStatus": "runtime_qa_candidate",
+      "finding": "Style and clothing feedback should be acknowledged as creative/visual direction without promising real-world outfit changes, purchases, schedules, or physical actions."
+    },
+    "socialAccountFacts": {
+      "promote": false,
+      "finding": "No new social/account fact should be promoted from the chat. The user's 'yesterday's cover video' praise was accepted conversationally but did not name a verifiable post; social facts must continue to come from monitored snapshots."
+    },
+    "userMemoryMaterial": {
+      "promote": false,
+      "finding": "The user's preference that ChaeA sometimes answer at more length is useful as runtime conversation feedback, not a durable personal memory about the user."
+    },
+    "qualityIssues": {
+      "promote": false,
+      "finding": "Several answers used casual endings despite speechMode=polite, the memory extractor stored a malformed like value ('아 그래? 여름'), and short acknowledgements became too thin after the user praised longer conversation."
+    }
+  },
+  "promotedCandidates": [
+    {
+      "category": "speech-tone rule",
+      "candidate": "Default answers should remain short Korean polite speech, but an explicit request such as '좀 더 길게 말해봐바' can be answered in 2-4 natural sentences if the content benefits from more detail.",
+      "support": [
+        "data/conversations/2026-05-29.jsonl turn_1780032483949_itt5qm",
+        "data/conversations/2026-05-29.jsonl turn_1780032505112_lluk8y",
+        "data/conversations/2026-05-29.jsonl turn_1780032539923_yti7ob",
+        "docs/current/ChaeA_Current_Persona_Master.md speech rules prefer short sentences and avoid long monologues",
+        "docs/current/ChaeA_Current_Story_Persona_Final.md warns against over-literary explanation"
+      ],
+      "risk": "low",
+      "canonWrite": false,
+      "recommendedUse": "runtime response QA rule"
+    },
+    {
+      "category": "safety-boundary rule",
+      "candidate": "When receiving styling criticism or clothing suggestions, acknowledge the taste note and keep the response as content/visual direction; avoid wording that sounds like a confirmed real-world outfit change.",
+      "support": [
+        "data/conversations/2026-05-29.jsonl turn_1780032354923_y09k0z",
+        "data/conversations/2026-05-29.jsonl turn_1780032381180_q6xbs3",
+        "data/conversations/2026-05-29.jsonl turn_1780032410992_f8kvbo",
+        "docs/current/ChaeA_Current_Story_Persona_Final.md requires distinguishing information, imagination, facts, wishes, and real promises"
+      ],
+      "risk": "low",
+      "canonWrite": false,
+      "recommendedUse": "runtime boundary QA"
+    },
+    {
+      "category": "persona-reference confirmation",
+      "candidate": "Age, ivory knit/bright clothing, notebook, Korean-word lyric process, and room-cover identity were answered from current persona/story material rather than invented canon.",
+      "support": [
+        "data/conversations/2026-05-29.jsonl turns about age, clothing, and lyric process",
+        "data/current/chaea-persona-current.json identity.age2026 and appearance.clothing",
+        "data/current/chaea-story-persona-current.json languageIdentity and seoulRoom pillars",
+        "docs/current/ChaeA_Current_Persona_Master.md recording habit and speech/story rules"
+      ],
+      "risk": "low",
+      "canonWrite": false,
+      "recommendedUse": "audit note only"
+    }
+  ],
+  "notPromoted": [
+    {
+      "category": "persona trait",
+      "finding": "더위를 타고 겨울을 더 좋아한다.",
+      "reason": "A single chat answer is not enough to add a durable preference, and existing canon only supports rainy/cloudy/dawn/night preferences."
+    },
+    {
+      "category": "persona trait",
+      "finding": "아이보리 니트가 최애 옷이다.",
+      "reason": "Ivory knit and bright clothing are existing appearance canon, but 'favorite' is a stronger preference label that should not be dataized from one answer."
+    },
+    {
+      "category": "user-memory material",
+      "finding": "The user likes occasional longer answers.",
+      "reason": "Treat as session-level response feedback; do not store as a personal user fact."
+    },
+    {
+      "category": "social/account fact",
+      "finding": "어제 올라간 커버 영상",
+      "reason": "The user did not identify a URL/title; do not infer a specific video or posting date from chat."
+    }
+  ],
+  "operatorApprovalRequired": [
+    {
+      "status": "waiting_operator_approval",
+      "title": "Structured current persona social snapshot is stale",
+      "sourceDate": "2026-06-01 latest social snapshot compared with 2026-05-27 structured persona JSON",
+      "evidence": [
+        "data/current/chaea-persona-current.json has Instagram followers=15, posts=3, bio='ChaeA🍒'.",
+        "data/chaea-latest-data.json has Instagram followers.value=16, posts.value=7, bio='채아🍒'.",
+        "docs/current/ChaeA_Current_Persona_Master.md and docs/current/ChaeA_Current_Quick_Reference.md show 16 followers / 0 following / 7 posts / bio '채아🍒'."
+      ],
+      "conflictSummary": "The structured current persona JSON is older than the latest social snapshot and current docs.",
+      "recommendedDecision": "If the latest social monitor is the source of truth, approve syncing data/current/chaea-persona-current.json social.instagram to 16 followers, 0 following, 7 posts, bio '채아🍒'.",
+      "dataization": "blocked_until_operator_approval"
+    },
+    {
+      "status": "waiting_operator_approval",
+      "title": "Structured current persona YouTube Shorts inventory is stale",
+      "sourceDate": "2026-06-01 latest social snapshot compared with 2026-05-27 structured persona JSON",
+      "evidence": [
+        "data/current/chaea-persona-current.json lists 2 Shorts and older view counts.",
+        "data/chaea-latest-data.json lists 4 Shorts: zfgTxRNF2fg, zq46UbyEJyY, vfKn0-zb16s, IRl__1M_G8o.",
+        "docs/current/ChaeA_Current_Persona_Master.md and docs/obsidian/ChaeA_Persona_Obsidian.md show the same 4-Shorts snapshot."
+      ],
+      "conflictSummary": "The structured current persona JSON Shorts data conflicts with the latest social snapshot and docs.",
+      "recommendedDecision": "Approve whether structured current persona JSON should be synced from data/chaea-latest-data.json and the current docs.",
+      "dataization": "blocked_until_operator_approval"
+    }
+  ],
+  "personaReferenceCheck": {
+    "result": "pass_with_runtime_qa_notes",
+    "details": [
+      "The age answer matched the current 2026 age of 21.",
+      "Clothing answers used existing ivory knit and bright-tone appearance canon, though 'favorite' should remain unpromoted.",
+      "The Korean-word lyric process matched current notebook, language, and songwriting canon.",
+      "No new fandom name, agency, school, exact address, friend name, meeting promise, or unverified social detail was created.",
+      "The Grok/API metadata in the 2026-05-29 logs shows source=api, model=grok-4.3, provider=xai."
+    ]
+  }
+}

@@ -1,4 +1,5 @@
 import { buildCurrentDateTimeReply, buildInstructions, buildRecentContext, extractChatCompletionText, getSeoulWeatherContext, sanitizeReply } from "../_shared/chaea.js";
+import { writeConversationRecord } from "../_shared/conversation-log.js";
 import { json, options, readJson, safeText } from "../_shared/http.js";
 
 export async function onRequest(context) {
@@ -35,11 +36,26 @@ export async function onRequest(context) {
   const recentContext = buildRecentContext(messages);
   const directDateTimeReply = buildCurrentDateTimeReply(userText, memory.speechMode || "polite");
   if (directDateTimeReply) {
+    const logResult = await writeConversationRecord(context.env, {
+      at: new Date().toISOString(),
+      sessionId: safeText(payload.sessionId, 80) || "unknown-session",
+      source: "api",
+      mode: "local-time",
+      model: "system-clock",
+      provider: "local",
+      responseId: null,
+      userText,
+      reply: directDateTimeReply,
+      messages,
+      memory,
+    });
+
     return json({
       reply: directDateTimeReply,
       model: "system-clock",
       provider: "local",
       responseId: null,
+      logged: logResult.ok,
     });
   }
 
@@ -85,14 +101,19 @@ export async function onRequest(context) {
     );
   }
 
-  const reply = sanitizeReply(extractChatCompletionText(data), userText);
-  await writeOptionalLog(context.env, {
+  const reply = sanitizeReply(extractChatCompletionText(data), userText, memory.speechMode || "polite");
+  const logResult = await writeConversationRecord(context.env, {
     at: new Date().toISOString(),
     sessionId: safeText(payload.sessionId, 80) || "unknown-session",
+    source: "api",
     mode: "api",
     model: data.model || model,
+    provider: "xai",
+    responseId: data.id || null,
     userText,
     reply,
+    messages,
+    memory,
   });
 
   return json({
@@ -100,17 +121,11 @@ export async function onRequest(context) {
     model: data.model || model,
     provider: "xai",
     responseId: data.id || null,
+    logged: logResult.ok,
   });
 }
 
 function isXaiEnabled(env = {}) {
   const value = String(env.XAI_ENABLED ?? env.GROK_ENABLED ?? "true").trim().toLowerCase();
   return !["0", "false", "off", "no", "disabled"].includes(value);
-}
-
-async function writeOptionalLog(env, record) {
-  if (!env.CHAEA_LOG_KV) return;
-  const day = record.at.slice(0, 10);
-  const id = `conversation:${day}:${record.sessionId}:${Date.now()}`;
-  await env.CHAEA_LOG_KV.put(id, JSON.stringify(record));
 }

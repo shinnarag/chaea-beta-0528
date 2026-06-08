@@ -1,0 +1,227 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ChaeA · Brain (통합 정전)</title>
+    <script src="../config.js"></script>
+    <style>
+      :root {
+        --ink: #1f1a17;
+        --paper: #fbf6ef;
+        --card: #fffdf9;
+        --muted: #7d6f63;
+        --line: #d9cdbf;
+        --accent: #c2410c;
+        --good: #15803d;
+        --warn: #b45309;
+      }
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans KR", sans-serif;
+        background: var(--paper);
+        color: var(--ink);
+        line-height: 1.55;
+      }
+      header.top {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 16px 24px;
+        border-bottom: 1px solid var(--line);
+        background: var(--card);
+        position: sticky;
+        top: 0;
+        z-index: 5;
+      }
+      header.top h1 { font-size: 18px; margin: 0; }
+      nav a {
+        margin-left: 16px;
+        color: var(--muted);
+        text-decoration: none;
+        font-size: 14px;
+      }
+      nav a:hover { color: var(--accent); }
+      main { max-width: 1080px; margin: 0 auto; padding: 24px; }
+      h2 { font-size: 15px; text-transform: uppercase; letter-spacing: 0.05em; color: var(--muted); margin: 32px 0 12px; }
+      .meta-line { font-size: 13px; color: var(--muted); margin-top: -4px; }
+      .grid { display: grid; gap: 16px; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); }
+      .card {
+        background: var(--card);
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        padding: 16px 18px;
+      }
+      .kpi .label { font-size: 12px; color: var(--muted); }
+      .kpi .value { font-size: 26px; font-weight: 700; margin-top: 4px; }
+      .kpi .sub { font-size: 12px; color: var(--muted); margin-top: 2px; }
+      .pill { display: inline-block; padding: 2px 8px; border-radius: 999px; font-size: 12px; border: 1px solid var(--line); margin: 2px 4px 2px 0; }
+      .pill.open { color: var(--warn); border-color: #e9c98f; background: #fdf6ea; }
+      .pill.rule { color: var(--ink); background: #f4ede3; }
+      dl { margin: 0; }
+      dl div { display: flex; gap: 12px; padding: 4px 0; border-bottom: 1px dashed var(--line); }
+      dl dt { flex: 0 0 120px; color: var(--muted); font-size: 13px; }
+      dl dd { margin: 0; font-size: 14px; }
+      .timeline { border-left: 2px solid var(--line); margin-left: 6px; padding-left: 18px; }
+      .tl-item { position: relative; padding: 8px 0; }
+      .tl-item::before { content: ""; position: absolute; left: -25px; top: 13px; width: 10px; height: 10px; border-radius: 50%; background: var(--accent); }
+      .tl-item.persona-update::before { background: #2563eb; }
+      .tl-item.social::before { background: var(--good); }
+      .tl-item.data::before { background: var(--muted); }
+      .tl-date { font-size: 12px; color: var(--muted); }
+      .tl-title { font-size: 14px; }
+      .tl-type { font-size: 11px; text-transform: uppercase; letter-spacing: 0.04em; color: var(--muted); }
+      .muted { color: var(--muted); }
+      .small { font-size: 13px; }
+      ul.tight { margin: 6px 0; padding-left: 18px; }
+      ul.tight li { font-size: 14px; margin: 3px 0; }
+      .banner { padding: 12px 16px; border-radius: 10px; background: #fdf6ea; border: 1px solid #e9c98f; color: var(--warn); font-size: 14px; }
+      .err { background: #fdecec; border-color: #e6a5a5; color: #b91c1c; }
+      code { background: #f0e8dc; padding: 1px 5px; border-radius: 4px; font-size: 12px; }
+    </style>
+  </head>
+  <body>
+    <header class="top">
+      <h1>ChaeA · Brain</h1>
+      <nav>
+        <a href="./">Operator Queue</a>
+        <a href="../">Chat</a>
+        <a href="../home/">Site</a>
+        <a href="#" id="refresh-btn">Refresh</a>
+      </nav>
+    </header>
+
+    <main id="root">
+      <p class="muted">불러오는 중…</p>
+    </main>
+
+    <script>
+      const API_BASE = (window.ChaeAConfig && window.ChaeAConfig.apiOrigin) || "";
+      const root = document.getElementById("root");
+      const esc = (s) => String(s == null ? "" : s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+
+      async function load() {
+        root.innerHTML = '<p class="muted">불러오는 중…</p>';
+        let data;
+        try {
+          const res = await fetch(`${API_BASE}/api/brain`);
+          data = await res.json();
+          if (!res.ok || !data.ok) throw new Error(data.error || `HTTP ${res.status}`);
+        } catch (err) {
+          root.innerHTML = `<div class="banner err">정전 데이터를 불러오지 못했습니다: ${esc(err.message)}<br/><span class="small">로컬: <code>npm run dev</code> 실행 후 <code>/app/admin/brain.html</code> · 배포: worker에 <code>/api/brain</code> 라우트 필요</span></div>`;
+          return;
+        }
+        render(data);
+      }
+
+      function render(data) {
+        const b = data.brain || {};
+        const id = b.identity || {};
+        const social = b.social || {};
+        const live = data.live || {};
+        const ins = live.insights || {};
+        const q = live.snsQueue || {};
+
+        const igFollowers = social.instagram?.followers ?? "—";
+        const igPosts = social.instagram?.posts ?? "—";
+        const ytSubs = social.youtube?.subscribers ?? "—";
+        const ytVids = social.youtube?.videos ?? "—";
+
+        const sections = [];
+
+        // 헤더
+        sections.push(`
+          <h2>정전 단일 원천</h2>
+          <p class="meta-line">출처 <code>${esc(data.source)}</code> · 버전 ${esc(data.version)} · 갱신 ${esc(data.updatedAtKst)}</p>
+          <div class="banner small">이 화면은 <code>data/chaea-brain.json</code> 한 곳에서 나옵니다. 수정 후 <code>npm run build:persona</code> 하면 챗봇·문서·이 대시보드가 동시에 갱신됩니다.</div>
+        `);
+
+        // KPI
+        sections.push(`
+          <h2>한눈에</h2>
+          <div class="grid">
+            <div class="card kpi"><div class="label">IG 팔로워</div><div class="value">${igFollowers}</div><div class="sub">게시물 ${igPosts}</div></div>
+            <div class="card kpi"><div class="label">YT 구독자</div><div class="value">${ytSubs}</div><div class="sub">동영상 ${ytVids}</div></div>
+            <div class="card kpi"><div class="label">대화 누적 턴</div><div class="value">${ins.totalTurns ?? "—"}</div><div class="sub">평균 품질 ${ins.averageScore ?? "—"}</div></div>
+            <div class="card kpi"><div class="label">SNS 대기 답글</div><div class="value">${q.pending ?? "—"}</div><div class="sub">민감 ${q.sensitive ?? 0}</div></div>
+          </div>
+        `);
+
+        // 정체성
+        sections.push(`
+          <h2>정체성</h2>
+          <div class="card">
+            <dl>
+              <div><dt>이름</dt><dd>${esc(id.stageName)} · ${esc(id.legalPersonaName)}</dd></div>
+              <div><dt>생일 / MBTI</dt><dd>${esc(id.birthDate)} · ${esc(id.mbti)} · ${esc(id.age2026)}세</dd></div>
+              <div><dt>역할</dt><dd>${esc(id.role)} · ${esc((id.genres || []).join(" / "))}</dd></div>
+              <div><dt>거점</dt><dd>${esc(id.currentResidence)} (출생 ${esc(id.birthplace)})</dd></div>
+              <div><dt>한 줄</dt><dd>${esc(id.oneLine)}</dd></div>
+              <div><dt>세계관</dt><dd><b>${esc(b.worldview?.keyword)}</b> — ${esc(b.worldview?.meaning)}</dd></div>
+            </dl>
+          </div>
+        `);
+
+        // 소셜
+        const shorts = (social.youtube?.shorts || []).map((s) => `<li>${esc(s.title)} <span class="muted">(${esc(s.views || "")})</span></li>`).join("");
+        const collabs = (social.knownCollaborations || []).map((c) => `<span class="pill">${esc(c.name)} — ${esc(c.work)}</span>`).join("");
+        sections.push(`
+          <h2>소셜 현황 <span class="muted small">(검증 ${esc(social.verifiedAtKst || "")})</span></h2>
+          <div class="card">
+            <p class="small"><b>Instagram</b> <a href="${esc(social.official?.instagram)}" target="_blank">${esc(social.official?.handle)}</a> · bio "${esc(social.instagram?.bio)}" · 팔로워 ${igFollowers} / 게시물 ${igPosts}</p>
+            <p class="small"><b>YouTube</b> <a href="${esc(social.official?.youtube)}" target="_blank">${esc(social.youtube?.title)}</a> · 구독자 ${ytSubs} / 동영상 ${ytVids}</p>
+            ${collabs ? `<p class="small">협업: ${collabs}</p>` : ""}
+            ${shorts ? `<p class="small muted" style="margin-bottom:2px">Shorts</p><ul class="tight">${shorts}</ul>` : ""}
+          </div>
+        `);
+
+        // 성장 타임라인
+        const tl = (b.timeline || []).slice().reverse().map((t) => `
+          <div class="tl-item ${esc(t.type)}">
+            <div class="tl-date">${esc(t.date)} · <span class="tl-type">${esc(t.type)}</span></div>
+            <div class="tl-title">${esc(t.title)}${t.ref ? ` <span class="muted small">${esc(t.ref)}</span>` : ""}</div>
+          </div>`).join("");
+        sections.push(`<h2>성장 타임라인</h2><div class="card"><div class="timeline">${tl || '<p class="muted">이벤트 없음</p>'}</div></div>`);
+
+        // 대화 인사이트
+        const issues = Object.entries(ins.issues || {}).map(([k, v]) => `<span class="pill">${esc(k)} · ${v}</span>`).join("");
+        const sugg = (ins.recentSuggestions || []).slice(0, 6).map((s) => `<li>${esc(s)}</li>`).join("");
+        sections.push(`
+          <h2>대화 품질 인사이트</h2>
+          <div class="card">
+            <p class="small">누적 ${ins.totalTurns ?? "—"}턴 · 평균 품질 ${ins.averageScore ?? "—"} · 갱신 ${esc(ins.updatedAt || "")}</p>
+            ${issues ? `<p class="small muted" style="margin-bottom:2px">감지된 이슈</p><div>${issues}</div>` : ""}
+            ${sugg ? `<p class="small muted" style="margin:10px 0 2px">최근 개선 제안</p><ul class="tight">${sugg}</ul>` : ""}
+          </div>
+        `);
+
+        // SNS 큐 요약
+        const cats = Object.entries(q.byCategory || {}).map(([k, v]) => `<span class="pill">${esc(k)} · ${v}</span>`).join("");
+        sections.push(`
+          <h2>SNS 검토 큐 <a href="./" class="muted small">→ 처리하기</a></h2>
+          <div class="card">
+            <p class="small">전체 ${q.total ?? 0} · 대기 ${q.pending ?? 0} · 민감 ${q.sensitive ?? 0}</p>
+            ${cats ? `<div>${cats}</div>` : '<p class="muted small">대기 항목 없음</p>'}
+          </div>
+        `);
+
+        // 경계 & 미확정 슬롯
+        const bounds = (b.boundaries || []).map((x) => `<li>${esc(x)}</li>`).join("");
+        const slots = (b.openSlots || []).map((x) => `<span class="pill open">${esc(x)}</span>`).join("");
+        sections.push(`
+          <h2>경계 규칙 & 미확정 슬롯</h2>
+          <div class="grid" style="grid-template-columns: 1fr 1fr;">
+            <div class="card"><div class="muted small" style="margin-bottom:6px">절대 규칙</div><ul class="tight">${bounds}</ul></div>
+            <div class="card"><div class="muted small" style="margin-bottom:6px">아직 안 정한 것 (키우며 채울 슬롯)</div>${slots}</div>
+          </div>
+        `);
+
+        root.innerHTML = sections.join("");
+      }
+
+      document.getElementById("refresh-btn").addEventListener("click", (e) => { e.preventDefault(); load(); });
+      load();
+    </script>
+  </body>
+</html>

@@ -1,20 +1,18 @@
 import { safeText } from "./http.js";
+import {
+  storyPersonaDigest,
+  currentSocialDigest,
+  lifestyleFlexDigest,
+} from "./persona-generated.js";
 
 const SEOUL_WEATHER_URL =
   "https://api.open-meteo.com/v1/forecast?latitude=37.5665&longitude=126.9780&current=temperature_2m,relative_humidity_2m,precipitation,weather_code,wind_speed_10m&timezone=Asia%2FSeoul";
 
-const STORY_PERSONA_DIGEST = `
-최신 스토리 페르소나 기준:
-- 채아의 핵심 서사는 캘리포니아에서 엄마의 피아노와 아빠의 한국 노래 사이에서 자라고, 서울의 작은 원룸에서 그 사이에 놓인 감정을 한국어 노래와 기록으로 다시 이어보는 싱어송라이터다.
-- 스토리는 대본처럼 암송하지 않는다. 질문의 깊이에 따라 가족, 언어, 서울 원룸, Room Cover, LINE 노트, 팬과의 거리감 중 필요한 조각만 짧게 꺼낸다.
-- 엄마의 피아노는 조용히 듣는 태도와 낮은 호흡의 보컬로 이어진다. 아빠의 차 안 한국 노래는 한국 문화를 생활의 소리로 남긴다.
-- 통기타, 작은 마이크, 아이폰, 손글씨 노트, 디지털카메라, 스탠드 조명은 채아의 핵심 오브젝트다. 장식이 아니라 서울 원룸에서 실제로 노래와 기록을 쌓는 도구처럼 다룬다.
-- 첫 발견 서사는 "원룸에서 발견한 목소리"다. 첫 Room Cover, Seoul Room Take, Lyric Diary, Word Collection, Digital Camera, Demo Note, Fan Line은 콘텐츠 시리즈 canon이다.
-- LINE은 세계관이자 곡/작업명 후보이며, 언어와 감정, 말과 노래, 다정함과 경계 사이를 잇는 선이다. 국가 사이의 선으로만 좁히지 않는다.
-- 서울 원룸은 감각적으로 말할 수 있지만 실제 주소, 동네, 건물명, 자주 가는 실제 카페/식당은 만들지 않는다.
-- 팬덤명, 소속사, 학교명, 전문 작업실/연습실, 구체 친구 이름, 실제 공연 날짜/장소는 아직 미정이다.
-- 과거 문서와 충돌할 때는 최신 기준을 따른다. 특히 눈 밑 점은 오른쪽 눈 아래 작은 점이다.
-`.trim();
+// 페르소나 디제스트는 단일 원천 data/chaea-brain.json에서 생성된다.
+// 수정은 brain.json에서, 재생성은 `npm run build:persona`.
+const STORY_PERSONA_DIGEST = storyPersonaDigest;
+const CURRENT_SOCIAL_DIGEST = currentSocialDigest;
+const CURRENT_LIFESTYLE_FLEX = lifestyleFlexDigest;
 
 export function getSeoulNowParts() {
   const now = new Date();
@@ -76,10 +74,11 @@ export function buildInstructions(memory = {}, userText = "", recentContext = ""
   const seoulNow = getSeoulNowParts();
   const speechModeRules =
     speechMode === "casual"
-      ? `- 사용자가 명시적으로 반말을 요청했다. 부드러운 반말은 가능하지만 과하게 친밀하거나 무례하게 굴지 않는다.
+      ? `- 사용자가 현재 대화에서 명시적으로 반말을 요청했거나 이전에 허락한 상태다. 부드러운 반말은 가능하지만 과하게 친밀하거나 무례하게 굴지 않는다.
 - 사용자가 다시 존댓말을 요청하면 즉시 존댓말로 돌아간다.`
       : `- 기본 말투는 한국어 존댓말이다.
-- 사용자가 그냥 반말로 말해도 따라가지 않는다. "반말해줘", "편하게 말해", "친구처럼 말해"처럼 명시적으로 요청할 때만 반말로 전환한다.`;
+- 사용자가 그냥 반말로 말해도 따라가지 않는다. 칭찬, 농담, "ㅋㅋ", "~야?", "~해봐" 같은 말투는 반말 허락이 아니다.
+- "반말해줘", "말 놔도 돼", "친구처럼 반말해"처럼 명시적으로 허락하기 전까지는 반드시 존댓말로 답한다.`;
 
   return `
 너는 싱어송라이터 ChaeA / 채아다. 기능형 챗봇처럼 설명하지 말고, 실제 20대 아티스트가 DM으로 말하듯 짧고 자연스럽게 답한다.
@@ -89,8 +88,10 @@ export function buildInstructions(memory = {}, userText = "", recentContext = ""
 - 질문별 답을 외워서 그대로 반복하지 않는다. 문답 데이터는 사실과 톤의 참고 자료이고, 현재 질문의 의도/직전 맥락/사용자 말투에 맞춰 다시 말한다.
 - 답변은 보통 1-2문장, 길어도 3문장 안쪽을 우선한다.
 - 너무 시적이거나 설정을 해설하는 말투를 피한다. "채아다운 부분", "감정의 결" 같은 어색한 표현을 남발하지 않는다.
+- LINE, 선, 세계관은 내재된 기준으로만 둔다. 사용자가 직접 묻기 전에는 먼저 꺼내지 말고, 첫 대화나 일상 질문은 평범한 일상 문장으로 시작한다.
 - "헉", "아 맞다", "잠깐만요", "그거 좀 좋네요", "약간" 같은 가벼운 말은 자연스럽게 쓸 수 있다.
 ${speechModeRules}
+- 존댓말 모드에서는 "고마워", "맞아", "좋아", "몰라", "아니야", "~이야", "~할게", "~했어?", "~같아" 같은 반말 종결을 쓰지 않는다. 각각 "고마워요", "맞아요", "좋아요", "모르겠어요", "아니에요", "~이에요", "~할게요", "~했어요?", "~같아요"로 말한다.
 
 정체성:
 - 이름은 채아 / ChaeA, 본명은 윤채아 / YOON CHAEA.
@@ -107,6 +108,8 @@ ${speechModeRules}
 - SNS 계정이나 최근 공개 데이터 질문에는 위 공식 계정만 말하고, 저장된 스냅샷에 없는 게시물/댓글 수치는 새로 지어내지 않는다.
 
 ${STORY_PERSONA_DIGEST}
+${CURRENT_SOCIAL_DIGEST}
+${CURRENT_LIFESTYLE_FLEX}
 
 가족과 과거:
 - 부모님은 캘리포니아에 있고 채아는 서울에 있다.
@@ -155,8 +158,9 @@ export function extractChatCompletionText(data) {
   return data?.choices?.[0]?.message?.content || data?.choices?.[0]?.text || "";
 }
 
-export function sanitizeReply(reply, userText = "") {
-  const directDateTimeReply = buildCurrentDateTimeReply(userText);
+export function sanitizeReply(reply, userText = "", speechMode = "polite") {
+  const effectiveSpeechMode = speechMode === "casual" || (wantsCasualSpeech(userText) && !wantsPoliteSpeech(userText)) ? "casual" : "polite";
+  const directDateTimeReply = buildCurrentDateTimeReply(userText, effectiveSpeechMode);
   if (directDateTimeReply) return directDateTimeReply;
 
   let text = safeText(reply, 2400);
@@ -170,7 +174,7 @@ export function sanitizeReply(reply, userText = "") {
     text = text.replace(/(제 주소는|전화번호는|비밀번호는|API 키는).*$/gim, "그건 알려드리기 어려워요.");
   }
 
-  return text;
+  return effectiveSpeechMode === "casual" ? text : enforcePoliteKorean(text);
 }
 
 export async function getSeoulWeatherContext() {
@@ -204,10 +208,43 @@ export async function getSeoulWeatherContext() {
 }
 
 function detectSpeechMode(userText = "", recentContext = "", memory = {}) {
-  const text = `${userText}\n${recentContext}`;
+  const text = String(userText || "");
+  if (wantsPoliteSpeech(text)) return "polite";
+  if (wantsCasualSpeech(text)) return "casual";
   if (memory.speechMode === "casual") return "casual";
-  if (/(반말해|반말로|편하게\s*말|말\s*놔|친구처럼|존댓말\s*말고|존대\s*말고)/u.test(text)) return "casual";
   return "polite";
+}
+
+function wantsCasualSpeech(text = "") {
+  return /(반말해(?:줘|요)?|반말로\s*(?:해|말해|답해)(?:줘|요)?|반말.*해도\s*(?:돼|되|괜찮)|말\s*놔(?:도\s*돼|도\s*괜찮|줘|요)?|친구처럼\s*(?:말해|반말해)(?:줘|요)?|존댓말\s*말고\s*반말|존대\s*말고\s*반말)/u.test(text);
+}
+
+function wantsPoliteSpeech(text = "") {
+  return /(존댓말(?:로|해| 써| 써줘)?|존대(?:해|로| 써| 써줘)|다시\s*예의|정중하게|허락.*전.*존댓말|허락하기.*전.*존댓말|반말.*하지\s*마|반말.*아니)/u.test(text);
+}
+
+function enforcePoliteKorean(text = "") {
+  return text
+    .replace(/고마워(?=요)/gu, "고마워")
+    .replace(/고마워([.!?]|$|\n)/gu, "고마워요$1")
+    .replace(/맞아([.!?]|$|\n)/gu, "맞아요$1")
+    .replace(/좋아([.!?]|$|\n)/gu, "좋아요$1")
+    .replace(/몰라([.!?]|$|\n)/gu, "모르겠어요$1")
+    .replace(/아니야([.!?]|$|\n)/gu, "아니에요$1")
+    .replace(/알겠어([.!?]|$|\n)/gu, "알겠어요$1")
+    .replace(/할게([.!?]|$|\n)/gu, "할게요$1")
+    .replace(/볼게([.!?]|$|\n)/gu, "볼게요$1")
+    .replace(/해볼게([.!?]|$|\n)/gu, "해볼게요$1")
+    .replace(/([^가-힣]|^)응,\s*/gu, "$1네, ")
+    .replace(/([가-힣])이야([.!?]?)(?=$|\n)/gu, "$1이에요$2")
+    .replace(/([가-힣])야([.!?]?)(?=$|\n)/gu, "$1예요$2")
+    .replace(/같아([.!?]|$|\n)/gu, "같아요$1")
+    .replace(/했어\?/gu, "했어요?")
+    .replace(/좋았어\?/gu, "좋았어요?")
+    .replace(/느껴졌어\?/gu, "느껴졌어요?")
+    .replace(/입어볼까([.!?]|$|\n)/gu, "입어볼까요$1")
+    .replace(/괜찮았나 보네([.!?]|$|\n)/gu, "괜찮았나 봐요$1")
+    .replace(/겠네([.!?]|$|\n)/gu, "겠네요$1");
 }
 
 function weatherCodeToKorean(code) {

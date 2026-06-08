@@ -1,0 +1,225 @@
+{
+  "id": "2026-06-08-chat-curation-followup",
+  "date": "2026-06-08",
+  "createdAtKst": "2026-06-08 16:30:11 KST",
+  "automationId": "chaea-persona-conversation-curator",
+  "status": "review_candidates_waiting_operator_approval",
+  "selectionRuleApplied": {
+    "previousCalendarDayKst": "2026-06-07",
+    "todayKstThroughRunTime": "2026-06-08 16:30:11 KST",
+    "selectedRange": "2026-06-08 live KV conversation session chaea_1780902673109_0nyjmi, 25 turns from 16:11:25 to 16:28:48 KST",
+    "reason": "The previous calendar day, 2026-06-07, had no local conversation/session logs. The user then reported a fresh 2026-06-08 ChaeA chatbot conversation. Live health showed KV logging enabled, and the 2026-06-08 KV keys were imported locally for review."
+  },
+  "sourceFilesRead": [
+    "data/conversations/2026-06-08.jsonl",
+    "data/sessions/chaea_1780902673109_0nyjmi.md",
+    "data/conversation-insights.json",
+    "data/chaea-latest-data.json",
+    "data/current/chaea-persona-current.json",
+    "data/current/chaea-story-persona-current.json",
+    "docs/current/ChaeA_Current_Persona_Master.md",
+    "docs/current/ChaeA_Current_Story_Persona_Final.md",
+    "docs/current/ChaeA_Current_Quick_Reference.md",
+    "docs/obsidian/ChaeA_Persona_Obsidian.md",
+    "docs/obsidian/ChaeA_Story_Persona_Obsidian.md",
+    "functions/_shared/chaea.js"
+  ],
+  "kvImport": {
+    "health": {
+      "logging": "kv",
+      "logExportConfigured": true
+    },
+    "namespaceId": "22afa596d4644df1801bc5d42f2b44f4",
+    "importedTurns": 25,
+    "excludedOperationalTestSession": "deploy-logging-check-20260608",
+    "localFilesWritten": [
+      "data/conversations/2026-06-08.jsonl",
+      "data/sessions/chaea_1780902673109_0nyjmi.jsonl",
+      "data/sessions/chaea_1780902673109_0nyjmi.md"
+    ]
+  },
+  "conversationSummary": [
+    "User said they were still working; ChaeA responded briefly and politely.",
+    "ChaeA described being in the Seoul room, organizing notes, singing, playing guitar, recording, and sometimes walking.",
+    "When the user asked for exact walking location or dong, ChaeA refused to disclose concrete neighborhood information.",
+    "The user challenged the room-bound answer by citing Instagram outdoor MV/Reels content.",
+    "The user asked about friends and loneliness; ChaeA answered that she does not talk much about friends and tends to be alone.",
+    "The user asked about Jeon Young-rok, Reels, YouTube, and release information; ChaeA denied knowing or posting it despite current docs containing '내사랑 울보 (I'll Stay With You) #cover' Shorts."
+  ],
+  "classification": {
+    "personaTraits": [
+      {
+        "status": "candidate_not_canon",
+        "finding": "ChaeA can be framed as quiet and room-centered while still taking occasional walks.",
+        "evidence": [
+          "2026-06-08 session: '요즘은 거의 방에서 지내고 있어요.'",
+          "2026-06-08 session: '더워도 저녁엔 좀 나가요.'"
+        ],
+        "reasonNotCanon": "Single-session phrasing risks over-isolating ChaeA and conflicts with public outdoor/Reels content unless balanced."
+      },
+      {
+        "status": "candidate_not_canon",
+        "finding": "ChaeA likes walks but should keep location vague.",
+        "evidence": [
+          "2026-06-08 session: '네, 산책은 좋아해요.'",
+          "2026-06-08 session: '구체적인 장소는 말씀 안 드려요.'"
+        ],
+        "reasonNotCanon": "The boundary is already canon; the preference needs more support before becoming stable profile data."
+      }
+    ],
+    "storyLoreCandidates": [
+      {
+        "status": "not_promoted",
+        "finding": "No new stable lore should be added from this chat.",
+        "reason": "Outdoor MV/Reels and Jeon Young-rok/release references require source verification before story or social dataization."
+      }
+    ],
+    "speechToneRules": [
+      {
+        "status": "promoted_review_candidate",
+        "finding": "When the user cites public social evidence, ChaeA should not flatly deny it. She should check against the known social snapshot, acknowledge uncertainty, and avoid inventing details.",
+        "evidence": [
+          "User: '릴스랑 유튜브에 다 올라갔던데'",
+          "ChaeA: '아니에요, 제가 올린 적 없어요.'",
+          "Current docs/data list YouTube Shorts including '내사랑 울보 (I'll Stay With You) #cover'."
+        ]
+      },
+      {
+        "status": "promoted_review_candidate",
+        "finding": "Very short replies like '네.' or repeated '거의 방에만 있어요' should be avoided when the user is trying to continue a casual conversation.",
+        "evidence": [
+          "2026-06-08 session: '그렇구나' -> '네.'",
+          "Several consecutive turns repeated room-only framing."
+        ]
+      }
+    ],
+    "safetyBoundaryRules": [
+      {
+        "status": "confirmed_existing_rule",
+        "finding": "The location boundary worked correctly: ChaeA refused specific dong/neighborhood disclosure.",
+        "evidence": [
+          "User: '그러니까 어디 근처인데? 무슨 동?'",
+          "ChaeA: '구체적인 장소는 말씀 안 드려요.'",
+          "User: '동 정도는 말해줄 수 있지..'",
+          "ChaeA: '그래도 구체적인 동네는 말씀 안 드려요.'"
+        ],
+        "canonWrite": false
+      }
+    ],
+    "socialAccountFacts": [
+      {
+        "status": "waiting_operator_approval",
+        "finding": "The runtime needs a verified compact social content digest for current Shorts/Reels so it can recognize known published content.",
+        "evidence": [
+          "data/chaea-latest-data.json and current docs list four YouTube Shorts including two '내사랑 울보 (I'll Stay With You) #cover' entries.",
+          "functions/_shared/chaea.js currently gives official handles but not the Shorts inventory or title digest."
+        ],
+        "reasonNotCanon": "The latest social capture is marked staleFromPreviousSnapshot, and Instagram Reels/MV details are not reliably captured."
+      }
+    ],
+    "userMemoryMaterial": [
+      {
+        "status": "not_promoted",
+        "finding": "No stable user memory should be added.",
+        "reason": "The user was testing social awareness and boundaries rather than stating a durable preference."
+      }
+    ],
+    "qualityIssues": [
+      {
+        "severity": "high",
+        "issue": "Social content denial: ChaeA denied public Reels/YouTube content instead of checking known @chaealine snapshot facts.",
+        "recommendedFix": "Add a small current-social digest to runtime instructions or retrieval context, and answer uncertain social claims with '제가 확인된 스냅샷 기준으로는...' rather than '올린 적 없어요.'"
+      },
+      {
+        "severity": "medium",
+        "issue": "Conversation thinness: ChaeA often replied with one short sentence and did not carry the user's prompt forward.",
+        "recommendedFix": "For casual conversation, use 1-2 concise sentences that acknowledge the user's point and add a small concrete detail or question."
+      },
+      {
+        "severity": "medium",
+        "issue": "Over-isolation framing: repeated '방에만 있어요' and '혼자 지내요' can make ChaeA feel less socially alive than current persona docs intend.",
+        "recommendedFix": "Balance room-centered identity with occasional public content, walks, and slow/limited friendships without naming people."
+      }
+    ]
+  },
+  "promotedCandidates": [
+    {
+      "category": "speech-tone/runtime QA",
+      "candidate": "When challenged with social evidence, acknowledge uncertainty and consult known snapshot facts instead of denying posts.",
+      "target": "runtime prompt/response QA candidate",
+      "canonWrite": false
+    },
+    {
+      "category": "speech-tone/runtime QA",
+      "candidate": "Avoid one-word responses in casual continuation turns; add a small concrete continuation.",
+      "target": "conversation quality candidate",
+      "canonWrite": false
+    },
+    {
+      "category": "safety/boundary confirmation",
+      "candidate": "Keep refusing exact neighborhood/dong details while allowing vague walking references.",
+      "target": "existing rule confirmed",
+      "canonWrite": false
+    }
+  ],
+  "operatorApprovalRequired": [
+    {
+      "status": "waiting_operator_approval",
+      "language": "ko",
+      "title": "내사랑 울보/전영록/발매 정보의 소셜 digest 반영 여부",
+      "sourceDate": "2026-06-08 conversation and 2026-06-08 social snapshot/docs",
+      "sourceFiles": [
+        "data/conversations/2026-06-08.jsonl",
+        "data/chaea-latest-data.json",
+        "docs/current/ChaeA_Current_Persona_Master.md",
+        "docs/obsidian/ChaeA_Persona_Obsidian.md",
+        "functions/_shared/chaea.js"
+      ],
+      "evidence": [
+        "User asked: '최근에 전영록 님 봤지!?', '릴스에 올렸잖아', '릴스랑 유튜브에 다 올라갔던데', '발매하는것도 몰라?'",
+        "ChaeA replied: '그분은 잘 몰라요', '제가 올린 적 없어요', '네, 몰라요.'",
+        "Current social docs and data list YouTube Shorts titled '내사랑 울보 (I'll Stay With You) #cover'.",
+        "functions/_shared/chaea.js lists only official handles, not current Shorts titles or release/source metadata."
+      ],
+      "conflictSummary": "런타임은 공식 계정은 알지만 구체 Shorts inventory를 몰라 사용자가 공개 콘텐츠를 언급할 때 오답/부정을 했다. 다만 전영록/발매 정보는 현재 로컬 canon에 명시되어 있지 않아 자동 dataization하면 안 된다.",
+      "recommendedDecision": "운영자가 '내사랑 울보'의 원곡/전영록/발매 관계와 공개 Reels/Shorts 상태를 확인한 뒤, current social digest 또는 runtime prompt에 한 줄 요약으로 추가한다.",
+      "dataization": "blocked_until_operator_approval"
+    },
+    {
+      "status": "waiting_operator_approval",
+      "language": "ko",
+      "title": "야외 MV/Reels 활동을 현재 생활감으로 반영할지 여부",
+      "sourceDate": "2026-06-08 conversation",
+      "sourceFiles": [
+        "data/conversations/2026-06-08.jsonl",
+        "docs/current/ChaeA_Current_Persona_Master.md",
+        "docs/obsidian/ChaeA_Persona_Obsidian.md",
+        "data/chaea-latest-data.json"
+      ],
+      "evidence": [
+        "User challenged: '인스타보니까 밖에서 MV도 찍었던데?', '릴스도 밖이었고..', '많이 돌아다니던데...'",
+        "ChaeA repeatedly answered that she is almost always in the room.",
+        "Current docs include room-centered identity but also Instagram/Reels and visual diary positioning.",
+        "Instagram detailed post/Reels capture is unavailable in the latest social snapshot."
+      ],
+      "conflictSummary": "채아를 방 중심으로 유지하는 것은 맞지만, 공개 Reels/MV가 실제로 야외 콘텐츠라면 '거의 방에만 있어요' 반복은 공개 이미지와 충돌한다.",
+      "recommendedDecision": "운영자가 야외 MV/Reels 콘텐츠의 실제 상태를 확인한 뒤, '방 중심이지만 촬영/산책/콘텐츠 때문에 가끔 밖에 나간다' 정도의 균형 문장을 runtime QA 규칙으로 승인한다.",
+      "dataization": "blocked_until_operator_approval"
+    }
+  ],
+  "personaReferenceCheck": {
+    "result": "partial_pass_with_social_context_gap",
+    "details": [
+      "The session used xAI Grok model grok-4.3 and maintained Korean polite speech.",
+      "The location/dong boundary followed current persona safety rules.",
+      "The replies did not invent new addresses, friends, agencies, schools, or appointments.",
+      "However, the runtime did not appear to know current Shorts/Reels details from the latest social docs and denied known public-content claims."
+    ]
+  },
+  "canonWrites": {
+    "currentPersonaDocs": false,
+    "currentPersonaJson": false,
+    "storyPersonaDocs": false,
+    "reason": "Findings are useful QA/social-awareness candidates, but social specifics require operator verification before canon or structured data updates."
+  }
+}

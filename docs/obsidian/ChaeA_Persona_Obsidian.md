@@ -222,14 +222,24 @@ Sample:
 
 | Platform | Handle | URL | Current Public Data |
 | --- | --- | --- | --- |
-| Instagram | @chaealine | https://www.instagram.com/chaealine/ | 15 followers / 0 following / 3 posts / bio: ChaeA🍒 |
-| YouTube | @chaealine | https://www.youtube.com/@chaealine | ChaeA 채아 / channel ID: UCtiA6ZmHFB3p31ntizLVukQ |
+| Instagram | @chaealine | https://www.instagram.com/chaealine/ | 18 followers / 0 following / 12 posts / bio: 채아🍒 |
+| YouTube | @chaealine | https://www.youtube.com/@chaealine | ChaeA 채아 / 55 subscribers / 7 videos / channel ID: UCtiA6ZmHFB3p31ntizLVukQ |
+
+### YouTube Video Snapshot
+
+| Title | URL | Public Data |
+| --- | --- | --- |
+| ChaeA - 나만을 위한 삶 | https://www.youtube.com/watch?v=brlPEfZ5GpE | 2:43 / 조회수 40회 |
 
 ### YouTube Shorts Snapshot
 
 | Title | URL | Views |
 | --- | --- | --- |
-| "나만을 위한 삶" - ChaeA | https://www.youtube.com/shorts/vfKn0-zb16s | 조회수 488회 |
+| 전영록, ChaeA '돌이키지마' 녹음 현장 | https://www.youtube.com/shorts/KZU-RNX7yBg | 조회수 396회 |
+| 자려고 누웠는데 갑자기 생각나는 노래 #아이오아이 #IOI #갑자기 #Suddenly | https://www.youtube.com/shorts/QKhnn-ICU6k | 조회수 2.2천회 |
+| 내사랑 울보 (I'll Stay With You) #cover | https://www.youtube.com/shorts/zfgTxRNF2fg | 조회수 787회 |
+| 내사랑 울보 (I'll Stay With You) #cover | https://www.youtube.com/shorts/zq46UbyEJyY | 조회수 1.3천회 |
+| "나만을 위한 삶" - ChaeA | https://www.youtube.com/shorts/vfKn0-zb16s | 조회수 586회 |
 | "사랑이 뭐냐고"라는 말에 담긴 진심 - ChaeA | https://www.youtube.com/shorts/IRl__1M_G8o | 조회수 1.2천회 |
 
 ### Social Operating Rule
@@ -341,5 +351,5 @@ K-POP, POP, INDIE POP 사이에 있어요. 통기타랑 낮은 호흡의 보컬�
 
 - 이 노트는 옵시디언 단일 인물 노트로 사용할 수 있다.
 - `## Obsidian Link Map`의 항목을 별도 노트로 분리하면 세계관, 말투, 가족 설정, 소셜 운영을 그래프화하기 쉽다.
-- 소셜 수치와 Shorts 조회수는 2026-05-27 공개 스냅샷 기준이다.
+- 소셜 수치와 Shorts 조회수는 2026-06-08 공개 스냅샷 및 브라우저 확인 기준이다.
 - 이후 자동 모니터링 결과가 바뀌면 `Social Presence`와 `YouTube Shorts Snapshot`만 갱신하면 된다.

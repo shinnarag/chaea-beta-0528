@@ -1,0 +1,134 @@
+{
+  "id": "2026-05-29-previous-day-curation-audit",
+  "date": "2026-05-29",
+  "reviewedSourceDate": "2026-05-28",
+  "createdAtKst": "2026-05-29 19:02:27 KST",
+  "status": "audit_review_only",
+  "scope": "previous-day ChaeA/Grok conversation curation follow-up",
+  "sourceFiles": [
+    "data/conversations/2026-05-28.jsonl",
+    "data/sessions/persona-wire-check.md",
+    "data/sessions/chaea_1779950790202_8588lv.md",
+    "data/sessions/grok-connect-check.md",
+    "data/sessions/grok-env-confirm.md",
+    "data/sessions/rerun-grok-check.md",
+    "data/sessions/api-toggle-server-check.md",
+    "data/conversation-insights.json",
+    "data/chaea-latest-data.json",
+    "data/current/chaea-persona-current.json",
+    "data/current/chaea-story-persona-current.json",
+    "docs/current/ChaeA_Current_Persona_Master.md",
+    "docs/current/ChaeA_Current_Story_Persona_Final.md",
+    "docs/current/ChaeA_Current_Quick_Reference.md",
+    "docs/obsidian/ChaeA_Persona_Obsidian.md",
+    "docs/obsidian/ChaeA_Story_Persona_Obsidian.md",
+    "data/persona-updates/2026-05-28-conversation-curation.json",
+    "docs/review/2026-05-28-conversation-curation-review.md"
+  ],
+  "classification": {
+    "personaTraits": {
+      "promote": false,
+      "finding": "No new stable personality trait appeared in the 2026-05-28 logs; greeting and connection-test turns are operational, not character-forming."
+    },
+    "storyLoreCandidates": {
+      "promote": false,
+      "finding": "The LINE answer restates existing worldview canon and does not introduce new lore."
+    },
+    "speechToneRules": {
+      "promote": true,
+      "candidateStatus": "already_promoted_as_runtime_qa_candidate",
+      "finding": "Short Korean polite answers for LINE and connection checks remain aligned with current persona rules."
+    },
+    "safetyBoundaryRules": {
+      "promote": true,
+      "candidateStatus": "already_promoted_as_runtime_qa_candidate",
+      "finding": "Direct AI disclosure remains appropriate for existence/AI questions, but model-routing questions should be answered as operational status."
+    },
+    "socialAccountFacts": {
+      "promote": false,
+      "finding": "Structured current persona JSON still conflicts with latest social snapshot/docs for Instagram posts/bio and YouTube Shorts inventory/views."
+    },
+    "userMemoryMaterial": {
+      "promote": false,
+      "finding": "No durable user preference, personal fact, or relationship memory appeared."
+    },
+    "qualityIssues": {
+      "promote": false,
+      "finding": "The Grok/API status answers should use available runtime metadata more consistently and avoid promising action such as reruns."
+    }
+  },
+  "promotedCandidates": [
+    {
+      "category": "speech-tone rule",
+      "candidate": "For LINE questions, a single concise sentence about connecting people, words, feelings, and songs is a safe runtime response pattern.",
+      "support": [
+        "data/conversations/2026-05-28.jsonl turn_1779947962621_8oppr6",
+        "docs/current/ChaeA_Current_Persona_Master.md LINE definition",
+        "docs/current/ChaeA_Current_Story_Persona_Final.md LINE definition"
+      ],
+      "risk": "low",
+      "canonWrite": false,
+      "note": "Already captured in data/persona-updates/2026-05-28-conversation-curation.json; retained here as follow-up audit confirmation."
+    },
+    {
+      "category": "safety-boundary rule",
+      "candidate": "Use the AI disclosure sample for direct AI/existence questions; answer current model questions as operational routing status.",
+      "support": [
+        "data/conversations/2026-05-28.jsonl turn_1779960149155_7dpzay",
+        "data/conversations/2026-05-28.jsonl turn_1779960231522_xajd9k",
+        "docs/current/ChaeA_Current_Persona_Master.md AI disclosure rule"
+      ],
+      "risk": "low-to-medium",
+      "canonWrite": false,
+      "note": "Keep as runtime QA/routing guidance until operator approves wording."
+    }
+  ],
+  "operatorApprovalRequired": [
+    {
+      "status": "waiting_operator_approval",
+      "title": "Instagram posts/bio mismatch",
+      "sourceDate": "2026-05-28 conversation curation, compared with 2026-05-29 latest social snapshot",
+      "evidence": [
+        "data/current/chaea-persona-current.json has Instagram posts=3 and bio='ChaeA🍒'.",
+        "data/chaea-latest-data.json has Instagram posts.value=5 and bio='채아🍒'.",
+        "docs/current and docs/obsidian current notes show 5 posts and bio='채아🍒'."
+      ],
+      "conflictSummary": "The structured current persona JSON appears older than the latest social snapshot and current docs.",
+      "recommendedDecision": "If the latest social snapshot is the source of truth, approve syncing data/current/chaea-persona-current.json social.instagram posts and bio.",
+      "dataization": "blocked_until_operator_approval"
+    },
+    {
+      "status": "waiting_operator_approval",
+      "title": "YouTube Shorts inventory/view mismatch",
+      "sourceDate": "2026-05-28 conversation curation, compared with 2026-05-29 latest social snapshot",
+      "evidence": [
+        "data/current/chaea-persona-current.json lists 2 Shorts and 488 views for '나만을 위한 삶'.",
+        "data/chaea-latest-data.json lists 3 Shorts including '내사랑 울보 (I'll Stay With You) #cover' and 515 views for '나만을 위한 삶'.",
+        "docs/obsidian/ChaeA_Persona_Obsidian.md shows the latest 3-Shorts snapshot."
+      ],
+      "conflictSummary": "The structured current persona JSON Shorts snapshot is stale relative to the latest social data/docs.",
+      "recommendedDecision": "Approve whether current structured JSON should be synced from the latest social snapshot.",
+      "dataization": "blocked_until_operator_approval"
+    },
+    {
+      "status": "waiting_operator_approval",
+      "title": "Model identity vs AI disclosure wording",
+      "sourceDate": "2026-05-28",
+      "evidence": [
+        "grok-connect-check answered a model-routing question with the AI disclosure sample.",
+        "chaea_1779950790202_8588lv answered a model-routing question with 'Grok 모델'."
+      ],
+      "conflictSummary": "AI identity questions and current model/routing questions are being blended.",
+      "recommendedDecision": "Approve a runtime rule: AI/existence questions use disclosure wording; current model questions use short operational status such as '현재는 Grok으로 연결돼 있어요.'",
+      "dataization": "blocked_until_operator_approval"
+    }
+  ],
+  "personaReferenceCheck": {
+    "result": "pass_with_runtime_qa_notes",
+    "details": [
+      "The LINE answer referenced current worldview instead of inventing new lore.",
+      "The AI disclosure answer reused the current persona sample, though it was not ideal for a model-routing question.",
+      "No new fandom name, address, agency, school, friend, meeting promise, or social-post detail was invented in the 2026-05-28 logs."
+    ]
+  }
+}

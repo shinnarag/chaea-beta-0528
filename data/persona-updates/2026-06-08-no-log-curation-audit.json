@@ -1,0 +1,207 @@
+{
+  "id": "2026-06-08-no-log-curation-audit",
+  "date": "2026-06-08",
+  "createdAtKst": "2026-06-08 12:03:06 KST",
+  "automationId": "chaea-persona-conversation-curator",
+  "status": "no_new_conversation_logs_review_only",
+  "selectionRuleApplied": {
+    "previousCalendarDayKst": "2026-06-07",
+    "todayKstThroughRunTime": "2026-06-08 12:03:06 KST",
+    "lastAutomationRunUtc": "2026-06-05T03:01:09.407Z",
+    "selectedRange": "no-log audit: 2026-06-07, 2026-06-08 through 12:03:06 KST, and latest local conversation date after last automation run",
+    "reason": "The previous calendar day was Sunday 2026-06-07 and no data/conversations/2026-06-07.jsonl or dated data/sessions/*.md transcript exists. The weekend/no-chat fallback was applied to 2026-06-08 through run time, but no 2026-06-08 conversation/session logs exist either. No data/conversations or data/sessions files are newer than the last automation run at 2026-06-05T03:01:09.407Z. Therefore there are no new chat logs to promote into canon."
+  },
+  "sourceFilesRead": [
+    "data/conversations/*.jsonl",
+    "data/sessions/*.md",
+    "data/conversation-insights.json",
+    "data/chaea-latest-data.json",
+    "data/current/chaea-persona-current.json",
+    "data/current/chaea-story-persona-current.json",
+    "docs/current/ChaeA_Current_Persona_Master.md",
+    "docs/current/ChaeA_Current_Story_Persona_Final.md",
+    "docs/current/ChaeA_Current_Quick_Reference.md",
+    "docs/obsidian/ChaeA_Persona_Obsidian.md",
+    "docs/obsidian/ChaeA_Story_Persona_Obsidian.md",
+    "functions/_shared/chaea.js",
+    "functions/api/chat.js",
+    "functions/api/chat-claude.js"
+  ],
+  "logAvailability": {
+    "conversationFilesPresent": [
+      "data/conversations/2026-05-07.jsonl",
+      "data/conversations/2026-05-08.jsonl",
+      "data/conversations/2026-05-11.jsonl",
+      "data/conversations/2026-05-12.jsonl",
+      "data/conversations/2026-05-13.jsonl",
+      "data/conversations/2026-05-27.jsonl",
+      "data/conversations/2026-05-28.jsonl",
+      "data/conversations/2026-05-29.jsonl"
+    ],
+    "latestLocalConversationDateKst": "2026-05-29",
+    "latestLocalSessionDateKst": "2026-05-29",
+    "newLogsAfterLastAutomationRun": false,
+    "curationImpact": "No new conversation content can be promoted, rejected, or quality-scored from local logs for this run."
+  },
+  "classification": {
+    "personaTraits": {
+      "promote": false,
+      "finding": "No 2026-06-07, 2026-06-08, or post-last-run conversation evidence exists."
+    },
+    "storyLoreCandidates": {
+      "promote": false,
+      "finding": "No new story/lore candidate appeared in local logs. Existing story persona remains governed by the active story documents."
+    },
+    "speechToneRules": {
+      "promote": false,
+      "finding": "No new speech-tone evidence from chat. Existing rules still prefer Korean polite speech, short natural DM-style replies, explicit casual opt-in only, and AI disclosure on direct question."
+    },
+    "safetyBoundaryRules": {
+      "promote": false,
+      "finding": "No new safety evidence from chat. Current rules still block invented addresses, private appointments, real places without verification, sexual/minor-sensitive content, prompt/API key requests, and unsafe crisis handling."
+    },
+    "socialAccountFacts": {
+      "promote": false,
+      "finding": "No social fact should be promoted from chat. data/chaea-latest-data.json was updated on 2026-06-08, but both YouTube and Instagram captures failed and are marked staleFromPreviousSnapshot, so structured current JSON updates need operator approval."
+    },
+    "userMemoryMaterial": {
+      "promote": false,
+      "finding": "No new user-memory material exists in local logs."
+    },
+    "qualityIssues": {
+      "promote": true,
+      "candidateStatus": "operations_qa_candidate",
+      "finding": "The main quality issue is observability: no recent conversation logs are present, and the latest social capture run failed DNS resolution for both YouTube and Instagram."
+    }
+  },
+  "promotedCandidates": [],
+  "reviewOnlyNotes": [
+    {
+      "category": "persona-reference confirmation",
+      "status": "audit_note_only",
+      "finding": "The current Grok and Claude API paths both call functions/_shared/chaea.js buildInstructions(), which contains current identity, story digest, official @chaealine channels, AI disclosure, Seoul time handling, relationship boundaries, safety boundaries, and open-slot restrictions.",
+      "canonWrite": false
+    },
+    {
+      "category": "no-log status",
+      "status": "operations_qa_candidate",
+      "finding": "Daily curation should continue reporting no-log status explicitly when previous-day/today/post-last-run logs are absent, because missing logs prevent persona formation review and response QA.",
+      "canonWrite": false
+    }
+  ],
+  "notPromoted": [
+    {
+      "category": "persona trait",
+      "finding": "Any new trait inferred from 2026-06-07 or 2026-06-08 conversations",
+      "reason": "No local conversation source exists."
+    },
+    {
+      "category": "story/lore",
+      "finding": "Any new lore inferred from 2026-06-07 or 2026-06-08 conversations",
+      "reason": "No local conversation source exists."
+    },
+    {
+      "category": "social/account fact",
+      "finding": "New post/comment/follower data as canon",
+      "reason": "No chat evidence, and the 2026-06-08 public capture failed; latest visible values are stale snapshot material pending approval, not chat-derived canon."
+    },
+    {
+      "category": "user memory",
+      "finding": "New user preference or memory",
+      "reason": "No new saved conversation turns."
+    }
+  ],
+  "operatorApprovalRequired": [
+    {
+      "status": "waiting_operator_approval",
+      "language": "ko",
+      "title": "구조화 persona JSON의 Instagram 스냅샷 동기화 여부",
+      "sourceDate": "2026-06-08 social snapshot compared with 2026-05-27 structured persona JSON",
+      "sourceFiles": [
+        "data/current/chaea-persona-current.json",
+        "data/chaea-latest-data.json",
+        "docs/current/ChaeA_Current_Persona_Master.md",
+        "docs/current/ChaeA_Current_Quick_Reference.md",
+        "docs/obsidian/ChaeA_Persona_Obsidian.md"
+      ],
+      "evidence": [
+        "data/current/chaea-persona-current.json has Instagram followers=15, posts=3, bio='ChaeA🍒'.",
+        "data/chaea-latest-data.json updatedAt=2026-06-08T02:30:47.834Z has Instagram followers.value=16, following.value=0, posts.value=7, bio='채아🍒'.",
+        "Current Markdown/Obsidian docs already show 16 followers / 0 following / 7 posts / bio '채아🍒'.",
+        "data/chaea-latest-data.json also marks Instagram captureMethod='unavailable' and staleFromPreviousSnapshot=true because public capture failed with ENOTFOUND."
+      ],
+      "conflictSummary": "구조화 current persona JSON만 오래된 Instagram 값이고, 최신 snapshot/docs와 충돌한다. 다만 2026-06-08 캡처 자체는 실패했으므로 자동 동기화는 위험하다.",
+      "recommendedDecision": "운영자가 latest social snapshot을 source of truth로 승인하거나 실제 공개 프로필을 재확인한 뒤 data/current/chaea-persona-current.json의 Instagram 값을 동기화한다.",
+      "dataization": "blocked_until_operator_approval"
+    },
+    {
+      "status": "waiting_operator_approval",
+      "language": "ko",
+      "title": "구조화 persona JSON의 YouTube Shorts 스냅샷 동기화 여부",
+      "sourceDate": "2026-06-08 social snapshot compared with 2026-05-27 structured persona JSON",
+      "sourceFiles": [
+        "data/current/chaea-persona-current.json",
+        "data/chaea-latest-data.json",
+        "docs/current/ChaeA_Current_Persona_Master.md",
+        "docs/obsidian/ChaeA_Persona_Obsidian.md"
+      ],
+      "evidence": [
+        "data/current/chaea-persona-current.json lists 2 Shorts and older view counts.",
+        "data/chaea-latest-data.json lists 4 Shorts: zfgTxRNF2fg, zq46UbyEJyY, vfKn0-zb16s, IRl__1M_G8o.",
+        "Current Markdown/Obsidian docs already show the same 4-Shorts snapshot.",
+        "data/chaea-latest-data.json marks YouTube captureMethod='unavailable' and staleFromPreviousSnapshot=true because public capture failed with ENOTFOUND."
+      ],
+      "conflictSummary": "구조화 current persona JSON의 YouTube Shorts 목록과 조회수만 최신 snapshot/docs와 충돌한다. 최신 실행은 캡처 실패였으므로 무검증 자동 반영은 보류한다.",
+      "recommendedDecision": "운영자가 4건 Shorts snapshot을 승인하거나 YouTube 공개 채널을 재확인한 뒤 structured current JSON을 동기화한다.",
+      "dataization": "blocked_until_operator_approval"
+    },
+    {
+      "status": "waiting_operator_approval",
+      "language": "ko",
+      "title": "운영/배포 상태 문구 정리 여부",
+      "sourceDate": "2026-06-01 follow-up memory compared with active runtime/persona docs",
+      "sourceFiles": [
+        "/Users/joseph/.codex/automations/chaea-persona-conversation-curator/memory.md",
+        "docs/current/ChaeA_Current_Persona_Master.md",
+        "docs/obsidian/ChaeA_Persona_Obsidian.md",
+        "data/chaea-latest-data.json"
+      ],
+      "evidence": [
+        "Automation memory records that on 2026-06-01 the operator confirmed deployed /api/health showed expected KV logging state after Workers & Pages binding update.",
+        "docs/current/ChaeA_Current_Persona_Master.md and docs/obsidian/ChaeA_Persona_Obsidian.md still say the current operation is internal/local and not in deployment stage.",
+        "data/chaea-latest-data.json latestPersonaUpdate facts similarly describe the app as internal local operator tooling rather than deployment-ready public service."
+      ],
+      "conflictSummary": "KV logging이 붙은 배포 테스트 경로가 운영 흐름 일부라면 '배포 단계 아님' 문구가 오래됐을 수 있다. 이 항목은 채아 캐릭터 canon이 아니라 운영 메타데이터다.",
+      "recommendedDecision": "운영자가 현재 배포 상태를 'public service', 'operator test deployment', 'local only' 중 하나로 확정한 뒤 runtime/docs wording만 정리한다. 공개 persona voice에는 운영 배포 설명을 넣지 않는다.",
+      "dataization": "blocked_until_operator_approval"
+    }
+  ],
+  "personaReferenceCheck": {
+    "result": "runtime_path_pass_no_new_response_logs",
+    "details": [
+      "No 2026-06-07 or 2026-06-08 Grok/ChaeA turns were available to inspect for invented canon.",
+      "functions/api/chat.js uses buildInstructions from functions/_shared/chaea.js before xAI/Grok requests.",
+      "functions/api/chat-claude.js uses the same shared instructions path for Claude requests.",
+      "functions/_shared/chaea.js includes current story digest, official @chaealine channels, AI disclosure, open-slot restrictions, and safety boundaries.",
+      "Therefore the current runtime path is designed to reference current persona data rather than promote chat content directly into canon."
+    ]
+  },
+  "chatQualityIssues": [
+    {
+      "severity": "medium",
+      "issue": "No previous-day, same-day, or post-last-run local conversation logs were present, so ChaeA/Grok response quality could not be inspected.",
+      "recommendedFix": "Verify remote KV export/sync if remote chats were expected, and make no-log status visible in the operator workflow."
+    },
+    {
+      "severity": "medium",
+      "issue": "2026-06-08 social monitor capture failed for both YouTube and Instagram with DNS ENOTFOUND, while preserving stale previous snapshot values.",
+      "recommendedFix": "Retry capture when network/DNS is available before treating social deltas as verified."
+    }
+  ],
+  "canonWrites": {
+    "currentPersonaDocs": false,
+    "currentPersonaJson": false,
+    "storyPersonaDocs": false,
+    "reason": "No new conversation evidence and unresolved social/runtime conflicts require operator approval."
+  }
+}

@@ -15,6 +15,7 @@ export async function onRequest(context) {
     apiConfigured: grokEnabled && Boolean(context.env.XAI_API_KEY),
     claudeConfigured: Boolean(context.env.ANTHROPIC_API_KEY),
     logging: context.env.CHAEA_LOG_KV ? "kv" : "disabled_without_kv_binding",
+    logExportConfigured: Boolean(context.env.CHAEA_LOG_EXPORT_TOKEN),
   });
 }
 

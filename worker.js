@@ -1,5 +1,7 @@
+import { onRequest as brain } from "./functions/api/brain.js";
 import { onRequest as chat } from "./functions/api/chat.js";
 import { onRequest as chatClaude } from "./functions/api/chat-claude.js";
+import { onRequest as conversationLogs } from "./functions/api/conversation-logs.js";
 import { onRequest as health } from "./functions/api/health.js";
 import { onRequest as insights } from "./functions/api/insights.js";
 import { onRequest as logTurn } from "./functions/api/log-turn.js";
@@ -12,8 +14,10 @@ export default {
     const url = new URL(request.url);
     const context = { request, env, ctx, waitUntil: ctx?.waitUntil?.bind(ctx) };
 
+    if (url.pathname === "/api/brain") return brain(context);
     if (url.pathname === "/api/chat") return chat(context);
     if (url.pathname === "/api/chat-claude") return chatClaude(context);
+    if (url.pathname === "/api/conversation-logs") return conversationLogs(context);
     if (url.pathname === "/api/health") return health(context);
     if (url.pathname === "/api/insights") return insights(context);
     if (url.pathname === "/api/log-turn") return logTurn(context);

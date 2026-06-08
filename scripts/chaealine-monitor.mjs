@@ -1,16 +1,20 @@
 import { mkdir, readFile, readdir, stat, writeFile, appendFile } from "node:fs/promises";
 import { existsSync } from "node:fs";
+import { execFile } from "node:child_process";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import { promisify } from "node:util";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, "..");
 const SOCIAL_DIR = path.join(ROOT, "data", "social");
+const CAPTURE_DIR = path.join(SOCIAL_DIR, "captures");
 const PERSONA_UPDATE_DIR = path.join(ROOT, "data", "persona-updates");
 const SNAPSHOT_FILE = path.join(SOCIAL_DIR, "chaealine-snapshot.json");
 const HISTORY_FILE = path.join(SOCIAL_DIR, "chaealine-history.jsonl");
 const LATEST_DATA_FILE = path.join(ROOT, "data", "chaea-latest-data.json");
 const SOCIAL_DOC_FILE = path.join(ROOT, "docs", "ChaeA_Social_Presence.md");
+const execFileAsync = promisify(execFile);
 
 const SOURCES = {
   youtube: "https://www.youtube.com/@chaealine",
@@ -33,17 +37,35 @@ await main();
 
 async function main() {
   const fetchedAt = new Date();
-  const [youtubeHtml, instagramHtml] = await Promise.all([
-    fetchText(SOURCES.youtube),
-    fetchText(SOURCES.instagram),
+  await mkdir(SOCIAL_DIR, { recursive: true });
+  await mkdir(CAPTURE_DIR, { recursive: true });
+  await mkdir(PERSONA_UPDATE_DIR, { recursive: true });
+
+  const previousSnapshot = await readJsonIfExists(SNAPSHOT_FILE);
+  const [youtubeResult, instagramResult] = await Promise.all([
+    collectPlatform("youtube", fetchedAt, previousSnapshot?.youtube),
+    collectPlatform("instagram", fetchedAt, previousSnapshot?.instagram),
   ]);
 
   const snapshot = {
     updatedAt: fetchedAt.toISOString(),
     updatedAtKst: formatKst(fetchedAt),
     sources: SOURCES,
-    youtube: parseYouTube(youtubeHtml),
-    instagram: parseInstagram(instagramHtml),
+    youtube: youtubeResult.data,
+    instagram: instagramResult.data,
+    captureEvidence: {
+      youtube: youtubeResult.captureEvidence,
+      instagram: instagramResult.captureEvidence,
+    },
+    visiblePosts: {
+      youtube: youtubeResult.visiblePosts,
+      instagram: instagramResult.visiblePosts,
+    },
+    visibleCommentsSummary: {
+      youtube: youtubeResult.visibleCommentsSummary,
+      instagram: instagramResult.visibleCommentsSummary,
+    },
+    reviewIssues: [...youtubeResult.reviewIssues, ...instagramResult.reviewIssues],
     analysis: buildAnalysis(),
   };
 
@@ -56,8 +78,6 @@ async function main() {
     latestPersonaUpdate: STATIC_UPDATE,
   };
 
-  await mkdir(SOCIAL_DIR, { recursive: true });
-  await mkdir(PERSONA_UPDATE_DIR, { recursive: true });
   await writeFile(SNAPSHOT_FILE, `${JSON.stringify(snapshot, null, 2)}\n`, "utf8");
   await appendFile(HISTORY_FILE, `${JSON.stringify(snapshot)}\n`, "utf8");
   await writeFile(LATEST_DATA_FILE, `${JSON.stringify(latestData, null, 2)}\n`, "utf8");
@@ -72,6 +92,195 @@ async function main() {
   console.log(`[ChaeA] Social snapshot saved: ${path.relative(ROOT, SNAPSHOT_FILE)}`);
   console.log(`[ChaeA] Latest data saved: ${path.relative(ROOT, LATEST_DATA_FILE)}`);
   console.log(`[ChaeA] Social doc updated: ${path.relative(ROOT, SOCIAL_DOC_FILE)}`);
+  if (snapshot.reviewIssues.length) {
+    console.log(`[ChaeA] Review issues: ${snapshot.reviewIssues.length}`);
+  }
+}
+
+async function collectPlatform(platform, fetchedAt, previousData) {
+  const url = SOURCES[platform];
+  try {
+    const html = await fetchText(url);
+    return buildPlatformResult(platform, html, {
+      fetchedAt,
+      method: "node-fetch",
+      url,
+      previousData,
+      sourceFailure: null,
+      captureFile: null,
+    });
+  } catch (error) {
+    const sourceFailure = describeError(error);
+    try {
+      const capture = await capturePublicPage(platform, url, fetchedAt);
+      const result = buildPlatformResult(platform, capture.html, {
+        fetchedAt,
+        method: "public-url-capture",
+        url,
+        previousData,
+        sourceFailure,
+        captureFile: capture.file,
+      });
+      result.reviewIssues.unshift({
+        platform,
+        severity: "info",
+        type: "fetch-fallback-used",
+        message: `Node fetch failed (${sourceFailure}); used public URL capture fallback.`,
+        observedAt: fetchedAt.toISOString(),
+      });
+      return result;
+    } catch (captureError) {
+      const message = `Node fetch failed (${sourceFailure}); public URL capture also failed (${describeError(captureError)}).`;
+      return buildFailedPlatformResult(platform, {
+        fetchedAt,
+        url,
+        previousData,
+        message,
+      });
+    }
+  }
+}
+
+function buildPlatformResult(platform, html, options) {
+  const data = platform === "youtube" ? parseYouTube(html) : parseInstagram(html);
+  const visibleText = extractVisibleText(html);
+  const visiblePosts = platform === "youtube" ? buildYouTubeVisiblePosts(data) : extractInstagramVisiblePosts(visibleText);
+  const visibleCommentsSummary = summarizeVisibleComments(platform, visibleText);
+  const reviewIssues = [];
+
+  if (options.sourceFailure) {
+    reviewIssues.push({
+      platform,
+      severity: "info",
+      type: "primary-fetch-failed",
+      message: `Primary Node fetch failed: ${options.sourceFailure}`,
+      observedAt: options.fetchedAt.toISOString(),
+    });
+  }
+
+  if (platform === "instagram" && !visiblePosts.length) {
+    reviewIssues.push({
+      platform,
+      severity: "operator-review",
+      type: "post-detail-not-visible",
+      message:
+        "Logged-out public capture did not expose reliable individual Instagram post captions or comment details. Do not promote post/comment content without manual visible-page verification.",
+      observedAt: options.fetchedAt.toISOString(),
+    });
+  }
+
+  if (platform === "youtube" && !data.shorts.length) {
+    reviewIssues.push({
+      platform,
+      severity: "operator-review",
+      type: "shorts-not-parsed",
+      message: "Public YouTube capture did not expose a reliable Shorts inventory.",
+      observedAt: options.fetchedAt.toISOString(),
+    });
+  }
+
+  return {
+    data: {
+      ...data,
+      captureMethod: options.method,
+      staleFromPreviousSnapshot: false,
+    },
+    captureEvidence: {
+      method: options.method,
+      url: options.url,
+      capturedAt: options.fetchedAt.toISOString(),
+      capturedAtKst: formatKst(options.fetchedAt),
+      htmlBytes: Buffer.byteLength(html, "utf8"),
+      textSample: visibleText.slice(0, 500),
+      file: options.captureFile ? path.relative(ROOT, options.captureFile) : null,
+    },
+    visiblePosts,
+    visibleCommentsSummary,
+    reviewIssues,
+  };
+}
+
+function buildFailedPlatformResult(platform, options) {
+  const fallback = previousDataForPlatform(platform, options.previousData);
+  return {
+    data: {
+      ...fallback,
+      captureMethod: "unavailable",
+      staleFromPreviousSnapshot: Boolean(options.previousData),
+    },
+    captureEvidence: {
+      method: "unavailable",
+      url: options.url,
+      capturedAt: options.fetchedAt.toISOString(),
+      capturedAtKst: formatKst(options.fetchedAt),
+      htmlBytes: 0,
+      textSample: "",
+      file: null,
+    },
+    visiblePosts: [],
+    visibleCommentsSummary: {
+      status: "unavailable",
+      summary: "Public comments were not inspected because the public page could not be captured.",
+      visibleCommentCount: null,
+      reactionTones: [],
+    },
+    reviewIssues: [
+      {
+        platform,
+        severity: "operator-review",
+        type: "capture-failed",
+        message: options.message,
+        observedAt: options.fetchedAt.toISOString(),
+      },
+    ],
+  };
+}
+
+function previousDataForPlatform(platform, previousData) {
+  if (previousData) return previousData;
+  if (platform === "youtube") {
+    return {
+      platform: "youtube",
+      handle: "@chaealine",
+      url: SOURCES.youtube,
+      canonicalUrl: SOURCES.youtube,
+      channelId: null,
+      title: "ChaeA 채아",
+      description: "",
+      shorts: [],
+    };
+  }
+  return {
+    platform: "instagram",
+    handle: "@chaealine",
+    url: SOURCES.instagram,
+    canonicalUrl: SOURCES.instagram,
+    profileId: null,
+    title: "ChaeA (@chaealine) - Instagram",
+    description: "",
+    followers: makeCount(""),
+    following: makeCount(""),
+    posts: makeCount(""),
+    bio: "",
+    publicPostDetailsAvailable: false,
+    note: "Instagram public data could not be captured in this run.",
+  };
+}
+
+async function capturePublicPage(platform, url, fetchedAt) {
+  const userAgent = platform === "instagram" ? "curl/8.7.1" : fetchUserAgent(platform);
+  const acceptLanguage = platform === "instagram" ? "en-US,en;q=0.9" : "ko-KR,ko;q=0.9,en-US;q=0.8,en;q=0.7";
+  const { stdout } = await execFileAsync(
+    "curl",
+    ["-L", "--max-time", "20", "-A", userAgent, "-H", `Accept-Language: ${acceptLanguage}`, url],
+    { maxBuffer: 12 * 1024 * 1024 },
+  );
+  if (!stdout || stdout.trim().length < 100) {
+    throw new Error("capture returned too little content");
+  }
+  const file = path.join(CAPTURE_DIR, `chaealine-${platform}-${stampForFile(fetchedAt)}.html`);
+  await writeFile(file, stdout, "utf8");
+  return { html: stdout, file };
 }
 
 async function fetchText(url) {
@@ -79,14 +288,18 @@ async function fetchText(url) {
   const response = await fetch(url, {
     headers: {
       "Accept-Language": isInstagram ? "en-US,en;q=0.9" : "ko-KR,ko;q=0.9,en-US;q=0.8,en;q=0.7",
-      "User-Agent": isInstagram
-        ? "curl/8.7.1"
-        : "Mozilla/5.0 (Macintosh; Intel Mac OS X 14_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125 Safari/537.36",
+      "User-Agent": fetchUserAgent(isInstagram ? "instagram" : "youtube"),
     },
     signal: AbortSignal.timeout(15000),
   });
   if (!response.ok) throw new Error(`${url} returned ${response.status}`);
   return response.text();
+}
+
+function fetchUserAgent(platform) {
+  return platform === "instagram"
+    ? "curl/8.7.1"
+    : "Mozilla/5.0 (Macintosh; Intel Mac OS X 14_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125 Safari/537.36";
 }
 
 function parseYouTube(html) {
@@ -223,6 +436,127 @@ function buildAnalysis() {
   };
 }
 
+function buildYouTubeVisiblePosts(youtube) {
+  return youtube.shorts.map((short) => ({
+    platform: "youtube",
+    type: "short",
+    id: short.videoId,
+    url: short.url,
+    text: short.title,
+    metrics: {
+      views: short.views || "",
+    },
+    commentVisibility: "not visible on channel capture",
+  }));
+}
+
+function extractInstagramVisiblePosts(visibleText) {
+  const lines = visibleText
+    .split("\n")
+    .map((line) => clean(line))
+    .filter(Boolean);
+  const candidates = [];
+  const seen = new Set();
+
+  for (const line of lines) {
+    if (!looksLikeInstagramPostText(line)) continue;
+    if (line.length < 8 || line.length > 280 || seen.has(line)) continue;
+    seen.add(line);
+    candidates.push({
+      platform: "instagram",
+      type: "visible-text",
+      id: null,
+      url: SOURCES.instagram,
+      text: line,
+      metrics: {},
+      commentVisibility: "not reliably visible on logged-out profile capture",
+    });
+    if (candidates.length >= 8) break;
+  }
+
+  return candidates;
+}
+
+function looksLikeInstagramPostText(line) {
+  if (/photos and videos|Followers|Following|Posts|Instagram|Log in|Sign up/i.test(line)) return false;
+  if (/^ChaeA\s*\(@chaealine\)/i.test(line)) return false;
+  return /#chaealine|#채아|#cover|#LINE|#원룸|#통기타|채아.+#|ChaeA.+#/iu.test(line);
+}
+
+function summarizeVisibleComments(platform, visibleText) {
+  const text = clean(visibleText);
+  const visibleCommentCount = firstVisibleCommentCount(text);
+  const reactionTones = detectReactionTones(text);
+
+  if (!visibleCommentCount && !reactionTones.length) {
+    return {
+      status: "not-visible",
+      summary:
+        platform === "instagram"
+          ? "Logged-out Instagram profile capture did not expose reliable public comment text."
+          : "YouTube channel capture did not expose public Shorts comments; inspect individual Shorts URLs for comment reactions.",
+      visibleCommentCount: null,
+      reactionTones: [],
+    };
+  }
+
+  return {
+    status: "limited-visible-text",
+    summary: `Public capture exposed limited comment/reaction signals: ${[
+      visibleCommentCount ? `${visibleCommentCount} visible comment-count signal` : "",
+      reactionTones.length ? `tones: ${reactionTones.join(", ")}` : "",
+    ]
+      .filter(Boolean)
+      .join("; ")}.`,
+    visibleCommentCount,
+    reactionTones,
+  };
+}
+
+function firstVisibleCommentCount(text) {
+  const patterns = [
+    /댓글\s*([\d,]+)\s*개/u,
+    /([\d,]+)\s*comments?/iu,
+    /View all\s+([\d,]+)\s+comments?/iu,
+  ];
+  for (const pattern of patterns) {
+    const match = text.match(pattern);
+    if (match) return Number.parseInt(match[1].replace(/,/g, ""), 10);
+  }
+  return null;
+}
+
+function detectReactionTones(text) {
+  const tones = [];
+  const checks = [
+    ["supportive", /(좋아요|응원|멋지|예쁘|감동|love|beautiful|great|nice|amazing)/iu],
+    ["curious", /(질문|궁금|언제|where|when|what|question)/iu],
+    ["cover-request", /(커버|cover|불러|sing|song request)/iu],
+    ["spam-risk", /(promo|follow back|dm me|telegram|whatsapp|crypto)/iu],
+    ["safety-review", /(죽고 싶|사라지고 싶|자해|suicide|kill myself|self harm)/iu],
+  ];
+  for (const [label, pattern] of checks) {
+    if (pattern.test(text)) tones.push(label);
+  }
+  return tones;
+}
+
+function extractVisibleText(html) {
+  return decodeHtml(
+    String(html)
+      .replace(/<script\b[\s\S]*?<\/script>/gi, "\n")
+      .replace(/<style\b[\s\S]*?<\/style>/gi, "\n")
+      .replace(/<noscript\b[\s\S]*?<\/noscript>/gi, "\n")
+      .replace(/<[^>]+>/g, "\n")
+      .replace(/\n{3,}/g, "\n\n"),
+  )
+    .split("\n")
+    .map((line) => clean(line))
+    .filter(Boolean)
+    .join("\n")
+    .slice(0, 8000);
+}
+
 function buildPersonaState(snapshot) {
   return {
     name: "ChaeA / 채아",
@@ -292,6 +626,10 @@ function renderSocialDoc(snapshot) {
         .map((item) => `- [${item.title || item.videoId}](${item.url})${item.views ? ` - ${item.views}` : ""}`)
         .join("\n")
     : "- 공개 Shorts 목록을 찾지 못함";
+  const captureEvidence = renderCaptureEvidence(snapshot);
+  const visiblePosts = renderVisiblePosts(snapshot);
+  const commentsSummary = renderCommentsSummary(snapshot);
+  const reviewIssues = renderReviewIssues(snapshot);
 
   return `# ChaeA Social Presence Snapshot
 
@@ -328,7 +666,68 @@ ${shorts}
 - YouTube는 짧은 감정/노래 조각과 향후 Room Session 아카이브 축으로 쓰기 좋다.
 - Instagram은 바이오, 사진, Reels, 댓글 검토 큐의 진입점으로 둔다.
 - 공개 수치와 콘텐츠 목록은 매 실행마다 data/social/chaealine-history.jsonl에 누적해 변화 추적용으로 보관한다.
+
+## Capture Evidence
+
+${captureEvidence}
+
+## Visible Posts And Comment Signals
+
+${visiblePosts}
+
+### Comments
+
+${commentsSummary}
+
+## Monitoring Review Issues
+
+${reviewIssues}
 `;
+}
+
+function renderCaptureEvidence(snapshot) {
+  return ["instagram", "youtube"]
+    .map((platform) => {
+      const evidence = snapshot.captureEvidence?.[platform];
+      if (!evidence) return `- ${platform}: capture evidence unavailable`;
+      const file = evidence.file ? ` / file: ${evidence.file}` : "";
+      return `- ${platform}: ${evidence.method} / ${evidence.htmlBytes} bytes${file}`;
+    })
+    .join("\n");
+}
+
+function renderVisiblePosts(snapshot) {
+  const rows = [];
+  for (const platform of ["instagram", "youtube"]) {
+    const posts = snapshot.visiblePosts?.[platform] || [];
+    if (!posts.length) {
+      rows.push(`- ${platform}: 공개 캡처에서 신뢰 가능한 개별 게시물 텍스트를 찾지 못함`);
+      continue;
+    }
+    for (const post of posts) {
+      const metric = post.metrics?.views ? ` / ${post.metrics.views}` : "";
+      rows.push(`- ${platform}: ${post.text || post.id || "visible item"}${post.url ? ` (${post.url})` : ""}${metric}`);
+    }
+  }
+  return rows.join("\n");
+}
+
+function renderCommentsSummary(snapshot) {
+  return ["instagram", "youtube"]
+    .map((platform) => {
+      const summary = snapshot.visibleCommentsSummary?.[platform];
+      if (!summary) return `- ${platform}: 공개 댓글 요약 없음`;
+      return `- ${platform}: ${summary.summary}`;
+    })
+    .join("\n");
+}
+
+function renderReviewIssues(snapshot) {
+  const issues = snapshot.reviewIssues || [];
+  if (!issues.length) return "- 없음";
+  return issues
+    .map((issue) => `- ${issue.platform} / ${issue.type}: ${issue.message}`)
+    .join("\n");
 }
 
 function readMeta(html, attr, value) {
@@ -407,6 +806,16 @@ function decodeHtml(value = "") {
 
 function escapeRegExp(value = "") {
   return String(value).replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
+
+function describeError(error) {
+  const cause = error?.cause;
+  const causeMessage = cause?.code || cause?.message;
+  return clean([error?.message, causeMessage].filter(Boolean).join(" / ")) || "unknown error";
+}
+
+function stampForFile(date) {
+  return date.toISOString().replace(/[:.]/g, "-");
 }
 
 function formatKst(date) {

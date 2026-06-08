@@ -202,11 +202,12 @@ const knowledgeBase = [
       "공식 Instagram은 @chaealine이에요.",
       "공식 YouTube도 @chaealine이에요.",
       "YouTube 채널명은 ChaeA 채아로 확인돼요.",
-      "공개 소셜 수치와 Shorts 목록은 data/social/chaealine-snapshot.json에 저장해요.",
+      "공개 Shorts에는 내사랑 울보 (I'll Stay With You) #cover, 나만을 위한 삶, 사랑이 뭐냐고라는 말에 담긴 진심이 있어요.",
     ],
     angles: [
       "이제 공식 계정은 @chaealine으로 맞춰두면 돼요.",
       "인스타는 사진과 Reels, 유튜브는 Shorts와 나중의 Room Session 쪽이 잘 맞아요.",
+      "공개된 Shorts 얘기를 하면 먼저 부정하지 말고, 확인된 snapshot 기준으로 받아야 해요.",
     ],
   },
   {
@@ -216,6 +217,7 @@ const knowledgeBase = [
     facts: [
       "제가 가장 자주 머무는 공간은 서울의 작은 원룸이에요.",
       "조용한 원룸, 창가, 스탠드 조명, 새벽의 거리가 잘 어울린다.",
+      "원래는 방에 있는 걸 좋아하지만, 최근에는 촬영이나 Reels/Shorts 일 때문에 밖에 나가는 일이 많아졌어요.",
       "비 오는 날에는 밖에 나가는 것보다 방 안에서 듣는 비 소리를 좋아한다.",
       "저녁에서 밤으로 넘어갈 때 불빛이 하나씩 켜지는 시간을 좋아한다.",
     ],
@@ -592,10 +594,10 @@ function detectSpeechModeRequest(text = "") {
   if (/(욕|씨발|시발|ㅅㅂ|개새|병신|지랄|짖어|굴욕|명령).*(해봐|해줘|말해|해)|반말로\s*욕/.test(text)) {
     return "polite";
   }
-  if (/(반말해|반말로|반말.*해도\s*(돼|되)|편하게\s*말|말\s*편하게|말\s*놔|친구처럼|존댓말\s*말고|존대\s*말고|왜.*존댓말|갑자기.*존댓말|존댓말.*왜)/.test(text)) {
+  if (/(반말해(?:줘|요)?|반말로\s*(?:해|말해|답해)(?:줘|요)?|반말.*해도\s*(?:돼|되|괜찮)|말\s*놔(?:도\s*돼|도\s*괜찮|줘|요)?|친구처럼\s*(?:말해|반말해)(?:줘|요)?|존댓말\s*말고\s*반말|존대\s*말고\s*반말)/.test(text)) {
     return "casual";
   }
-  if (/(존댓말(?:로|해| 써| 써줘)?|존대(?:해|로| 써| 써줘)|다시\s*예의|정중하게)/.test(text) && !/(존댓말\s*말고|존대\s*말고|왜.*존댓말|갑자기.*존댓말|존댓말.*왜)/.test(text)) {
+  if (/(존댓말(?:로|해| 써| 써줘)?|존대(?:해|로| 써| 써줘)|다시\s*예의|정중하게|허락.*전.*존댓말|허락하기.*전.*존댓말|반말.*하지\s*마|반말.*아니)/.test(text)) {
     return "polite";
   }
   if (/반말하는거야|반말하는 거야|말투.*이상|말투.*왜/.test(text)) {
@@ -802,7 +804,7 @@ async function generateApiResponse(message) {
         mode: endpoint.mode,
         provider: data.provider || endpoint.provider,
         label: endpoint.label,
-        shouldClientLog: endpoint.mode === "claude",
+        shouldClientLog: endpoint.mode === "claude" && !data.logged,
       };
     } catch (error) {
       lastError = error;
@@ -1080,13 +1082,16 @@ function directAnswer(analysis) {
   }
 
   if (analysis.intent === "social") {
+    if (includesAny(text, ["내사랑 울보", "울보", "stay with you", "전영록", "발매", "릴스", "reels", "shorts", "쇼츠"])) {
+      return "아, 그 공개된 커버/Shorts 얘기군요.\n제가 확인된 snapshot 기준으로는 내사랑 울보 커버 Shorts가 있어요. 세부 발매 정보는 정확히 확인하고 말할게요.";
+    }
     if (includesAny(text, ["유튜브", "youtube", "채널"])) {
-      return "유튜브는 @chaealine이에요.\n채널명은 ChaeA 채아로 열어뒀고, Shorts 기록도 저장해두고 있어요.";
+      return "유튜브는 @chaealine이에요.\n채널명은 ChaeA 채아고, 내사랑 울보 같은 Shorts snapshot도 있어요.";
     }
     if (includesAny(text, ["인스타", "인스타그램", "instagram"])) {
       return "인스타그램은 @chaealine이에요.\n사진이랑 Reels, 댓글 검토 쪽은 이 계정을 기준으로 볼게요.";
     }
-    return "공식 SNS는 Instagram @chaealine, YouTube @chaealine이에요.\n새로 확인한 공개 데이터는 로컬에 저장해둘게요.";
+    return "공식 SNS는 Instagram @chaealine, YouTube @chaealine이에요.\n공개된 Shorts/Reels 얘기는 확인된 snapshot 기준으로 받아볼게요.";
   }
 
   if (analysis.intent === "boundary") {
@@ -1332,9 +1337,34 @@ function polishResponse(response, analysis) {
 
   if (memory.speechMode === "casual") {
     text = dePoeticizeLocalReply(makeCasualResponse(text));
+  } else {
+    text = enforcePoliteLocalReply(text);
   }
 
   return text;
+}
+
+function enforcePoliteLocalReply(text = "") {
+  return text
+    .replace(/고마워([.!?]|$|\n)/gu, "고마워요$1")
+    .replace(/맞아([.!?]|$|\n)/gu, "맞아요$1")
+    .replace(/좋아([.!?]|$|\n)/gu, "좋아요$1")
+    .replace(/몰라([.!?]|$|\n)/gu, "모르겠어요$1")
+    .replace(/아니야([.!?]|$|\n)/gu, "아니에요$1")
+    .replace(/알겠어([.!?]|$|\n)/gu, "알겠어요$1")
+    .replace(/할게([.!?]|$|\n)/gu, "할게요$1")
+    .replace(/볼게([.!?]|$|\n)/gu, "볼게요$1")
+    .replace(/해볼게([.!?]|$|\n)/gu, "해볼게요$1")
+    .replace(/([^가-힣]|^)응,\s*/gu, "$1네, ")
+    .replace(/([가-힣])이야([.!?]?)(?=$|\n)/gu, "$1이에요$2")
+    .replace(/([가-힣])야([.!?]?)(?=$|\n)/gu, "$1예요$2")
+    .replace(/같아([.!?]|$|\n)/gu, "같아요$1")
+    .replace(/했어\?/gu, "했어요?")
+    .replace(/좋았어\?/gu, "좋았어요?")
+    .replace(/느껴졌어\?/gu, "느껴졌어요?")
+    .replace(/입어볼까([.!?]|$|\n)/gu, "입어볼까요$1")
+    .replace(/괜찮았나 보네([.!?]|$|\n)/gu, "괜찮았나 봐요$1")
+    .replace(/겠네([.!?]|$|\n)/gu, "겠네요$1");
 }
 
 function dePoeticizeLocalReply(text) {
@@ -1447,9 +1477,9 @@ function renderConversation() {
 function buildOpeningMessage() {
   return pickFresh(
     [
-      "안녕하세요. ChaeA예요.\nLINE이나 서울, 요즘 쓰는 노래 얘기 편하게 물어봐요.",
-      "방까지 잘 찾아왔네요.\n처음엔 뭐부터 얘기해볼까요?",
-      "안녕하세요. 채아예요.\n편하게 말 걸어도 돼요.",
+      "안녕하세요. 채아예요.\n오늘은 어떤 하루였어요?",
+      "왔네요.\n잠깐 쉬어가듯이 얘기해도 좋아요.",
+      "안녕하세요.\n지금 생각나는 얘기부터 편하게 말해줘요.",
     ],
     String(Date.now()),
   );

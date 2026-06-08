@@ -10,6 +10,7 @@ import {
   sanitizeReply,
 } from "../_shared/chaea.js";
 import { callClaude } from "../_shared/claude.js";
+import { writeConversationRecord } from "../_shared/conversation-log.js";
 import { json, options, readJson, safeText } from "../_shared/http.js";
 
 export async function onRequest(context) {
@@ -41,11 +42,26 @@ export async function onRequest(context) {
   const recentContext = buildRecentContext(messages);
   const directDateTimeReply = buildCurrentDateTimeReply(userText, memory.speechMode || "polite");
   if (directDateTimeReply) {
+    const logResult = await writeConversationRecord(context.env, {
+      at: new Date().toISOString(),
+      sessionId: safeText(payload.sessionId, 80) || "unknown-session",
+      source: "api",
+      mode: "local-time",
+      model: "system-clock",
+      provider: "local",
+      responseId: null,
+      userText,
+      reply: directDateTimeReply,
+      messages,
+      memory,
+    });
+
     return json({
       reply: directDateTimeReply,
       model: "system-clock",
       provider: "local",
       responseId: null,
+      logged: logResult.ok,
     });
   }
 
@@ -74,15 +90,20 @@ export async function onRequest(context) {
       temperature: Number(context.env.ANTHROPIC_TEMPERATURE || 0.75),
     });
 
-    const reply = sanitizeReply(text, userText);
+    const reply = sanitizeReply(text, userText, memory.speechMode || "polite");
 
-    await writeOptionalLog(context.env, {
+    const logResult = await writeConversationRecord(context.env, {
       at: new Date().toISOString(),
       sessionId: safeText(payload.sessionId, 80) || "unknown-session",
+      source: "api",
       mode: "claude",
       model: usedModel,
+      provider: "anthropic",
+      responseId: raw?.id || null,
       userText,
       reply,
+      messages,
+      memory,
     });
 
     return json({
@@ -90,6 +111,7 @@ export async function onRequest(context) {
       model: usedModel,
       provider: "anthropic",
       responseId: raw?.id || null,
+      logged: logResult.ok,
     });
   } catch (err) {
     return json(
@@ -100,11 +122,4 @@ export async function onRequest(context) {
       err.status || 502,
     );
   }
-}
-
-async function writeOptionalLog(env, record) {
-  if (!env.CHAEA_LOG_KV) return;
-  const day = record.at.slice(0, 10);
-  const id = `conversation:${day}:${record.sessionId}:${Date.now()}`;
-  await env.CHAEA_LOG_KV.put(id, JSON.stringify(record));
 }

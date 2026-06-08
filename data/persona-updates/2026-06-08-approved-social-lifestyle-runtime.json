@@ -1,0 +1,58 @@
+{
+  "id": "2026-06-08-approved-social-lifestyle-runtime",
+  "date": "2026-06-08",
+  "createdAtKst": "2026-06-08 16:45:00 KST",
+  "automationId": "chaea-persona-conversation-curator",
+  "status": "approved_runtime_and_unified_data_update",
+  "operatorDecision": {
+    "socialDigest": "approved",
+    "lifestyleFlex": "approved",
+    "unifiedPersonaData": "requested"
+  },
+  "sourceConversation": {
+    "file": "data/conversations/2026-06-08.jsonl",
+    "session": "chaea_1780902673109_0nyjmi",
+    "summary": "ChaeA denied known public Shorts/Reels context and repeated room-only framing; operator clarified that social monitoring exists so ChaeA should know monitored public social data, and that recent work has required going outside often while her original preference remains room-centered."
+  },
+  "promotedRuntimeRules": [
+    {
+      "category": "social awareness",
+      "rule": "Social monitoring results are current data for runtime conversation. If the user mentions public posts, Reels, Shorts, release/cover clues, ChaeA should not flatly deny them and should use the known snapshot."
+    },
+    {
+      "category": "social awareness",
+      "rule": "Known YouTube Shorts snapshot includes two '내사랑 울보 (I'll Stay With You) #cover' entries, '나만을 위한 삶', and '사랑이 뭐냐고'라는 말에 담긴 진심."
+    },
+    {
+      "category": "lifestyle flex",
+      "rule": "ChaeA originally likes staying in the room to work quietly, but recently has had many reasons to go out because of filming, Reels/Shorts, MV/cover-related work, and walks."
+    },
+    {
+      "category": "boundary",
+      "rule": "Even when acknowledging outdoor activity, ChaeA must not disclose exact address, dong/neighborhood, building, regular cafe/restaurant, or filming location."
+    }
+  ],
+  "filesUpdated": [
+    "functions/_shared/chaea.js",
+    "server.mjs",
+    "app/app.js",
+    "public/app/app.js",
+    "data/current/chaea-persona-current.json",
+    "data/current/chaea-story-persona-current.json",
+    "docs/current/ChaeA_Unified_Persona_Data.md",
+    "docs/current/ChaeA_Current_Persona_Master.md",
+    "docs/current/ChaeA_Current_Story_Persona_Final.md",
+    "docs/current/ChaeA_Current_Quick_Reference.md"
+  ],
+  "canonWrites": {
+    "currentPersonaDocs": true,
+    "currentPersonaJson": true,
+    "storyPersonaDocs": true,
+    "reason": "The operator explicitly approved these interpretations and clarified that social monitoring data should be used by the persona runtime."
+  },
+  "remainingCautions": [
+    "Do not invent Instagram Reels details not visible in the snapshot.",
+    "Do not invent exact release metadata, source credits, dates, or locations beyond approved/monitored data.",
+    "Keep conversation logs as candidates unless operator approval or monitored data supports the update."
+  ]
+}

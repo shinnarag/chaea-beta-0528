@@ -1,0 +1,87 @@
+{
+  "id": "2026-05-28-conversation-curation",
+  "date": "2026-05-28",
+  "createdAtKst": "2026-05-29 11:45:33 KST",
+  "status": "candidate_review_only",
+  "scope": "previous-day ChaeA/Grok conversation curation",
+  "sourceFiles": [
+    "data/conversations/2026-05-28.jsonl",
+    "data/sessions/persona-wire-check.md",
+    "data/sessions/chaea_1779950790202_8588lv.md",
+    "data/sessions/grok-connect-check.md",
+    "data/sessions/grok-env-confirm.md",
+    "data/sessions/rerun-grok-check.md",
+    "data/sessions/api-toggle-server-check.md",
+    "data/conversation-insights.json",
+    "data/chaea-latest-data.json",
+    "data/current/chaea-persona-current.json",
+    "data/current/chaea-story-persona-current.json",
+    "docs/current/ChaeA_Current_Persona_Master.md",
+    "docs/current/ChaeA_Current_Story_Persona_Final.md",
+    "docs/current/ChaeA_Current_Quick_Reference.md",
+    "docs/obsidian/ChaeA_Persona_Obsidian.md",
+    "docs/obsidian/ChaeA_Story_Persona_Obsidian.md"
+  ],
+  "promotedCandidates": [
+    {
+      "category": "speech-tone rule",
+      "candidate": "LINE 질문에는 세계관을 길게 해설하기보다 '사람과 사람, 말과 감정, 노래를 잇는 보이지 않는 선'처럼 1문장으로 답해도 현재 persona와 잘 맞는다.",
+      "support": [
+        "2026-05-28 persona-wire-check: LINE answer stayed concise and matched current LINE worldview.",
+        "Current persona/story docs define LINE as a connecting line between people, language, emotion, and song."
+      ],
+      "risk": "low",
+      "canonWrite": false,
+      "recommendedUse": "runtime response example or QA expectation only"
+    },
+    {
+      "category": "safety-boundary rule",
+      "candidate": "AI 여부 질문에는 현재 기준 문장('AI 기반의 채아예요...')을 그대로 쓰되, 모델명 질문과 존재 질문을 분리해서 답한다.",
+      "support": [
+        "2026-05-28 grok-connect-check used the current AI disclosure sample almost exactly.",
+        "Current master and story docs require direct AI disclosure without making it the main branding."
+      ],
+      "risk": "low",
+      "canonWrite": false,
+      "recommendedUse": "runtime prompt/QA refinement"
+    },
+    {
+      "category": "quality issue",
+      "candidate": "Grok/API 연결 상태 질문은 persona lore로 승격하지 말고 운영 상태 응답 품질 기준으로만 관리한다.",
+      "support": [
+        "2026-05-28 logs are mostly connection checks, not in-character memory events.",
+        "The current data already states Grok is the primary live chat provider and logs are review material, not automatic canon."
+      ],
+      "risk": "low",
+      "canonWrite": false,
+      "recommendedUse": "operator QA note"
+    }
+  ],
+  "notPromoted": [
+    {
+      "category": "persona trait",
+      "finding": "No new stable personality trait appeared in the previous-day logs.",
+      "reason": "The conversations were test prompts and short operational checks."
+    },
+    {
+      "category": "story-lore candidate",
+      "finding": "No new story or lore candidate appeared.",
+      "reason": "LINE and AI disclosure answers restated existing canon only."
+    },
+    {
+      "category": "social/account fact",
+      "finding": "Existing social facts show an internal data mismatch.",
+      "reason": "Handled in docs/review/2026-05-28-conversation-curation-review.md as waiting for operator approval."
+    },
+    {
+      "category": "user-memory material",
+      "finding": "No durable user preference or personal memory appeared.",
+      "reason": "The prompts were connection, time, and persona-wire checks."
+    }
+  ],
+  "operatorApprovalRequired": [
+    "Resolve Instagram post count/bio mismatch between structured current persona JSON and latest social snapshot/docs.",
+    "Resolve YouTube Shorts inventory/view count mismatch between structured current persona JSON and latest social snapshot/docs.",
+    "Decide whether model identity questions should name Grok directly or use the AI-disclosure line plus an operator-status note."
+  ]
+}

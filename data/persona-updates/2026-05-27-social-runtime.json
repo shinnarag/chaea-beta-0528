@@ -8,10 +8,10 @@
     "Current date/time answers are handled from the local Seoul system clock before the model is called.",
     "Official public handles are Instagram @chaealine and YouTube @chaealine."
   ],
-  "snapshotAt": "2026-05-27T07:21:03.907Z",
+  "snapshotAt": "2026-06-08T08:27:00.488Z",
   "social": {
-    "updatedAt": "2026-05-27T07:21:03.907Z",
-    "updatedAtKst": "2026. 05. 27. 16:21:03",
+    "updatedAt": "2026-06-08T08:27:00.488Z",
+    "updatedAtKst": "2026. 06. 08. 17:27:00",
     "sources": {
       "youtube": "https://www.youtube.com/@chaealine",
       "instagram": "https://www.instagram.com/chaealine/"
@@ -26,11 +26,39 @@
       "description": "안녕하세요. 싱어송라이터 채아라고 해요.",
       "shorts": [
         {
+          "videoId": "KZU-RNX7yBg",
+          "url": "https://www.youtube.com/shorts/KZU-RNX7yBg",
+          "title": "전영록, ChaeA '돌이키지마' 녹음 현장🎧",
+          "views": "조회수 396회",
+          "accessibilityText": "전영록, ChaeA '돌이키지마' 녹음 현장🎧, 조회수 396회 - Shorts 동영상 재생"
+        },
+        {
+          "videoId": "QKhnn-ICU6k",
+          "url": "https://www.youtube.com/shorts/QKhnn-ICU6k",
+          "title": "자려고 😴 누웠는데 🛏️ 갑자기🎵 생각나는 노래 #아이오아이 #IOI #갑자기 #Suddenly",
+          "views": "조회수 2.2천회",
+          "accessibilityText": "자려고 😴 누웠는데 🛏️ 갑자기🎵 생각나는 노래 #아이오아이 #IOI #갑자기 #Suddenly, 조회수 2.2천회 - Shorts 동영상 재생"
+        },
+        {
+          "videoId": "zfgTxRNF2fg",
+          "url": "https://www.youtube.com/shorts/zfgTxRNF2fg",
+          "title": "내사랑 울보 (I'll Stay With You) #cover",
+          "views": "조회수 787회",
+          "accessibilityText": "내사랑 울보 (I'll Stay With You) #cover, 조회수 787회 - Shorts 동영상 재생"
+        },
+        {
+          "videoId": "zq46UbyEJyY",
+          "url": "https://www.youtube.com/shorts/zq46UbyEJyY",
+          "title": "내사랑 울보 (I'll Stay With You) #cover",
+          "views": "조회수 1.3천회",
+          "accessibilityText": "내사랑 울보 (I'll Stay With You) #cover, 조회수 1.3천회 - Shorts 동영상 재생"
+        },
+        {
           "videoId": "vfKn0-zb16s",
           "url": "https://www.youtube.com/shorts/vfKn0-zb16s",
           "title": "\"나만을 위한 삶\" 🌾 | ChaeA",
-          "views": "조회수 488회",
-          "accessibilityText": "\"나만을 위한 삶\" 🌾 | ChaeA, 조회수 488회 - Shorts 동영상 재생"
+          "views": "조회수 586회",
+          "accessibilityText": "\"나만을 위한 삶\" 🌾 | ChaeA, 조회수 586회 - Shorts 동영상 재생"
         },
         {
           "videoId": "IRl__1M_G8o",
@@ -39,7 +67,9 @@
           "views": "조회수 1.2천회",
           "accessibilityText": "“사랑이 뭐냐고”라는 말에 담긴 진심 💭 | ChaeA, 조회수 1.2천회 - Shorts 동영상 재생"
         }
-      ]
+      ],
+      "captureMethod": "node-fetch",
+      "staleFromPreviousSnapshot": false
     },
     "instagram": {
       "platform": "instagram",
@@ -48,23 +78,139 @@
       "canonicalUrl": "https://www.instagram.com/chaealine/",
       "profileId": "23704110250",
       "title": "ChaeA (@chaealine) • Instagram photos and videos",
-      "description": "15 Followers, 0 Following, 3 Posts - See Instagram photos and videos from ChaeA (@chaealine)",
+      "description": "18 Followers, 0 Following, 12 Posts - See Instagram photos and videos from ChaeA (@chaealine)",
       "followers": {
-        "display": "15",
-        "value": 15
+        "display": "18",
+        "value": 18
       },
       "following": {
         "display": "0",
         "value": 0
       },
       "posts": {
-        "display": "3",
-        "value": 3
+        "display": "12",
+        "value": 12
       },
-      "bio": "ChaeA🍒",
+      "bio": "채아🍒",
       "publicPostDetailsAvailable": false,
-      "note": "Instagram public HTML currently exposes profile-level metadata, not reliable logged-out post detail or comment data."
+      "note": "Instagram public HTML currently exposes profile-level metadata, not reliable logged-out post detail or comment data.",
+      "captureMethod": "node-fetch",
+      "staleFromPreviousSnapshot": false
     },
+    "captureEvidence": {
+      "youtube": {
+        "method": "node-fetch",
+        "url": "https://www.youtube.com/@chaealine",
+        "capturedAt": "2026-06-08T08:27:00.488Z",
+        "capturedAtKst": "2026. 06. 08. 17:27:00",
+        "htmlBytes": 782662,
+        "textSample": "ChaeA 채아 - YouTube\n정보\n보도자료\n저작권\n문의하기\n크리에이터\n광고\n개발자\n약관\n개인정보처리방침\n정책 및 안전\nYouTube 작동의 원리\n새로운 기능 테스트하기\n&copy; 2026 Google LLC, Sundar Pichai, 1600 Amphitheatre Parkway, Mountain View CA 94043, USA, 0807-882-594 (무료), yt-support-solutions-kr@google.com, 호스팅: Google LLC,\n사업자정보\n,\n불법촬영물 신고\n크리에이터들이 유튜브 상에 게시, 태그 또는 추천한 상품들은 판매자들의 약관에 따라 판매됩니다. 유튜브는 이러한 제품들을 판매하지 않으며, 그에 대한 책임을 지지 않습니다.",
+        "file": null
+      },
+      "instagram": {
+        "method": "node-fetch",
+        "url": "https://www.instagram.com/chaealine/",
+        "capturedAt": "2026-06-08T08:27:00.488Z",
+        "capturedAtKst": "2026. 06. 08. 17:27:00",
+        "htmlBytes": 879761,
+        "textSample": "ChaeA (@chaealine) • Instagram photos and videos",
+        "file": null
+      }
+    },
+    "visiblePosts": {
+      "youtube": [
+        {
+          "platform": "youtube",
+          "type": "short",
+          "id": "KZU-RNX7yBg",
+          "url": "https://www.youtube.com/shorts/KZU-RNX7yBg",
+          "text": "전영록, ChaeA '돌이키지마' 녹음 현장🎧",
+          "metrics": {
+            "views": "조회수 396회"
+          },
+          "commentVisibility": "not visible on channel capture"
+        },
+        {
+          "platform": "youtube",
+          "type": "short",
+          "id": "QKhnn-ICU6k",
+          "url": "https://www.youtube.com/shorts/QKhnn-ICU6k",
+          "text": "자려고 😴 누웠는데 🛏️ 갑자기🎵 생각나는 노래 #아이오아이 #IOI #갑자기 #Suddenly",
+          "metrics": {
+            "views": "조회수 2.2천회"
+          },
+          "commentVisibility": "not visible on channel capture"
+        },
+        {
+          "platform": "youtube",
+          "type": "short",
+          "id": "zfgTxRNF2fg",
+          "url": "https://www.youtube.com/shorts/zfgTxRNF2fg",
+          "text": "내사랑 울보 (I'll Stay With You) #cover",
+          "metrics": {
+            "views": "조회수 787회"
+          },
+          "commentVisibility": "not visible on channel capture"
+        },
+        {
+          "platform": "youtube",
+          "type": "short",
+          "id": "zq46UbyEJyY",
+          "url": "https://www.youtube.com/shorts/zq46UbyEJyY",
+          "text": "내사랑 울보 (I'll Stay With You) #cover",
+          "metrics": {
+            "views": "조회수 1.3천회"
+          },
+          "commentVisibility": "not visible on channel capture"
+        },
+        {
+          "platform": "youtube",
+          "type": "short",
+          "id": "vfKn0-zb16s",
+          "url": "https://www.youtube.com/shorts/vfKn0-zb16s",
+          "text": "\"나만을 위한 삶\" 🌾 | ChaeA",
+          "metrics": {
+            "views": "조회수 586회"
+          },
+          "commentVisibility": "not visible on channel capture"
+        },
+        {
+          "platform": "youtube",
+          "type": "short",
+          "id": "IRl__1M_G8o",
+          "url": "https://www.youtube.com/shorts/IRl__1M_G8o",
+          "text": "“사랑이 뭐냐고”라는 말에 담긴 진심 💭 | ChaeA",
+          "metrics": {
+            "views": "조회수 1.2천회"
+          },
+          "commentVisibility": "not visible on channel capture"
+        }
+      ],
+      "instagram": []
+    },
+    "visibleCommentsSummary": {
+      "youtube": {
+        "status": "not-visible",
+        "summary": "YouTube channel capture did not expose public Shorts comments; inspect individual Shorts URLs for comment reactions.",
+        "visibleCommentCount": null,
+        "reactionTones": []
+      },
+      "instagram": {
+        "status": "not-visible",
+        "summary": "Logged-out Instagram profile capture did not expose reliable public comment text.",
+        "visibleCommentCount": null,
+        "reactionTones": []
+      }
+    },
+    "reviewIssues": [
+      {
+        "platform": "instagram",
+        "severity": "operator-review",
+        "type": "post-detail-not-visible",
+        "message": "Logged-out public capture did not expose reliable individual Instagram post captions or comment details. Do not promote post/comment content without manual visible-page verification.",
+        "observedAt": "2026-06-08T08:27:00.488Z"
+      }
+    ],
     "analysis": {
       "summary": "Official social presence is now unified under @chaealine.",
       "positioning": [

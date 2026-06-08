@@ -7,6 +7,16 @@ XAI_MODEL = "grok-4.3"
 XAI_BASE_URL = "https://api.x.ai/v1"
 XAI_MAX_TOKENS = "280"
 
+# Conversation logging for deployed web chat:
+# 1. Create a KV namespace, then paste the returned id below.
+# 2. Set CHAEA_LOG_EXPORT_TOKEN as a secret before enabling remote export.
+[[kv_namespaces]]
+binding = "CHAEA_LOG_KV"
+id = "22afa596d4644df1801bc5d42f2b44f4"
+
+# Required secret:
+# wrangler secret put CHAEA_LOG_EXPORT_TOKEN
+
 [assets]
 directory = "./public"
 binding = "ASSETS"

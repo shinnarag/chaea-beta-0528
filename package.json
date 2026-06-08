@@ -6,10 +6,17 @@
   "scripts": {
     "build:pages": "node scripts/build-pages-assets.mjs",
     "build:cloudflare": "node scripts/build-pages-assets.mjs",
-    "check": "node --check server.mjs && node --check app/app.js && node --check worker.js && node --check functions/api/chat.js && node --check functions/api/chat-claude.js && node --check functions/api/health.js && node --check functions/api/log-turn.js && node --check functions/api/insights.js && node --check functions/api/sns-classify.js && node --check functions/api/sns-draft.js && node --check functions/api/sns-queue.js && node --check functions/_shared/claude.js && node --check scripts/instagram-monitor.mjs && node --check scripts/chaealine-monitor.mjs",
+    "build:persona": "node scripts/build-persona.mjs",
+    "check:persona": "node scripts/build-persona.mjs --check",
+    "sync:brain": "node scripts/sync-brain.mjs",
+    "check": "node --check server.mjs && node --check app/app.js && node --check worker.js && node --check functions/api/brain.js && node --check functions/api/chat.js && node --check functions/api/chat-claude.js && node --check functions/api/conversation-logs.js && node --check functions/api/health.js && node --check functions/api/log-turn.js && node --check functions/api/insights.js && node --check functions/api/sns-classify.js && node --check functions/api/sns-draft.js && node --check functions/api/sns-queue.js && node --check functions/_shared/chaea.js && node --check functions/_shared/persona-generated.js && node --check scripts/build-persona.mjs && node --check functions/_shared/claude.js && node --check functions/_shared/conversation-log.js && node --check scripts/instagram-monitor.mjs && node --check scripts/chaealine-monitor.mjs && node --check scripts/sync-conversation-logs.mjs && node --check scripts/sync-brain.mjs",
     "deploy:cloudflare": "wrangler deploy",
     "dev": "node server.mjs",
     "monitor:social": "node scripts/chaealine-monitor.mjs",
+    "sync:conversations": "node scripts/sync-conversation-logs.mjs",
     "start": "node server.mjs"
+  },
+  "devDependencies": {
+    "wrangler": "^4.98.0"
   }
 }

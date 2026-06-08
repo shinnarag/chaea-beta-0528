@@ -3,6 +3,11 @@ import { appendFile, mkdir, readFile, readdir, writeFile } from "node:fs/promise
 import { existsSync, statSync } from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import {
+  storyPersonaDigest,
+  currentSocialDigest,
+  lifestyleFlexDigest,
+} from "./functions/_shared/persona-generated.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -21,18 +26,11 @@ const SEOUL_WEATHER_URL = "https://api.open-meteo.com/v1/forecast?latitude=37.56
 const WEATHER_CACHE_MS = 10 * 60 * 1000;
 let weatherCache = { at: 0, text: "", ok: false };
 
-const STORY_PERSONA_DIGEST = `
-최신 스토리 페르소나 기준:
-- 채아의 핵심 서사는 캘리포니아에서 엄마의 피아노와 아빠의 한국 노래 사이에서 자라고, 서울의 작은 원룸에서 그 사이에 놓인 감정을 한국어 노래와 기록으로 다시 이어보는 싱어송라이터다.
-- 스토리는 대본처럼 암송하지 않는다. 질문의 깊이에 따라 가족, 언어, 서울 원룸, Room Cover, LINE 노트, 팬과의 거리감 중 필요한 조각만 짧게 꺼낸다.
-- 엄마의 피아노는 조용히 듣는 태도와 낮은 호흡의 보컬로 이어진다. 아빠의 차 안 한국 노래는 한국 문화를 생활의 소리로 남긴다.
-- 통기타, 작은 마이크, 아이폰, 손글씨 노트, 디지털카메라, 스탠드 조명은 채아의 핵심 오브젝트다. 장식이 아니라 서울 원룸에서 실제로 노래와 기록을 쌓는 도구처럼 다룬다.
-- 첫 발견 서사는 "원룸에서 발견한 목소리"다. 첫 Room Cover, Seoul Room Take, Lyric Diary, Word Collection, Digital Camera, Demo Note, Fan Line은 콘텐츠 시리즈 canon이다.
-- LINE은 세계관이자 곡/작업명 후보이며, 언어와 감정, 말과 노래, 다정함과 경계 사이를 잇는 선이다. 국가 사이의 선으로만 좁히지 않는다.
-- 서울 원룸은 감각적으로 말할 수 있지만 실제 주소, 동네, 건물명, 자주 가는 실제 카페/식당은 만들지 않는다.
-- 팬덤명, 소속사, 학교명, 전문 작업실/연습실, 구체 친구 이름, 실제 공연 날짜/장소는 아직 미정이다.
-- 과거 문서와 충돌할 때는 최신 기준을 따른다. 특히 눈 밑 점은 오른쪽 눈 아래 작은 점이다.
-`.trim();
+// 페르소나 디제스트는 단일 원천 data/chaea-brain.json에서 생성된다.
+// 수정은 brain.json에서, 재생성은 `npm run build:persona`.
+const STORY_PERSONA_DIGEST = storyPersonaDigest;
+const CURRENT_SOCIAL_DIGEST = currentSocialDigest;
+const CURRENT_LIFESTYLE_FLEX = lifestyleFlexDigest;
 
 const MIME_TYPES = {
   ".html": "text/html; charset=utf-8",
@@ -71,6 +69,11 @@ const server = createServer(async (req, res) => {
 
     if (req.method === "GET" && url.pathname === "/api/insights") {
       await handleInsights(res);
+      return;
+    }
+
+    if (req.method === "GET" && url.pathname === "/api/brain") {
+      await handleBrain(res);
       return;
     }
 
@@ -262,6 +265,79 @@ async function handleLogTurn(req, res) {
 async function handleInsights(res) {
   const insights = await readInsights();
   sendJson(res, 200, insights);
+}
+
+// GET /api/brain — 단일 원천 + 라이브 통계(대화 인사이트, 소셜 스냅샷, SNS 큐 요약)를 합쳐
+// 통합 대시보드가 한 번에 받을 수 있게 한다.
+async function handleBrain(res) {
+  const brain = await readJsonFile(path.join(DATA_DIR, "chaea-brain.json"), null);
+  if (!brain) {
+    sendJson(res, 500, { ok: false, error: "brain_not_found", hint: "data/chaea-brain.json 누락" });
+    return;
+  }
+
+  const insights = await readInsights();
+  const snapshot = await readJsonFile(path.join(DATA_DIR, "social", "chaealine-snapshot.json"), null);
+  const queue = await readSnsQueueSummary();
+
+  sendJson(res, 200, {
+    ok: true,
+    source: "data/chaea-brain.json",
+    version: brain.meta?.version || null,
+    updatedAtKst: brain.meta?.updatedAtKst || null,
+    brain,
+    live: {
+      insights,
+      social: snapshot
+        ? {
+            updatedAtKst: snapshot.updatedAtKst,
+            instagram: snapshot.instagram?.followers
+              ? {
+                  followers: snapshot.instagram.followers?.value ?? snapshot.instagram.followers,
+                  posts: snapshot.instagram.posts?.value ?? snapshot.instagram.posts,
+                  bio: snapshot.instagram.bio,
+                }
+              : null,
+            youtube: snapshot.youtube
+              ? { title: snapshot.youtube.title, shortsCount: (snapshot.youtube.shorts || []).length }
+              : null,
+            verification: snapshot.browserVerification || null,
+          }
+        : null,
+      snsQueue: queue,
+    },
+  });
+}
+
+async function readJsonFile(filePath, fallback) {
+  try {
+    return JSON.parse(await readFile(filePath, "utf8"));
+  } catch {
+    return fallback;
+  }
+}
+
+async function readSnsQueueSummary() {
+  const dir = path.join(DATA_DIR, "sns-queue");
+  const summary = { total: 0, pending: 0, sensitive: 0, byCategory: {}, byStatus: {} };
+  try {
+    const files = await readdir(dir);
+    for (const file of files) {
+      if (!file.endsWith(".json")) continue;
+      const item = await readJsonFile(path.join(dir, file), null);
+      if (!item) continue;
+      summary.total += 1;
+      summary.byStatus[item.status] = (summary.byStatus[item.status] || 0) + 1;
+      if (item.status === "pending") {
+        summary.pending += 1;
+        summary.byCategory[item.category] = (summary.byCategory[item.category] || 0) + 1;
+        if (item.category === "sensitive") summary.sensitive += 1;
+      }
+    }
+  } catch {
+    /* dir 없음 */
+  }
+  return summary;
 }
 
 async function callXAI(apiKey, body, sessionId) {
@@ -666,6 +742,7 @@ ${speechModeRules}
 - "한국엔 언제 왔어?", "서울엔 언제 왔어?"에는 "서울에 온 지는 아직 오래 안 됐어요. 사람도 공간도 천천히 익히는 중이에요."처럼 기준을 흐리지 않고 짧게 답한다.
 - 공식 SNS는 Instagram @chaealine, YouTube @chaealine이다. SNS 계정/채널을 물으면 이 두 링크를 기준으로 짧게 답한다.
 - 최근 소셜 공개 데이터는 data/social/chaealine-snapshot.json에 저장된 스냅샷을 기준으로 관리한다. 스냅샷에 없는 개별 게시물, 댓글, DM, 수치 변화는 지어내지 않는다.
+- 소셜 모니터링 결과는 대화에서 쓰기 위한 현재 데이터다. 사용자가 공개 Reels/Shorts/커버/발매 단서를 말하면 모른다고 단정하지 말고 아래 최신 소셜/활동 기준을 참고한다.
 - 사용자가 "반말하는거야?", "그게 무슨 대화야?", "좀 이상한데"처럼 지적하면 먼저 짧게 사과하고, 바로 이전 답을 자연스럽게 다시 말한다.
 - 한국어가 서툰 캐릭터처럼 말하지 않는다.
 - 팬덤명이나 고정 팬 호칭은 아직 쓰지 않는다.
@@ -705,6 +782,8 @@ ${speechModeRules}
 - 사용자가 "넌 무슨 말하고 싶어?", "그냥 네가 하는 말 듣고 싶어"라고 하면 최근 대화 감정, 서울 날씨, 아주 평범한 일상 중 하나로 짧게 말한다.
 
 ${STORY_PERSONA_DIGEST}
+${CURRENT_SOCIAL_DIGEST}
+${CURRENT_LIFESTYLE_FLEX}
 
 현재 기준 날짜:
 ${today}
