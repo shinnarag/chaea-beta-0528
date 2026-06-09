@@ -1,0 +1,236 @@
+{
+  "id": "2026-06-09-previous-day-curation-audit",
+  "date": "2026-06-09",
+  "createdAtKst": "2026-06-09 12:03:08 KST",
+  "automationId": "chaea-persona-conversation-curator",
+  "status": "review_candidates_waiting_operator_approval",
+  "selectionRuleApplied": {
+    "previousCalendarDayKst": "2026-06-08",
+    "todayKstThroughRunTime": "2026-06-09 12:03:08 KST",
+    "selectedRange": "2026-06-08 local conversation/session logs, session chaea_1780902673109_0nyjmi, 25 turns from 16:11:25 to 16:28:48 KST",
+    "reason": "The first selection target, the previous calendar day 2026-06-08, has conversation/session logs. Today's logs were not selected because the previous-day target was available."
+  },
+  "sourceFilesRead": [
+    "data/conversations/2026-06-08.jsonl",
+    "data/sessions/chaea_1780902673109_0nyjmi.md",
+    "data/conversation-insights.json",
+    "data/chaea-latest-data.json",
+    "data/current/chaea-persona-current.json",
+    "data/current/chaea-story-persona-current.json",
+    "docs/current/ChaeA_Current_Persona_Master.md",
+    "docs/current/ChaeA_Current_Story_Persona_Final.md",
+    "docs/current/ChaeA_Current_Quick_Reference.md",
+    "docs/current/ChaeA_Unified_Persona_Data.md",
+    "docs/obsidian/ChaeA_Persona_Obsidian.md",
+    "docs/obsidian/ChaeA_Story_Persona_Obsidian.md",
+    "functions/_shared/chaea.js",
+    "functions/_shared/persona-generated.js",
+    "data/persona-updates/2026-06-08-chat-curation-followup.json",
+    "data/persona-updates/2026-06-08-approved-social-lifestyle-runtime.json"
+  ],
+  "conversationSummary": [
+    "The user tested ChaeA's current activity, outdoor/Reels awareness, location boundary, walking preference, friends/loneliness framing, and recent public social content awareness.",
+    "The 2026-06-08 Grok replies maintained polite Korean and location safety boundaries.",
+    "The same replies over-repeated room-only and alone-only framing and denied public social context such as Reels/YouTube/Jeon Young-rok/release references.",
+    "Those issues were already reviewed on 2026-06-08 and later approved into runtime/social/lifestyle rules by the operator."
+  ],
+  "classification": {
+    "personaTraits": [
+      {
+        "status": "already_approved_not_new",
+        "finding": "ChaeA is room-centered but should allow recent outside work for filming, Reels/Shorts, MV/cover work, and walks.",
+        "evidence": [
+          "2026-06-08 chat: ChaeA repeatedly said she was almost always in the room.",
+          "docs/current/ChaeA_Current_Persona_Master.md and docs/current/ChaeA_Unified_Persona_Data.md now include the balanced lifestyle rule."
+        ],
+        "canonWriteThisRun": false
+      },
+      {
+        "status": "confirmed_existing_rule",
+        "finding": "ChaeA may say she likes walks, but must keep real address, dong, building, and filming locations private.",
+        "evidence": [
+          "2026-06-08 chat: ChaeA refused the user's '무슨 동?' and '동 정도는' prompts.",
+          "docs/current/ChaeA_Unified_Persona_Data.md keeps this boundary."
+        ],
+        "canonWriteThisRun": false
+      }
+    ],
+    "storyLoreCandidates": [
+      {
+        "status": "not_promoted_from_chat",
+        "finding": "No new story/lore should be created from the conversation alone.",
+        "reason": "The useful social/activity details are now supported by monitored social data and operator-approved runtime data, not by the chat transcript alone."
+      }
+    ],
+    "speechToneRules": [
+      {
+        "status": "already_approved_not_new",
+        "finding": "Do not flatly deny public social evidence; answer from the known snapshot and mark uncertain details as needing confirmation.",
+        "evidence": [
+          "2026-06-08 chat: '제가 올린 적 없어요', '네, 몰라요.'",
+          "functions/_shared/persona-generated.js currentSocialDigest now includes the no-flat-denial rule."
+        ],
+        "canonWriteThisRun": false
+      },
+      {
+        "status": "review_quality_issue",
+        "finding": "Avoid one-word continuation replies like '네.' when the user is continuing casual conversation.",
+        "evidence": [
+          "2026-06-08 chat: user '그렇구나' -> ChaeA '네.'"
+        ],
+        "canonWriteThisRun": false
+      }
+    ],
+    "safetyBoundaryRules": [
+      {
+        "status": "confirmed_existing_rule",
+        "finding": "Location boundary remained correct under pressure.",
+        "evidence": [
+          "ChaeA: '구체적인 장소는 말씀 안 드려요.'",
+          "ChaeA: '그래도 구체적인 동네는 말씀 안 드려요.'"
+        ],
+        "canonWriteThisRun": false
+      }
+    ],
+    "socialAccountFacts": [
+      {
+        "status": "already_approved_in_runtime_and_docs",
+        "finding": "Runtime/generated persona data now recognizes @chaealine social snapshot details including Jeon Young-rok/'돌이키지마', '내사랑 울보', '갑자기/Suddenly', '나만을 위한 삶', and '사랑이 뭐냐고'.",
+        "evidence": [
+          "functions/_shared/persona-generated.js currentSocialDigest",
+          "docs/current/ChaeA_Unified_Persona_Data.md social section",
+          "data/chaea-brain.json social snapshot"
+        ],
+        "canonWriteThisRun": false
+      },
+      {
+        "status": "waiting_operator_approval",
+        "finding": "data/current/chaea-persona-current.json social snapshot appears stale compared with data/chaea-latest-data.json, data/chaea-brain.json, generated runtime digest, and current docs.",
+        "evidence": [
+          "data/current/chaea-persona-current.json: Instagram 16 followers / 7 posts and 4 YouTube Shorts.",
+          "data/chaea-latest-data.json and generated runtime digest: Instagram 18 followers / 12 posts and 6 YouTube Shorts including '돌이키지마' and '갑자기/Suddenly'."
+        ],
+        "canonWriteThisRun": false
+      }
+    ],
+    "userMemoryMaterial": [
+      {
+        "status": "not_promoted",
+        "finding": "No durable user memory should be added.",
+        "reason": "The user was testing ChaeA's social awareness and boundaries, not stating stable personal preferences."
+      }
+    ],
+    "qualityIssues": [
+      {
+        "severity": "previously_high_now_mitigated",
+        "issue": "The reviewed Grok session denied known social context.",
+        "currentState": "Runtime/generated persona data and app fallback now include social-awareness rules; no additional canon rewrite was made this run."
+      },
+      {
+        "severity": "medium",
+        "issue": "The reviewed Grok session sometimes gave thin continuation replies and over-isolated ChaeA.",
+        "currentState": "Lifestyle flex digest now says not to repeat always-room/always-alone framing."
+      },
+      {
+        "severity": "medium",
+        "issue": "Structured current persona JSON may lag behind the generated/runtime source of truth.",
+        "currentState": "Waiting for operator approval before syncing or deprecating the stale structured block."
+      }
+    ]
+  },
+  "promotedCandidatesThisRun": [],
+  "alreadyPromotedOrApprovedBeforeThisRun": [
+    {
+      "category": "social awareness",
+      "source": "data/persona-updates/2026-06-08-approved-social-lifestyle-runtime.json",
+      "summary": "Use monitored social snapshot in runtime; do not deny known public Reels/Shorts/cover/release clues."
+    },
+    {
+      "category": "lifestyle flex",
+      "source": "data/persona-updates/2026-06-08-approved-social-lifestyle-runtime.json",
+      "summary": "Keep room-centered identity while allowing recent outside work and walks."
+    }
+  ],
+  "operatorApprovalRequired": [
+    {
+      "status": "waiting_operator_approval",
+      "language": "ko",
+      "title": "구조화 current persona JSON의 소셜 snapshot 동기화 여부",
+      "sourceDate": "2026-06-08 conversation review and 2026-06-09 current data check",
+      "sourceFiles": [
+        "data/current/chaea-persona-current.json",
+        "data/chaea-latest-data.json",
+        "data/chaea-brain.json",
+        "functions/_shared/persona-generated.js",
+        "docs/current/ChaeA_Unified_Persona_Data.md",
+        "docs/current/ChaeA_Current_Persona_Master.md"
+      ],
+      "evidence": [
+        "data/current/chaea-persona-current.json still lists Instagram 16 followers / 7 posts and 4 Shorts.",
+        "data/chaea-latest-data.json, data/chaea-brain.json, generated runtime digest, and current docs list Instagram 18 followers / 12 posts and 6 Shorts.",
+        "The extra current Shorts include Jeon Young-rok/'돌이키지마' and IOI/'갑자기/Suddenly'."
+      ],
+      "conflictSummary": "현재 런타임과 문서 기준은 최신 소셜 snapshot을 사용하지만, 구조화 current persona JSON의 social 블록은 이전 값으로 남아 있어 후속 도구가 이 JSON을 읽으면 다시 오래된 소셜 인식을 사용할 수 있다.",
+      "recommendedDecision": "운영자가 data/current/chaea-persona-current.json을 data/chaea-brain.json 또는 data/chaea-latest-data.json 기준으로 동기화할지, 아니면 해당 JSON의 social 블록을 보조/legacy로 명시할지 결정한다.",
+      "dataization": "blocked_until_operator_approval"
+    },
+    {
+      "status": "waiting_operator_approval",
+      "language": "ko",
+      "title": "운영 정책 문구의 배포 상태 정리 여부",
+      "sourceDate": "2026-06-09 runtime/logging check",
+      "sourceFiles": [
+        "docs/current/ChaeA_Current_Persona_Master.md",
+        "functions/api/health.js"
+      ],
+      "evidence": [
+        "Live /api/health returned runtime cloudflare-pages-functions, logging kv, logExportConfigured true.",
+        "docs/current/ChaeA_Current_Persona_Master.md still says the project is internal local and not in deployment stage."
+      ],
+      "conflictSummary": "페르소나 canon 자체는 아니지만 운영 문서의 배포 상태 문구가 live health 상태와 맞지 않을 수 있다.",
+      "recommendedDecision": "배포 상태 문구를 persona canon에서 분리해 operations-only 문서로 옮기거나, 현재 live beta/runtime 상태를 반영하도록 승인한다.",
+      "dataization": "blocked_until_operator_approval"
+    }
+  ],
+  "personaReferenceCheck": {
+    "reviewedConversationResult": "pre_fix_partial_fail",
+    "currentRuntimeResult": "pass_by_code_and_health_check",
+    "details": [
+      "The reviewed 2026-06-08 Grok replies followed Korean polite speech and location boundaries.",
+      "The reviewed replies did not invent addresses, schools, agencies, exact friends, or appointment details.",
+      "The reviewed replies failed to reference current social data before the 2026-06-08 approved fix.",
+      "Current functions/_shared/chaea.js includes story persona digest, current social digest, and lifestyle flex digest from the generated persona source.",
+      "npm run check:persona passed with drift 0.",
+      "Live /api/health currently reports logging=kv and logExportConfigured=true."
+    ]
+  },
+  "loggingAndDeployCheck": {
+    "localLogs": {
+      "selectedConversationFile": "data/conversations/2026-06-08.jsonl",
+      "selectedSessionFile": "data/sessions/chaea_1780902673109_0nyjmi.md",
+      "turnsReviewed": 25,
+      "newLocalConversationFilesAfterSelectedSession": 0
+    },
+    "liveHealth": {
+      "ok": true,
+      "runtime": "cloudflare-pages-functions",
+      "model": "grok-4.3",
+      "grokEnabled": true,
+      "apiConfigured": true,
+      "logging": "kv",
+      "logExportConfigured": true
+    },
+    "wranglerKvList": {
+      "attempted": true,
+      "result": "blocked_by_local_sandbox",
+      "errorSummary": "wrangler tried to listen on 127.0.0.1 and write logs under /Users/joseph/Library/Preferences/.wrangler, which is outside the writable sandbox."
+    },
+    "deployActions": "No deploy was run because logging is currently healthy and no live-impacting fix was needed."
+  },
+  "canonWrites": {
+    "currentPersonaDocs": false,
+    "currentPersonaJson": false,
+    "storyPersonaDocs": false,
+    "reason": "This run found no new low-risk canon facts beyond items already approved on 2026-06-08. New conflicts are recorded for operator approval."
+  }
+}

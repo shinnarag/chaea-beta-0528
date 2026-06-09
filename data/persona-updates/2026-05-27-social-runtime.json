@@ -8,10 +8,10 @@
     "Current date/time answers are handled from the local Seoul system clock before the model is called.",
     "Official public handles are Instagram @chaealine and YouTube @chaealine."
   ],
-  "snapshotAt": "2026-06-08T08:27:00.488Z",
+  "snapshotAt": "2026-06-09T02:30:42.129Z",
   "social": {
-    "updatedAt": "2026-06-08T08:27:00.488Z",
-    "updatedAtKst": "2026. 06. 08. 17:27:00",
+    "updatedAt": "2026-06-09T02:30:42.129Z",
+    "updatedAtKst": "2026. 06. 09. 11:30:42",
     "sources": {
       "youtube": "https://www.youtube.com/@chaealine",
       "instagram": "https://www.instagram.com/chaealine/"
@@ -68,8 +68,8 @@
           "accessibilityText": "“사랑이 뭐냐고”라는 말에 담긴 진심 💭 | ChaeA, 조회수 1.2천회 - Shorts 동영상 재생"
         }
       ],
-      "captureMethod": "node-fetch",
-      "staleFromPreviousSnapshot": false
+      "captureMethod": "unavailable",
+      "staleFromPreviousSnapshot": true
     },
     "instagram": {
       "platform": "instagram",
@@ -94,121 +94,61 @@
       "bio": "채아🍒",
       "publicPostDetailsAvailable": false,
       "note": "Instagram public HTML currently exposes profile-level metadata, not reliable logged-out post detail or comment data.",
-      "captureMethod": "node-fetch",
-      "staleFromPreviousSnapshot": false
+      "captureMethod": "unavailable",
+      "staleFromPreviousSnapshot": true
     },
     "captureEvidence": {
       "youtube": {
-        "method": "node-fetch",
+        "method": "unavailable",
         "url": "https://www.youtube.com/@chaealine",
-        "capturedAt": "2026-06-08T08:27:00.488Z",
-        "capturedAtKst": "2026. 06. 08. 17:27:00",
-        "htmlBytes": 782662,
-        "textSample": "ChaeA 채아 - YouTube\n정보\n보도자료\n저작권\n문의하기\n크리에이터\n광고\n개발자\n약관\n개인정보처리방침\n정책 및 안전\nYouTube 작동의 원리\n새로운 기능 테스트하기\n&copy; 2026 Google LLC, Sundar Pichai, 1600 Amphitheatre Parkway, Mountain View CA 94043, USA, 0807-882-594 (무료), yt-support-solutions-kr@google.com, 호스팅: Google LLC,\n사업자정보\n,\n불법촬영물 신고\n크리에이터들이 유튜브 상에 게시, 태그 또는 추천한 상품들은 판매자들의 약관에 따라 판매됩니다. 유튜브는 이러한 제품들을 판매하지 않으며, 그에 대한 책임을 지지 않습니다.",
+        "capturedAt": "2026-06-09T02:30:42.129Z",
+        "capturedAtKst": "2026. 06. 09. 11:30:42",
+        "htmlBytes": 0,
+        "textSample": "",
         "file": null
       },
       "instagram": {
-        "method": "node-fetch",
+        "method": "unavailable",
         "url": "https://www.instagram.com/chaealine/",
-        "capturedAt": "2026-06-08T08:27:00.488Z",
-        "capturedAtKst": "2026. 06. 08. 17:27:00",
-        "htmlBytes": 879761,
-        "textSample": "ChaeA (@chaealine) • Instagram photos and videos",
+        "capturedAt": "2026-06-09T02:30:42.129Z",
+        "capturedAtKst": "2026. 06. 09. 11:30:42",
+        "htmlBytes": 0,
+        "textSample": "",
         "file": null
       }
     },
     "visiblePosts": {
-      "youtube": [
-        {
-          "platform": "youtube",
-          "type": "short",
-          "id": "KZU-RNX7yBg",
-          "url": "https://www.youtube.com/shorts/KZU-RNX7yBg",
-          "text": "전영록, ChaeA '돌이키지마' 녹음 현장🎧",
-          "metrics": {
-            "views": "조회수 396회"
-          },
-          "commentVisibility": "not visible on channel capture"
-        },
-        {
-          "platform": "youtube",
-          "type": "short",
-          "id": "QKhnn-ICU6k",
-          "url": "https://www.youtube.com/shorts/QKhnn-ICU6k",
-          "text": "자려고 😴 누웠는데 🛏️ 갑자기🎵 생각나는 노래 #아이오아이 #IOI #갑자기 #Suddenly",
-          "metrics": {
-            "views": "조회수 2.2천회"
-          },
-          "commentVisibility": "not visible on channel capture"
-        },
-        {
-          "platform": "youtube",
-          "type": "short",
-          "id": "zfgTxRNF2fg",
-          "url": "https://www.youtube.com/shorts/zfgTxRNF2fg",
-          "text": "내사랑 울보 (I'll Stay With You) #cover",
-          "metrics": {
-            "views": "조회수 787회"
-          },
-          "commentVisibility": "not visible on channel capture"
-        },
-        {
-          "platform": "youtube",
-          "type": "short",
-          "id": "zq46UbyEJyY",
-          "url": "https://www.youtube.com/shorts/zq46UbyEJyY",
-          "text": "내사랑 울보 (I'll Stay With You) #cover",
-          "metrics": {
-            "views": "조회수 1.3천회"
-          },
-          "commentVisibility": "not visible on channel capture"
-        },
-        {
-          "platform": "youtube",
-          "type": "short",
-          "id": "vfKn0-zb16s",
-          "url": "https://www.youtube.com/shorts/vfKn0-zb16s",
-          "text": "\"나만을 위한 삶\" 🌾 | ChaeA",
-          "metrics": {
-            "views": "조회수 586회"
-          },
-          "commentVisibility": "not visible on channel capture"
-        },
-        {
-          "platform": "youtube",
-          "type": "short",
-          "id": "IRl__1M_G8o",
-          "url": "https://www.youtube.com/shorts/IRl__1M_G8o",
-          "text": "“사랑이 뭐냐고”라는 말에 담긴 진심 💭 | ChaeA",
-          "metrics": {
-            "views": "조회수 1.2천회"
-          },
-          "commentVisibility": "not visible on channel capture"
-        }
-      ],
+      "youtube": [],
       "instagram": []
     },
     "visibleCommentsSummary": {
       "youtube": {
-        "status": "not-visible",
-        "summary": "YouTube channel capture did not expose public Shorts comments; inspect individual Shorts URLs for comment reactions.",
+        "status": "unavailable",
+        "summary": "Public comments were not inspected because the public page could not be captured.",
         "visibleCommentCount": null,
         "reactionTones": []
       },
       "instagram": {
-        "status": "not-visible",
-        "summary": "Logged-out Instagram profile capture did not expose reliable public comment text.",
+        "status": "unavailable",
+        "summary": "Public comments were not inspected because the public page could not be captured.",
         "visibleCommentCount": null,
         "reactionTones": []
       }
     },
     "reviewIssues": [
       {
+        "platform": "youtube",
+        "severity": "operator-review",
+        "type": "capture-failed",
+        "message": "Node fetch failed (fetch failed / ENOTFOUND); public URL capture also failed (Command failed: curl -L --max-time 20 -A Mozilla/5.0 (Macintosh; Intel Mac OS X 14_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125 Safari/537.36 -H Accept-Language: ko-KR,ko;q=0.9,en-US;q=0.8,en;q=0.7 https://www.youtube.com/@chaealine % Total % Received % Xferd Average Speed Time Time Time Current Dload Upload Total Spent Left Speed 0 0 0 0 0 0 0 0 --:--:-- --:--:-- --:--:-- 0curl: (6) Could not resolve host: www.youtube.com).",
+        "observedAt": "2026-06-09T02:30:42.129Z"
+      },
+      {
         "platform": "instagram",
         "severity": "operator-review",
-        "type": "post-detail-not-visible",
-        "message": "Logged-out public capture did not expose reliable individual Instagram post captions or comment details. Do not promote post/comment content without manual visible-page verification.",
-        "observedAt": "2026-06-08T08:27:00.488Z"
+        "type": "capture-failed",
+        "message": "Node fetch failed (fetch failed / ENOTFOUND); public URL capture also failed (Command failed: curl -L --max-time 20 -A curl/8.7.1 -H Accept-Language: en-US,en;q=0.9 https://www.instagram.com/chaealine/ % Total % Received % Xferd Average Speed Time Time Time Current Dload Upload Total Spent Left Speed 0 0 0 0 0 0 0 0 --:--:-- --:--:-- --:--:-- 0curl: (6) Could not resolve host: www.instagram.com).",
+        "observedAt": "2026-06-09T02:30:42.129Z"
       }
     ],
     "analysis": {

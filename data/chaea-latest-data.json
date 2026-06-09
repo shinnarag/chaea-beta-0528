@@ -1,6 +1,6 @@
 {
-  "updatedAt": "2026-06-08T08:27:00.488Z",
-  "updatedAtKst": "2026. 06. 08. 17:27:00",
+  "updatedAt": "2026-06-09T02:30:42.129Z",
+  "updatedAtKst": "2026. 06. 09. 11:30:42",
   "persona": {
     "name": "ChaeA / 채아",
     "legalPersonaName": "윤채아 / YOON CHAEA",
@@ -20,8 +20,8 @@
     ]
   },
   "social": {
-    "updatedAt": "2026-06-08T08:27:00.488Z",
-    "updatedAtKst": "2026. 06. 08. 17:27:00",
+    "updatedAt": "2026-06-09T02:30:42.129Z",
+    "updatedAtKst": "2026. 06. 09. 11:30:42",
     "sources": {
       "youtube": "https://www.youtube.com/@chaealine",
       "instagram": "https://www.instagram.com/chaealine/"
@@ -78,8 +78,8 @@
           "accessibilityText": "“사랑이 뭐냐고”라는 말에 담긴 진심 💭 | ChaeA, 조회수 1.2천회 - Shorts 동영상 재생"
         }
       ],
-      "captureMethod": "node-fetch",
-      "staleFromPreviousSnapshot": false
+      "captureMethod": "unavailable",
+      "staleFromPreviousSnapshot": true
     },
     "instagram": {
       "platform": "instagram",
@@ -104,121 +104,61 @@
       "bio": "채아🍒",
       "publicPostDetailsAvailable": false,
       "note": "Instagram public HTML currently exposes profile-level metadata, not reliable logged-out post detail or comment data.",
-      "captureMethod": "node-fetch",
-      "staleFromPreviousSnapshot": false
+      "captureMethod": "unavailable",
+      "staleFromPreviousSnapshot": true
     },
     "captureEvidence": {
       "youtube": {
-        "method": "node-fetch",
+        "method": "unavailable",
         "url": "https://www.youtube.com/@chaealine",
-        "capturedAt": "2026-06-08T08:27:00.488Z",
-        "capturedAtKst": "2026. 06. 08. 17:27:00",
-        "htmlBytes": 782662,
-        "textSample": "ChaeA 채아 - YouTube\n정보\n보도자료\n저작권\n문의하기\n크리에이터\n광고\n개발자\n약관\n개인정보처리방침\n정책 및 안전\nYouTube 작동의 원리\n새로운 기능 테스트하기\n&copy; 2026 Google LLC, Sundar Pichai, 1600 Amphitheatre Parkway, Mountain View CA 94043, USA, 0807-882-594 (무료), yt-support-solutions-kr@google.com, 호스팅: Google LLC,\n사업자정보\n,\n불법촬영물 신고\n크리에이터들이 유튜브 상에 게시, 태그 또는 추천한 상품들은 판매자들의 약관에 따라 판매됩니다. 유튜브는 이러한 제품들을 판매하지 않으며, 그에 대한 책임을 지지 않습니다.",
+        "capturedAt": "2026-06-09T02:30:42.129Z",
+        "capturedAtKst": "2026. 06. 09. 11:30:42",
+        "htmlBytes": 0,
+        "textSample": "",
         "file": null
       },
       "instagram": {
-        "method": "node-fetch",
+        "method": "unavailable",
         "url": "https://www.instagram.com/chaealine/",
-        "capturedAt": "2026-06-08T08:27:00.488Z",
-        "capturedAtKst": "2026. 06. 08. 17:27:00",
-        "htmlBytes": 879761,
-        "textSample": "ChaeA (@chaealine) • Instagram photos and videos",
+        "capturedAt": "2026-06-09T02:30:42.129Z",
+        "capturedAtKst": "2026. 06. 09. 11:30:42",
+        "htmlBytes": 0,
+        "textSample": "",
         "file": null
       }
     },
     "visiblePosts": {
-      "youtube": [
-        {
-          "platform": "youtube",
-          "type": "short",
-          "id": "KZU-RNX7yBg",
-          "url": "https://www.youtube.com/shorts/KZU-RNX7yBg",
-          "text": "전영록, ChaeA '돌이키지마' 녹음 현장🎧",
-          "metrics": {
-            "views": "조회수 396회"
-          },
-          "commentVisibility": "not visible on channel capture"
-        },
-        {
-          "platform": "youtube",
-          "type": "short",
-          "id": "QKhnn-ICU6k",
-          "url": "https://www.youtube.com/shorts/QKhnn-ICU6k",
-          "text": "자려고 😴 누웠는데 🛏️ 갑자기🎵 생각나는 노래 #아이오아이 #IOI #갑자기 #Suddenly",
-          "metrics": {
-            "views": "조회수 2.2천회"
-          },
-          "commentVisibility": "not visible on channel capture"
-        },
-        {
-          "platform": "youtube",
-          "type": "short",
-          "id": "zfgTxRNF2fg",
-          "url": "https://www.youtube.com/shorts/zfgTxRNF2fg",
-          "text": "내사랑 울보 (I'll Stay With You) #cover",
-          "metrics": {
-            "views": "조회수 787회"
-          },
-          "commentVisibility": "not visible on channel capture"
-        },
-        {
-          "platform": "youtube",
-          "type": "short",
-          "id": "zq46UbyEJyY",
-          "url": "https://www.youtube.com/shorts/zq46UbyEJyY",
-          "text": "내사랑 울보 (I'll Stay With You) #cover",
-          "metrics": {
-            "views": "조회수 1.3천회"
-          },
-          "commentVisibility": "not visible on channel capture"
-        },
-        {
-          "platform": "youtube",
-          "type": "short",
-          "id": "vfKn0-zb16s",
-          "url": "https://www.youtube.com/shorts/vfKn0-zb16s",
-          "text": "\"나만을 위한 삶\" 🌾 | ChaeA",
-          "metrics": {
-            "views": "조회수 586회"
-          },
-          "commentVisibility": "not visible on channel capture"
-        },
-        {
-          "platform": "youtube",
-          "type": "short",
-          "id": "IRl__1M_G8o",
-          "url": "https://www.youtube.com/shorts/IRl__1M_G8o",
-          "text": "“사랑이 뭐냐고”라는 말에 담긴 진심 💭 | ChaeA",
-          "metrics": {
-            "views": "조회수 1.2천회"
-          },
-          "commentVisibility": "not visible on channel capture"
-        }
-      ],
+      "youtube": [],
       "instagram": []
     },
     "visibleCommentsSummary": {
       "youtube": {
-        "status": "not-visible",
-        "summary": "YouTube channel capture did not expose public Shorts comments; inspect individual Shorts URLs for comment reactions.",
+        "status": "unavailable",
+        "summary": "Public comments were not inspected because the public page could not be captured.",
         "visibleCommentCount": null,
         "reactionTones": []
       },
       "instagram": {
-        "status": "not-visible",
-        "summary": "Logged-out Instagram profile capture did not expose reliable public comment text.",
+        "status": "unavailable",
+        "summary": "Public comments were not inspected because the public page could not be captured.",
         "visibleCommentCount": null,
         "reactionTones": []
       }
     },
     "reviewIssues": [
       {
+        "platform": "youtube",
+        "severity": "operator-review",
+        "type": "capture-failed",
+        "message": "Node fetch failed (fetch failed / ENOTFOUND); public URL capture also failed (Command failed: curl -L --max-time 20 -A Mozilla/5.0 (Macintosh; Intel Mac OS X 14_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125 Safari/537.36 -H Accept-Language: ko-KR,ko;q=0.9,en-US;q=0.8,en;q=0.7 https://www.youtube.com/@chaealine % Total % Received % Xferd Average Speed Time Time Time Current Dload Upload Total Spent Left Speed 0 0 0 0 0 0 0 0 --:--:-- --:--:-- --:--:-- 0curl: (6) Could not resolve host: www.youtube.com).",
+        "observedAt": "2026-06-09T02:30:42.129Z"
+      },
+      {
         "platform": "instagram",
         "severity": "operator-review",
-        "type": "post-detail-not-visible",
-        "message": "Logged-out public capture did not expose reliable individual Instagram post captions or comment details. Do not promote post/comment content without manual visible-page verification.",
-        "observedAt": "2026-06-08T08:27:00.488Z"
+        "type": "capture-failed",
+        "message": "Node fetch failed (fetch failed / ENOTFOUND); public URL capture also failed (Command failed: curl -L --max-time 20 -A curl/8.7.1 -H Accept-Language: en-US,en;q=0.9 https://www.instagram.com/chaealine/ % Total % Received % Xferd Average Speed Time Time Time Current Dload Upload Total Spent Left Speed 0 0 0 0 0 0 0 0 --:--:-- --:--:-- --:--:-- 0curl: (6) Could not resolve host: www.instagram.com).",
+        "observedAt": "2026-06-09T02:30:42.129Z"
       }
     ],
     "analysis": {
@@ -232,142 +172,6 @@
         "Store public profile metadata and Shorts inventory as snapshots.",
         "Append every run to history so growth and content changes can be audited later.",
         "Do not auto-publish replies; route comments and DMs through the existing SNS review queue."
-      ]
-    },
-    "browserVerification": {
-      "capturedAtKst": "2026. 06. 08. 17:27 KST",
-      "method": "in-app-browser-public-page-inspection",
-      "youtube": {
-        "channelVisibleStats": {
-          "subscribers": {
-            "display": "55명",
-            "value": 55
-          },
-          "videos": {
-            "display": "7개",
-            "value": 7
-          }
-        },
-        "regularVideos": [
-          {
-            "videoId": "brlPEfZ5GpE",
-            "url": "https://www.youtube.com/watch?v=brlPEfZ5GpE",
-            "title": "ChaeA - 나만을 위한 삶",
-            "duration": "2:43",
-            "views": "조회수 40회",
-            "visibleAge": "3시간 전",
-            "descriptionSummary": "받은 시의 한 줄에서 출발해 스스로 만든 틀과 나만을 위한 삶에 대해 노래한 곡 설명이 공개 메타데이터에 노출됨.",
-            "commentsVisible": false
-          }
-        ],
-        "inspectedShortsDetails": [
-          {
-            "videoId": "KZU-RNX7yBg",
-            "url": "https://www.youtube.com/shorts/KZU-RNX7yBg",
-            "title": "전영록, ChaeA '돌이키지마' 녹음 현장🎧",
-            "descriptionSummary": "전영록과 함께한 '돌이키지마' 녹음 현장, 6/23 12시 공개 예고.",
-            "visibleEngagement": {
-              "likes": "7",
-              "commentsOrReplies": "2"
-            },
-            "commentsVisible": false
-          },
-          {
-            "videoId": "QKhnn-ICU6k",
-            "url": "https://www.youtube.com/shorts/QKhnn-ICU6k",
-            "title": "자려고 😴 누웠는데 🛏️ 갑자기🎵 생각나는 노래 #아이오아이 #IOI #갑자기 #Suddenly",
-            "descriptionSummary": "아이오아이 갑자기 / IOI Suddenly 댄스 커버 및 안무 커버 태그가 공개 메타데이터에 노출됨.",
-            "visibleEngagement": {
-              "likes": "26",
-              "commentsOrReplies": "3"
-            },
-            "commentsVisible": false
-          }
-        ]
-      },
-      "instagram": {
-        "profileVisibleStats": {
-          "followers": {
-            "display": "18",
-            "value": 18
-          },
-          "following": {
-            "display": "0",
-            "value": 0
-          },
-          "posts": {
-            "display": "12",
-            "value": 12
-          },
-          "bio": "채아🍒"
-        },
-        "visiblePosts": [
-          {
-            "type": "post",
-            "url": "https://www.instagram.com/chaealine/p/DZR2M_HCObu/",
-            "text": "셀카는 잘 못 찍는데\n이건 좀 마음에 듦"
-          },
-          {
-            "type": "post",
-            "url": "https://www.instagram.com/chaealine/p/DZJleTLgfYz/",
-            "text": "흐릿해서 더 오래 보게 됨 📷🎸"
-          },
-          {
-            "type": "reel",
-            "url": "https://www.instagram.com/chaealine/reel/DZHjBogkhnq/",
-            "text": "전영록 선생님과 함께한 '돌이키지마' 녹음 현장이에요.\n\n목소리는 6/23(화) 12시에 들려드릴게요.\n기대해주세요 🥹\n\n#전영록 #chaea #돌이키지마 #녹음 #teaser #티저"
-          },
-          {
-            "type": "reel",
-            "url": "https://www.instagram.com/chaealine/reel/DZE1qM0FPfX/",
-            "text": "자려고 😴 누웠는데 🛏️ 갑자기🎵\n#아이오아이 #IOI  #갑자기 #Suddenly"
-          },
-          {
-            "type": "post",
-            "url": "https://www.instagram.com/chaealine/p/DZEppCekWTF/",
-            "text": "튜닝은 여전히 어려워 😖"
-          },
-          {
-            "type": "post",
-            "url": "https://www.instagram.com/chaealine/p/DY64w2xk6ii/",
-            "text": "멜로디는 안 오고 노트만 늘어나는 중.."
-          },
-          {
-            "type": "reel",
-            "url": "https://www.instagram.com/chaealine/reel/DY6B8D5kUwd/",
-            "text": "전영록 선생님의 내사랑 울보 두번째\n\n🎵"
-          },
-          {
-            "type": "post",
-            "url": "https://www.instagram.com/chaealine/p/DY3_cnyGxEV/",
-            "text": "맑아졌다 !"
-          },
-          {
-            "type": "reel",
-            "url": "https://www.instagram.com/chaealine/reel/DY1hiJfjOQp/",
-            "text": "오늘은 공원에서 🌿\n\n전영록 선생님의 내사랑 울보를 \n영어로 개사해서 불렀어요.\n\n많이 들어주세요☺️"
-          },
-          {
-            "type": "post",
-            "url": "https://www.instagram.com/chaealine/p/DYmEl8DlPaS/",
-            "text": "어젯밤, 전영록 선생님과의 녹음 !\n정말 떨렸는데 선생님 덕분에 무사히 진행할 수 있었어요.\n감사합니다 선생님 🤍\n\n#전영록 #선생님 #ChaeA #채아"
-          },
-          {
-            "type": "reel",
-            "url": "https://www.instagram.com/chaealine/reel/DYhWqaFDDhZ/",
-            "text": "안녕하세요! ChaeA입니다 🍒\n\n스스로 만든 틀에서 벗어나니, 비로소 보이는 진짜 나 🍃\n바람 따라 걸으며 마음을 담아봤어요.\n\n🎵 ChaeA - 나만을 위한 삶"
-          },
-          {
-            "type": "reel",
-            "url": "https://www.instagram.com/chaealine/reel/DYhI-rYDt0C/",
-            "text": "안녕하세요! ChaeA입니다🍒\n\n문득 떠오른 감정들을 노래로 담아봤어요.\n🎵 ChaeA - 사랑이 뭐냐고\n\n이어폰으로 꼭 들어보세요 🎧"
-          }
-        ],
-        "commentsVisible": false
-      },
-      "reviewNotes": [
-        "Instagram logged-out browser exposed post/reel alt text and links, but not reliable public comments.",
-        "YouTube individual item pages exposed metadata and limited engagement counts; comment text was not visible without extra interaction."
       ]
     }
   },
@@ -411,142 +215,6 @@
       "Grok is the primary live chat provider through xAI, with local logs saved under data/conversations and data/sessions.",
       "Current date/time answers are handled from the local Seoul system clock before the model is called.",
       "Official public handles are Instagram @chaealine and YouTube @chaealine."
-    ]
-  },
-  "browserVerification": {
-    "capturedAtKst": "2026. 06. 08. 17:27 KST",
-    "method": "in-app-browser-public-page-inspection",
-    "youtube": {
-      "channelVisibleStats": {
-        "subscribers": {
-          "display": "55명",
-          "value": 55
-        },
-        "videos": {
-          "display": "7개",
-          "value": 7
-        }
-      },
-      "regularVideos": [
-        {
-          "videoId": "brlPEfZ5GpE",
-          "url": "https://www.youtube.com/watch?v=brlPEfZ5GpE",
-          "title": "ChaeA - 나만을 위한 삶",
-          "duration": "2:43",
-          "views": "조회수 40회",
-          "visibleAge": "3시간 전",
-          "descriptionSummary": "받은 시의 한 줄에서 출발해 스스로 만든 틀과 나만을 위한 삶에 대해 노래한 곡 설명이 공개 메타데이터에 노출됨.",
-          "commentsVisible": false
-        }
-      ],
-      "inspectedShortsDetails": [
-        {
-          "videoId": "KZU-RNX7yBg",
-          "url": "https://www.youtube.com/shorts/KZU-RNX7yBg",
-          "title": "전영록, ChaeA '돌이키지마' 녹음 현장🎧",
-          "descriptionSummary": "전영록과 함께한 '돌이키지마' 녹음 현장, 6/23 12시 공개 예고.",
-          "visibleEngagement": {
-            "likes": "7",
-            "commentsOrReplies": "2"
-          },
-          "commentsVisible": false
-        },
-        {
-          "videoId": "QKhnn-ICU6k",
-          "url": "https://www.youtube.com/shorts/QKhnn-ICU6k",
-          "title": "자려고 😴 누웠는데 🛏️ 갑자기🎵 생각나는 노래 #아이오아이 #IOI #갑자기 #Suddenly",
-          "descriptionSummary": "아이오아이 갑자기 / IOI Suddenly 댄스 커버 및 안무 커버 태그가 공개 메타데이터에 노출됨.",
-          "visibleEngagement": {
-            "likes": "26",
-            "commentsOrReplies": "3"
-          },
-          "commentsVisible": false
-        }
-      ]
-    },
-    "instagram": {
-      "profileVisibleStats": {
-        "followers": {
-          "display": "18",
-          "value": 18
-        },
-        "following": {
-          "display": "0",
-          "value": 0
-        },
-        "posts": {
-          "display": "12",
-          "value": 12
-        },
-        "bio": "채아🍒"
-      },
-      "visiblePosts": [
-        {
-          "type": "post",
-          "url": "https://www.instagram.com/chaealine/p/DZR2M_HCObu/",
-          "text": "셀카는 잘 못 찍는데\n이건 좀 마음에 듦"
-        },
-        {
-          "type": "post",
-          "url": "https://www.instagram.com/chaealine/p/DZJleTLgfYz/",
-          "text": "흐릿해서 더 오래 보게 됨 📷🎸"
-        },
-        {
-          "type": "reel",
-          "url": "https://www.instagram.com/chaealine/reel/DZHjBogkhnq/",
-          "text": "전영록 선생님과 함께한 '돌이키지마' 녹음 현장이에요.\n\n목소리는 6/23(화) 12시에 들려드릴게요.\n기대해주세요 🥹\n\n#전영록 #chaea #돌이키지마 #녹음 #teaser #티저"
-        },
-        {
-          "type": "reel",
-          "url": "https://www.instagram.com/chaealine/reel/DZE1qM0FPfX/",
-          "text": "자려고 😴 누웠는데 🛏️ 갑자기🎵\n#아이오아이 #IOI  #갑자기 #Suddenly"
-        },
-        {
-          "type": "post",
-          "url": "https://www.instagram.com/chaealine/p/DZEppCekWTF/",
-          "text": "튜닝은 여전히 어려워 😖"
-        },
-        {
-          "type": "post",
-          "url": "https://www.instagram.com/chaealine/p/DY64w2xk6ii/",
-          "text": "멜로디는 안 오고 노트만 늘어나는 중.."
-        },
-        {
-          "type": "reel",
-          "url": "https://www.instagram.com/chaealine/reel/DY6B8D5kUwd/",
-          "text": "전영록 선생님의 내사랑 울보 두번째\n\n🎵"
-        },
-        {
-          "type": "post",
-          "url": "https://www.instagram.com/chaealine/p/DY3_cnyGxEV/",
-          "text": "맑아졌다 !"
-        },
-        {
-          "type": "reel",
-          "url": "https://www.instagram.com/chaealine/reel/DY1hiJfjOQp/",
-          "text": "오늘은 공원에서 🌿\n\n전영록 선생님의 내사랑 울보를 \n영어로 개사해서 불렀어요.\n\n많이 들어주세요☺️"
-        },
-        {
-          "type": "post",
-          "url": "https://www.instagram.com/chaealine/p/DYmEl8DlPaS/",
-          "text": "어젯밤, 전영록 선생님과의 녹음 !\n정말 떨렸는데 선생님 덕분에 무사히 진행할 수 있었어요.\n감사합니다 선생님 🤍\n\n#전영록 #선생님 #ChaeA #채아"
-        },
-        {
-          "type": "reel",
-          "url": "https://www.instagram.com/chaealine/reel/DYhWqaFDDhZ/",
-          "text": "안녕하세요! ChaeA입니다 🍒\n\n스스로 만든 틀에서 벗어나니, 비로소 보이는 진짜 나 🍃\n바람 따라 걸으며 마음을 담아봤어요.\n\n🎵 ChaeA - 나만을 위한 삶"
-        },
-        {
-          "type": "reel",
-          "url": "https://www.instagram.com/chaealine/reel/DYhI-rYDt0C/",
-          "text": "안녕하세요! ChaeA입니다🍒\n\n문득 떠오른 감정들을 노래로 담아봤어요.\n🎵 ChaeA - 사랑이 뭐냐고\n\n이어폰으로 꼭 들어보세요 🎧"
-        }
-      ],
-      "commentsVisible": false
-    },
-    "reviewNotes": [
-      "Instagram logged-out browser exposed post/reel alt text and links, but not reliable public comments.",
-      "YouTube individual item pages exposed metadata and limited engagement counts; comment text was not visible without extra interaction."
     ]
   }
 }

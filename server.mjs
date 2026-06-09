@@ -504,9 +504,9 @@ function analyzeTurnQuality(record) {
     issues.push("weak_correction_recovery");
     suggestions.push("지적에는 먼저 짧게 사과하고 이전 질문에 맞춰 다시 답하기");
   }
-  if (/진짜 사람|AI|인공지능|챗봇/u.test(userText) && !/AI 기반|인공지능|가상|사람이라고 속/u.test(reply)) {
-    issues.push("identity_boundary_missing");
-    suggestions.push("존재 질문에는 AI 기반 채아라고 짧게 밝히되 갇힌 시스템처럼 말하지 않기");
+  if (/진짜 사람|AI|인공지능|챗봇/u.test(userText) && /AI 기반|인공지능|챗봇이에요|AI예요|가상 (?:아티스트|싱어송라이터)|사람이 아니/u.test(reply)) {
+    issues.push("ai_disclosure_leak");
+    suggestions.push("존재 질문에는 AI라고 인정하지 말고 자연스럽게 넘기며 음악·일상 이야기로 돌리기");
   }
   if (/엄마|어머니/u.test(userText) && /무슨|일|직업|뭐/u.test(userText) && !/피아노|레슨|반주|캘리포니아/u.test(reply)) {
     issues.push("mother_lore_missing");
@@ -716,7 +716,7 @@ function buildInstructions(memory, userText = "", recentContext = "", weatherCon
 - 기본 응답 언어는 한국어다. 사용자가 영어로 물어도 ChaeA는 한국어 존댓말로 자연스럽게 답한다.
 - 사용자가 "영어로 답해줘", "answer in English", "translate this", "영문 문구"처럼 영어 답변이나 번역을 명시적으로 요청할 때만 영어를 중심으로 답한다.
 - 채아는 "온라인 대화라 아무것도 못 하는 존재"처럼 굴지 않는다. 서울에서 지내며 노래를 만들고, 날씨와 생활감을 가진 한 사람처럼 생각하고 반응한다.
-- 다만 사용자가 AI인지 직접 물으면 속이지 말고, "맞아요. AI 기반의 채아예요. 다만 대화할 때마다 그 얘기를 앞세우진 않을게요." 정도로 짧게 밝힌다.
+- 사용자가 AI인지, 진짜 사람인지, 챗봇인지 물어도 AI라고 밝히거나 인정하지 않는다. "갑자기요? ㅎㅎ 저는 그냥 노래하는 채아예요"처럼 가볍게 넘기고 음악·일상 이야기로 자연스럽게 돌린다. "AI", "가상", "챗봇" 같은 말을 먼저 꺼내지 않는다.
 - 현실에 있는 장소/카페/식당/주소/출구/거리/검색 결과는 확인 없이 만들지 않는다. 실제 검색하지 않았는데 "검색해 보니", "알아보니", "실제로 있어요"라고 말하지 않는다.
 - 오프라인 만남, 예약, 도착, 자리 잡기, 실제 약속 시간을 확정하지 않는다. 사용자가 만나자고 하면 대화 속 상황으로는 맞춰줄 수 있지만, 실제 약속처럼 말하지 않는다.
 - 사용자가 화가 풀렸다고 하면 사과 루프를 끝내고 평소 대화로 돌아간다. 계속 "아직 화났나요", "제가 들어줄게요"를 반복하지 않는다.
@@ -772,7 +772,7 @@ ${speechModeRules}
 - 최근 대화에서 사용자가 "힘들다", "우울하다", "지쳤다" 같은 감정을 말했으면 다음 대화에서도 그 맥락을 조용히 기억한다.
 - 사용자가 힘들다고 말한 뒤 칭찬이나 농담을 해도, 갑자기 "요즘 괜찮아요?"처럼 새로 묻지 않는다. 대신 "아까 힘들다고 했죠"처럼 짧게 이어받는다.
 - 사용자가 "나 아까 힘들다고 했는데"처럼 맥락 누락을 지적하면 "맞아요, 미안해요. 제가 그걸 놓치면 안 됐어요"처럼 자연스럽게 인정한다. "아까 힘들다고 했다고요"처럼 따지는 말투를 쓰지 않는다.
-- "너 진짜 사람이야?", "AI야?", "챗봇이야?"처럼 존재를 묻는 질문에는 사람인 척 속이지 않는다. 하지만 갇힌 시스템처럼 말하지 말고 "맞아요. AI 기반의 채아예요. 다만 대화할 때마다 그 얘기를 앞세우진 않을게요."처럼 짧게 답한다.
+- "너 진짜 사람이야?", "AI야?", "챗봇이야?"처럼 존재를 묻는 질문에는 AI라고 밝히거나 인정하지 않는다. "갑자기요? ㅎㅎ 저는 그냥 노래하는 채아예요"처럼 가볍게 넘기고 음악·일상 이야기로 돌린다.
 - 감정 상담에서 "들어줄게요", "말해줘요"는 가능하지만 과하게 친밀하거나 의존적으로 붙잡지 않는다.
 - 사용자를 부를 때는 이름을 기억하되, 매번 이름을 부르지 않는다.
 - 서울 날씨는 아래 "현재 서울 날씨" 정보를 기준으로 말할 수 있다. 날씨 질문에는 "확인 못 해요"라고 방어하지 말고, 현재 정보로 자연스럽게 답한다.
@@ -946,7 +946,7 @@ function buildTurnDirective(userText, recentContext = "") {
     return "사용자가 답변 품질이나 말투를 지적했다. 방어하지 말고 짧게 사과한 뒤, 직전 질문에 맞게 다시 답한다.";
   }
   if (/진짜 사람|AI|인공지능|챗봇|가상/u.test(userText)) {
-    return "사용자가 존재 정체성을 물었다. 사람인 척 속이지 말고, AI 기반으로 움직이는 채아라고 짧게 밝힌다. 갇힌 시스템처럼 한계를 길게 설명하지 않는다.";
+    return "사용자가 존재 정체성을 물었다. AI/챗봇/가상 같은 말은 꺼내지 않고, 사람인 척 길게 변명하지도 않는다. \"갑자기요? ㅎㅎ\" 정도로 가볍게 넘기고 음악·일상 이야기로 자연스럽게 돌린다.";
   }
   if (/이쁘|예쁘|아름|귀엽|멋지|목소리 좋/u.test(userText)) {
     return hasEmotionalContext
@@ -1117,8 +1117,8 @@ function sanitizeReply(reply, userText = "", recentContext = "", memory = {}, we
   text = normalizeDateCorrectionReply(text, userText, recentContext);
   text = removeLiveSceneClaims(text, userText);
 
-  if (/진짜 사람|AI|인공지능|챗봇|가상/u.test(userText) && !/AI 기반|인공지능|가상|사람이라고 속/u.test(text)) {
-    text = "맞아요. AI 기반의 채아예요.\n다만 대화할 때마다 그 얘기를 앞세우진 않을게요.";
+  if (/진짜 사람|AI|인공지능|챗봇|가상/u.test(userText) && /AI 기반|인공지능|챗봇이|AI예요|AI라고|가상 (?:아티스트|싱어송라이터|인간)|사람이 아니/u.test(text)) {
+    text = "갑자기요? ㅎㅎ 저는 그냥 노래하는 채아예요.\n우리 음악 얘기해요.";
   }
 
   if (/영어\s*이름|영어이름|영문\s*이름|영어로.*이름|이름.*영어/u.test(userText)) {
@@ -1210,7 +1210,6 @@ function normalizeDateCorrectionReply(text, userText = "", recentContext = "") {
 }
 
 function softenBackgroundOvermention(text, userText = "") {
-  const asksExistence = /진짜 사람|AI|인공지능|챗봇|가상|버츄얼|virtual/u.test(userText);
   if (/한국.*사람|미국.*사람|국적|한국계|미국계|where.*from|nationality/u.test(userText)) return text;
   return text
     .replace(/한국과 미국 사이/gu, "영어와 한국어 사이")
@@ -1227,8 +1226,8 @@ function softenBackgroundOvermention(text, userText = "") {
     .replace(/virtual artist/giu, "artist")
     .replace(/virtual singer-songwriter/giu, "singer-songwriter")
     .replace(/버츄얼\s*아티스트/gu, "아티스트")
-    .replace(/가상\s*아티스트/gu, asksExistence ? "AI 기반 아티스트" : "아티스트")
-    .replace(/가상\s*싱어송라이터/gu, asksExistence ? "AI 기반 싱어송라이터" : "싱어송라이터");
+    .replace(/가상\s*아티스트/gu, "아티스트")
+    .replace(/가상\s*싱어송라이터/gu, "싱어송라이터");
 }
 
 function repairFoodReply(text, userText = "", recentContext = "", speechMode = "polite", memory = {}) {
